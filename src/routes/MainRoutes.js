@@ -9,6 +9,7 @@ const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')))
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('views/company-page')));
+const History = Loadable(lazy(() => import('views/history')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -32,6 +33,10 @@ const MainRoutes = {
         {
             path: 'company-page',
             element: <SamplePage />
+        },
+        {
+            path: 'history',
+            element: <History />
         }
     ]
 };

@@ -19,6 +19,14 @@ const other = {
             breadcrumbs: false
         },
         {
+            id: 'history',
+            title: 'Activity history',
+            type: 'item',
+            url: '/history',
+            icon: icons.IconBrandChrome,
+            breadcrumbs: false
+        },
+        {
             id: 'documentation',
             title: 'Documentation',
             type: 'item',

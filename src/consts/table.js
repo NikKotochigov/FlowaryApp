@@ -1,0 +1,58 @@
+export const table = [
+    {id: 1,
+        status: "finished",
+    date: "2023-01-01",
+    time: '21:23:00',
+     token: 'USDC',
+     from: '0x1AFaF7463894656662E6BdcbDC7752000000acbB',
+     txhash: "0xff93ae379a676792aec24761354371c95df3283522b6cded378079f675259cea",
+     chain: 'goerly'
+},
+{id: 2,
+    status: "active",
+    date: '01.01.2023',
+time: '17:45:50',
+token: 'USDT',
+from: '0x1AFaF7463894656662E6BdcbDC7752000000acbB',
+txhash: "0xff93ae379a676792aec24761354371c95df3283522b6cded378079f675259cea",
+chain: 'goerly'
+},
+{id: 3,
+    status: "finished",
+    date: '02.01.2023',
+time: '08:14:44',
+token: 'btc',
+from: '0x1AFaF7463894656662E6BdcbDC7752000000acbB',
+txhash: "0xff93ae379a676792aec24761354371c95df3283522b6cded378079f675259cea",
+chain: 'goerly'
+},
+{id: 4,
+    status: "finished",
+    date: '02.01.2023',
+time: '21:23:00',
+ token: 'eth',
+ from: '0x1AFaF7463894656662E6BdcbDC7752000000acbB',
+ txhash: "0xff93ae379a676792aec24761354371c95df3283522b6cded378079f675259cea",
+ chain: 'goerly'
+},
+{id: 5,
+status: "active",
+date: '03.01.2023',
+time: '17:45:50',
+token: 'bnb',
+from: '0x1AFaF7463894656662E6BdcbDC7752000000acbB',
+txhash: "0xff93ae379a676792aec24761354371c95df3283522b6cded378079f675259cea",
+chain: 'goerly'
+},
+{id: 6,
+status: "finished",
+date: '03.01.2023',
+time: '08:14:44',
+token: 'usdc',
+from: '0x1AFaF7463894656662E6BdcbDC7752000000acbB',
+txhash: "0xff93ae379a676792aec24761354371c95df3283522b6cded378079f675259cea",
+chain: 'goerly'
+},
+
+
+]
