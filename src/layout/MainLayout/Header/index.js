@@ -6,10 +6,10 @@ import { Avatar, Box, ButtonBase } from '@mui/material';
 
 // project imports
 import LogoSection from '../LogoSection';
-import ProfileSection from './ProfileSection';
 
 // assets
 import { IconMenu2 } from '@tabler/icons';
+import { ConnectWallet } from 'ui-component/connect-wallet/connectWallet';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
@@ -53,7 +53,10 @@ const Header = ({ handleLeftDrawerToggle }) => {
                 </ButtonBase>
             </Box>
 
-            <ProfileSection />
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ flexGrow: 1 }} />
+
+            <ConnectWallet />
         </>
     );
 };
