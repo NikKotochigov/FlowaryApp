@@ -1,10 +1,15 @@
-import { Box, Button, Typography } from "@mui/material";
-
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { goods } from "consts/data";
+import { useSelector } from "react-redux";
+import { contractSelector } from "store/reducers/contract/reducer";
+import User from '../../../src/components/pages/company/user'
 // ==============================|| SAMPLE PAGE ||============================== //
 const SamplePage = () => {
+  const { name} = useSelector(contractSelector)
 
     return (
         <>
+
             <Box
                 sx={{
                     display: {
@@ -24,7 +29,7 @@ const SamplePage = () => {
                         m: 7
                     }}
                 >
-                    <Typography variant="h3" color="error.main">
+                    <Typography variant="h1" color="error.main">
                         COMPANY page
                     </Typography>
                     <Button variant="outlined" size="large"
@@ -42,7 +47,7 @@ const SamplePage = () => {
                         m: 7
                     }}
                 >
-                    <Typography variant="h4" color="common.main">
+                    <Typography variant="h2" color="common.main">
                         Avaibale balance: 1000$</Typography>
                     {/* <LoadDepositModal /> */}
                 </Box>
@@ -63,11 +68,11 @@ const SamplePage = () => {
                     justifyContent: "center",
                 }}
             >
-                {/* <Grid container spacing={3} maxWidth={800}>
+                <Grid container spacing={3} maxWidth={800}>
             {goods.map((item) => (
-                <User key={item.id} {...item} check={check} />
+                <User key={item.id} {...item} />
             ))}
-        </Grid> */}
+        </Grid>
             </Box>
         </>
 
