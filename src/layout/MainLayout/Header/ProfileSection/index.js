@@ -34,6 +34,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import UpgradePlanCard from './UpgradePlanCard';
+import { customizationSelector } from 'store/reducers/customization/reducer';
 // import User1 from 'assets/images/users/user-round.svg';
 
 // assets
@@ -43,7 +44,7 @@ import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
 
 const ProfileSection = () => {
     const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
+    const customization = useSelector(customizationSelector);
     const navigate = useNavigate();
 
     const [sdm, setSdm] = useState(true);

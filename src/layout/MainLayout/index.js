@@ -12,7 +12,7 @@ import Sidebar from './Sidebar';
 import Customization from '../Customization';
 import navigation from 'menu-items';
 import { drawerWidth } from 'store/constant';
-import { SET_MENU } from 'store/actions';
+import { customizationSelector, setMenu } from 'store/reducers/customization/reducer';
 
 // assets
 import { IconChevronRight } from '@tabler/icons';
@@ -67,10 +67,10 @@ const MainLayout = () => {
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
     // Handle left drawer
-    const leftDrawerOpened = useSelector((state) => state.customization.opened);
+    const leftDrawerOpened = useSelector(customizationSelector).opened;
     const dispatch = useDispatch();
     const handleLeftDrawerToggle = () => {
-        dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
+        dispatch(setMenu(!leftDrawerOpened));
     };
 
     return (

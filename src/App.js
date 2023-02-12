@@ -11,11 +11,12 @@ import themes from 'themes';
 
 // project imports
 import NavigationScroll from 'layout/NavigationScroll';
+import { customizationSelector } from 'store/reducers/customization/reducer';
 
 // ==============================|| APP ||============================== //
 
 const App = () => {
-    const customization = useSelector((state) => state.customization);
+    const customization = useSelector(customizationSelector);
 
     return (
         <StyledEngineProvider injectFirst>

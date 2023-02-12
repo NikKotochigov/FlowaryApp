@@ -9,6 +9,7 @@ import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography 
 
 // project imports
 import NavItem from '../NavItem';
+import { customizationSelector } from 'store/reducers/customization/reducer';
 
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -18,7 +19,7 @@ import { IconChevronDown, IconChevronUp } from '@tabler/icons';
 
 const NavCollapse = ({ menu, level }) => {
     const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
+    const customization = useSelector(customizationSelector);
 
     const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState(null);
