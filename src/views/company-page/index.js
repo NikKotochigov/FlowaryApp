@@ -2,7 +2,9 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import { goods } from "consts/data";
 import { useSelector } from "react-redux";
 import { contractSelector } from "store/reducers/contract/reducer";
-import User from '../../../src/components/pages/company/user'
+import AddRecieverModal from "ui-component/pages/company/addRecieverModal/addRecieverModal";
+import LoadDepositModal from "ui-component/pages/company/loadDepositModal/loadDepositModal";
+import User from '../../ui-component/pages/company/user'
 // ==============================|| SAMPLE PAGE ||============================== //
 const SamplePage = () => {
   const { name} = useSelector(contractSelector)
@@ -28,7 +30,7 @@ const SamplePage = () => {
                         m: 7
                     }}
                 >
-                    <Typography variant="h1" color="error.main">
+                    <Typography variant="h1" color="red">
                         COMPANY page
                     </Typography>
                     <Button variant="outlined" size="large"
@@ -48,7 +50,7 @@ const SamplePage = () => {
                 >
                     <Typography variant="h2" color="common.main">
                         Avaibale balance: 1000$</Typography>
-                    {/* <LoadDepositModal /> */}
+                    <LoadDepositModal />
                 </Box>
             </Box>
             <Box
@@ -59,7 +61,7 @@ const SamplePage = () => {
                     mb: 3,
                 }}
             >
-                {/* <AddRecieverModal /> */}
+                <AddRecieverModal />
             </Box>
             <Box
                 sx={{

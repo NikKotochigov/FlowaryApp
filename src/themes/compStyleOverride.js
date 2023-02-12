@@ -112,7 +112,10 @@ export default function componentStyleOverrides(theme) {
                     },
                     '&.MuiInputBase-multiline': {
                         padding: 1
-                    }
+                    },
+                    ["&:hover"]: {
+                        boxShadow:  '0 2px 14px 0 rgb(32 40 45 / 30%)'
+                                  },   
                 },
                 input: {
                     fontWeight: 500,
