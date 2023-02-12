@@ -9,7 +9,6 @@ const SamplePage = () => {
 
     return (
         <>
-
             <Box
                 sx={{
                     display: {
