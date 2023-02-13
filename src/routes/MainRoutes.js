@@ -5,9 +5,10 @@ import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 
 // dashboard routing
-const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
+const Main = Loadable(lazy(() => import('views/main/default')));
 
 // sample page routing
+const Dashboard = Loadable(lazy(() => import('views/dashboard')));
 const SamplePage = Loadable(lazy(() => import('views/company-page')));
 const History = Loadable(lazy(() => import('views/history')));
 
@@ -19,16 +20,20 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <DashboardDefault />
+            element: <Main />
         },
         {
-            path: 'dashboard',
+            path: 'main',
             children: [
                 {
                     path: 'default',
-                    element: <DashboardDefault />
+                    element: <Main />
                 }
             ]
+        },
+        {
+            path: 'dashboard',
+            element: <Dashboard />
         },
         {
             path: 'company-page',

@@ -11,6 +11,14 @@ const other = {
     type: 'group',
     children: [
         {
+            id: 'dashboard',
+            title: 'Dashboard',
+            type: 'item',
+            url: '/dashboard',
+            icon: icons.IconBrandChrome,
+            breadcrumbs: false
+        },
+        {
             id: 'company-page',
             title: 'Company Page',
             type: 'item',
@@ -30,7 +38,7 @@ const other = {
             id: 'documentation',
             title: 'Documentation',
             type: 'item',
-            url: 'https://codedthemes.gitbook.io/berry/',
+            url: 'https://github.com/NikKotochigov/FlowaryApp',
             icon: icons.IconHelp,
             external: true,
             target: true
