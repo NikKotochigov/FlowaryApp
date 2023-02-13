@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
 // assets
 import colors from 'assets/scss/_themes-vars.module.scss';
@@ -46,8 +46,9 @@ export const theme = (customization) => {
         typography: themeTypography(themeOption)
     };
 
-    const themes = createTheme(themeOptions);
+    let themes = createTheme(themeOptions);
     themes.components = componentStyleOverrides(themeOption);
+    themes = responsiveFontSizes(themes)
 
     return themes;
 };
