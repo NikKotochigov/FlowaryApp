@@ -12,7 +12,7 @@ const HelperToolkit = ({ title }) => {
     [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: theme.palette.common.white,
       color: 'rgba(0, 0, 0, 0.87)',
-      boxShadow: theme.shadows[25],
+      boxShadow: '0 2px 14px 0 rgb(32 40 45 / 30%)',
       fontSize: 11,
       maxWidth: 150,
     },
