@@ -5,7 +5,7 @@ export default function componentStyleOverrides(theme) {
             styleOverrides: {
                 root: {
                     fontWeight: 500,
-                    borderRadius: '4px'
+                    borderRadius: '7px'
                 }
             }
         },
@@ -114,7 +114,8 @@ export default function componentStyleOverrides(theme) {
                         padding: 1
                     },
                     ["&:hover"]: {
-                        boxShadow:  '0 2px 14px 0 rgb(32 40 45 / 30%)'
+                        // boxShadow:  '0 2px 14px 0 rgb(32 40 45 / 30%)'
+                        boxShadow: "0 2px 14px 0px rgb(41 109 198 / 80%)"
                                   },   
                 },
                 input: {

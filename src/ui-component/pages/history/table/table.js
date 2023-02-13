@@ -30,6 +30,7 @@ const handleClickOpen = () => setOpen(prev => !prev);
           boxShadow:     '0 2px 14px 0 rgb(32 40 45 / 30%)',
           borderRadius: 2,
           maxWidth: 850,
+          background: 'white'
         }}
       >
         <Table aria-label="simple table">

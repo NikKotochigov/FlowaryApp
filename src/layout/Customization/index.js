@@ -111,8 +111,12 @@ const Customization = () => {
                     }}
                 >
                     <AnimateButton type="rotate">
-                        <IconButton color="inherit" size="large" disableRipple>
-                            <IconSettings />
+                        <IconButton color="inherit" size="large" disableRipple
+                     
+                        >
+                            <IconSettings 
+                           
+                            />
                         </IconButton>
                     </AnimateButton>
                 </Fab>

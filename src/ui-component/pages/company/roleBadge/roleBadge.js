@@ -5,19 +5,19 @@ import IconButton from '@mui/material/IconButton';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
-        right: 25,
-        top: 17,
-        width: 98,
+        right: -60,
+        top: 0,
+        width: 140,
         height: 26,
+        fontSize: '14px',
         background: 'red',
         border: `2px solid ${theme.palette.background.paper}`
-        // padding: '0 px',
     }
 }));
 
-export default function CustomBadge({ children, content }) {
+export default function RoleBadge({ children, content }) {
     return (
-        <IconButton aria-label="cart">
+        <IconButton aria-label="cart" sx={{ fontSize: '16px' }}>
             <StyledBadge badgeContent={content} color="secondary">
                 {children}
             </StyledBadge>
