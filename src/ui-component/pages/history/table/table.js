@@ -6,6 +6,7 @@ import Tooltip from "../../../elements/tooltip"
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import { table } from "../../../../consts/table";
 import { useState } from "react";
+import tableImg from 'assets/images/tableImg.gif';
 
 
 const TableS = ({ rows }) => {
@@ -53,12 +54,14 @@ const handleClickOpen = () => setOpen(prev => !prev);
                     {row.status == "finished" ? (
                       <HighlightOffIcon style={{fontSize: '250%', color: 'red'}}/>
                     ) : (
-                      <img
-                        alt="logo"
-                        src="tableImg.gif"
-                        width={40}
-                        height={40}
-                      />
+                      // <img
+                      //   alt="logo"
+                      //   src="tableImg.gif"
+                      //   width={40}
+                      //   height={40}
+                      // />
+                      <img src={tableImg} alt="gif" width="45" />
+
                     )}
                   </TableCell>
 

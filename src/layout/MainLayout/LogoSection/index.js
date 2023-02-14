@@ -15,7 +15,9 @@ const LogoSection = () => {
     const { defaultId } = useSelector(customizationSelector);
     const dispatch = useDispatch();
     return (
-        <ButtonBase disableRipple onClick={() => dispatch(menuOpen(defaultId))} component={Link} to={config.defaultPath}>
+        <ButtonBase disableRipple onClick={() => dispatch(menuOpen(defaultId))} 
+        component={Link} to={config.defaultPath}
+        >
             <Logo />
         </ButtonBase>
     );
