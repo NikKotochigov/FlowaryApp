@@ -55,7 +55,7 @@ const User = () => {
   // const handleClose = () => {
   //   setOpen(false);
   // };
-  
+
   return (
     <Grid item xs={12}>
 
@@ -72,42 +72,42 @@ const User = () => {
           borderRadius: 2,
           boxShadow: theme.shadows[25],
           minHeight: 160,
-         alignItems: "center",
+          alignItems: "center",
           justifyItems: 'center',
         }}
       >
-        
-             {startstop ? (
+
+        {startstop ? (
           <CustomBadge content={"Active stream"}>
             {/* <CustomAvatar n={name}  /> */}
-           <Box sx={{m:2, }}>
-                  <Jazzicon
-             diameter={90}
-            seed={jsNumberForAddress('0x1AFaF7463894656662E6BdcbDC775227rrE6acbB')}
-                        />
-           </Box>
-      
-         </CustomBadge>
+            <Box sx={{ m: 2, }}>
+              <Jazzicon
+                diameter={90}
+                seed={jsNumberForAddress('0x1AFaF7463894656662E6BdcbDC775227rrE6acbB')}
+              />
+            </Box>
+
+          </CustomBadge>
         ) : (
           // <CustomAvatar n={name} />
-          <Box sx={{m:2, }}>
-          <Jazzicon
-     diameter={90}
-    seed={jsNumberForAddress('0x1AFaF7463894656662E6BdcbDC775227rrE6acbB')}
-                />
-   </Box>
-        )} 
-        
-    
+          <Box sx={{ m: 2, }}>
+            <Jazzicon
+              diameter={90}
+              seed={jsNumberForAddress('0x1AFaF7463894656662E6BdcbDC775227rrE6acbB')}
+            />
+          </Box>
+        )}
+
+
         <CardContent>
           {/* <Typography variant="h6" component="h3">
             {name}
           </Typography> */}
           <Typography variant="h5">
-            Address: 
+            Address:
             {'0x1AFaF7463894656662E6BdcbDC775227rrE6acbB'.slice(0, 5) +
-                          "..." +
-                          '0x1AFaF7463894656662E6BdcbDC775227rrE6acbB'.slice(38)}
+              "..." +
+              '0x1AFaF7463894656662E6BdcbDC775227rrE6acbB'.slice(38)}
           </Typography>
           {startstop && (
             <Typography
@@ -119,87 +119,89 @@ const User = () => {
           )}
         </CardContent>
         {/* {!check ? ( */}
-          <CardActions
-            sx={{ ml: {
-                xs: 0, // 100%
-                sm: 15, //600px
-              },
-            }}
-          >
+        <CardActions
+          sx={{
+            ml: {
+              xs: 0, // 100%
+              sm: 15, //600px
+            },
+          }}
+        >
 
-            {startstop ? (
-              <Button
-                variant="outlined"
-                sx={{ color: "red" }}
-                onClick={handleToggleClick}
-              >
-                Stop stream
-              </Button>
-            ) : (
-              <Button
+          {startstop ? (
+            <Button
+              variant="outlined"
+              sx={{ color: "red" }}
+              onClick={handleToggleClick}
+            >
+              Stop stream
+            </Button>
+          ) : (
+            <Button
               variant="outlined"
               onClick={handleToggleClick}
             >
               Start stream
             </Button>
-              // <BasicModal
-              //   nameModal={"Start Stream"}
-              //   open={open}
-              //   handleClickOpen={handleClickOpen}
-              //   // handleClose={handleClose}
-              // >
-              //   <Box
-              //     sx={{
-              //       display: "flex",
-              //       flexDirection: "column",
-              //       alignItems: "center",
-              //       gap: 2,
-              //       width: 400,
-              //     }}
-              //   >
-              //     <CardMedia
-              //       component="img"
-              //       height="160"
-              //       image="/static/images/stream.jpg"
-              //       alt="stream picture"
-              //     />
-              //     <TextField
-              //       fullWidth
-              //       label="Amount per hour"
-              //       variant="outlined"
-              //       onChange={(e) => setAmountPerHour(e.target.value)}
-              //     />
-              //     <Box onClick={handleClickOpen}>
-              //       <Button variant="outlined" onClick={handleToggleClick}>
-              //         Start stream
-              //       </Button>
-              //     </Box>
-              //   </Box>
-              // </BasicModal>
+            // <BasicModal
+            //   nameModal={"Start Stream"}
+            //   open={open}
+            //   handleClickOpen={handleClickOpen}
+            //   // handleClose={handleClose}
+            // >
+            //   <Box
+            //     sx={{
+            //       display: "flex",
+            //       flexDirection: "column",
+            //       alignItems: "center",
+            //       gap: 2,
+            //       width: 400,
+            //     }}
+            //   >
+            //     <CardMedia
+            //       component="img"
+            //       height="160"
+            //       image="/static/images/stream.jpg"
+            //       alt="stream picture"
+            //     />
+            //     <TextField
+            //       fullWidth
+            //       label="Amount per hour"
+            //       variant="outlined"
+            //       onChange={(e) => setAmountPerHour(e.target.value)}
+            //     />
+            //     <Box onClick={handleClickOpen}>
+            //       <Button variant="outlined" onClick={handleToggleClick}>
+            //         Start stream
+            //       </Button>
+            //     </Box>
+            //   </Box>
+            // </BasicModal>
 
 
-            )}
+          )}
 
 
-         </CardActions>
-         <Box sx={{display: "flex",
-                        flexDirection: "column",
-                        alignItems: "top",
-                        height: {
-                          xs: '60px', // 100%
-                          sm: '130px', //600px
-                        },
-                        ml: {
-                          xs: 0, // 100%
-                          sm: 5, //600px
-                        },
-                        }}>
-  <ManageAccountsRoundedIcon style={{fontSize: '300%', color: '#0047AB'}}
-  onClick={()=>console.log('ff')}
-  />
-                         
-                        </Box>
-        
+        </CardActions>
+        <Box sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "top",
+          height: {
+            xs: '60px', // 100%
+            sm: '130px', //600px
+          },
+          ml: {
+            xs: 0, // 100%
+            sm: 5, //600px
+          },
+        }}>
+          <ManageAccountsRoundedIcon style={{ fontSize: '300%', color: '#0047AB' }}
+            onClick={() => console.log('ff')}
+          />
+
+        </Box>
+
         {/* ) : (
     <Box ml="150px">
            <ControlCheck />
