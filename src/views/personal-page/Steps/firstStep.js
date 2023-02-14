@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { contractSelector, setAddress } from "store/reducers/contract/reducer";
 import { createCompany } from "utils/createCompany";
 
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 
 function FirstStep() {
     const [name, setName] = useState("");
     const dispatch = useDispatch();
-    const { address } = useSelector(contractSelector);
 
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -46,7 +45,6 @@ function FirstStep() {
                     >
                         Create company
                     </Button>
-                    {address && <Typography>{name}</Typography>}
                 </Box>
             </Box>
         </>
