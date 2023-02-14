@@ -68,6 +68,7 @@ export default function themePalette(theme) {
         background: {
             paper: theme.paper,
             default: theme.backgroundDefault
+
         }
     };
 }
