@@ -18,6 +18,10 @@ import Tooltip from "../../ui-component/elements/tooltip";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import TableS from "../../ui-component/pages/history/table/table";
 
+import { ethers } from "ethers";
+import companyContract from "contracts/CompanyContract";
+import provider from "contracts/provider";
+
 
 // const rowSS = table.map(
 //   ({ id, status, date, token, from, txhash, chain, time }) =>
@@ -40,6 +44,74 @@ const History = () => {
   const [valueStop, setValueStop] = useState(dayjs("2023-01-02"));
   function createData(id, status, date, token, from, txhash, chain, time) {
     return { id, status, date, token, from, txhash, chain, time };
+  }
+
+  //----------------------------------------------- MY FUNCS ----------------------------
+  const handleEvents = async()=>{
+    try {
+      
+//--------  EVENT#1   StartFlow ---------------
+      let eventFilterStart = companyContract.filters.StartFlow();
+      let eventStart = await companyContract.queryFilter(eventFilterStart);
+
+      // console.log("Amount Events: ", eventStart.length)
+      // console.log("All Events: ", eventStart)
+
+      for (let i = 0; i < eventStart.length; i++) {
+
+        //@dev SET IN OBJ as you like
+
+        console.log("#1 Event name: Start Stream")
+
+        // TIME
+        const timeStamp = (await provider.getBlock(eventStart[0].blockNumber)).timestamp;
+        console.log("#2 Time: ", timeStamp)
+
+        // Employee address:
+        const addressEmployee = eventStart[i].args[0]
+        console.log("#3 Employee: ", addressEmployee)
+
+        // Transaction Hash:
+        const txHash = eventStart[i].transactionHash
+        console.log("#4 TX hash: ", txHash)
+        
+        //@dev DO YOU NEED RATE????
+      }
+
+//--------  EVENT#2   FinishFlow ---------------
+    let eventFinish = await companyContract.queryFilter(companyContract.filters.FinishFlow());
+    console.log("Amount Events FINISH: ", eventFinish.length)
+    console.log("All Events: ", eventFinish)
+
+    for (let i = 0; i < eventStart.length; i++) {
+
+      console.log("🏁 #1 Event name: FINSIH Stream")
+
+         // TIME
+        const timeStamp = (await provider.getBlock(eventFinish[0].blockNumber)).timestamp;
+        console.log("🏁 #2 Time: ", timeStamp)
+
+        // Employee address:
+        const addressEmployee = eventFinish[i].args[0]
+        console.log("🏁 #3 Employee: ", addressEmployee)
+
+        // Employee EARNED:
+        const earnedTokens = eventFinish[i].args[1]
+        console.log("🏁 #3 Earned: ", earnedTokens.toNumber())
+
+        // Transaction Hash:
+        const txHash = eventFinish[i].transactionHash
+        console.log("#4 TX hash: ", txHash)
+    }
+//--------  EVENT#3   ADD_EMPLOYEE ---------------
+const eventAddEmployee = await companyContract.queryFilter(companyContract.filters.AddEmployee());
+console.log("All Events ADD EMPLOYEE: ", eventAddEmployee)
+
+
+  
+    } catch (error) {
+      console.log("DEV>>>>", error)
+    }
   }
 
   const rows = [
@@ -147,8 +219,8 @@ const History = () => {
               },
             }}
           />
-          <Button variant="outlined" sx={{ width: "150px", mb: 5 }}>
-            Show history
+          <Button onClick={handleEvents} variant="outlined" sx={{ width: "150px", mb: 5 }}>
+            TEST_ETHERS
           </Button>
         </Box>
 
