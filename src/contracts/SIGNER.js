@@ -1,4 +1,6 @@
 import provider from "./provider";
+import { ethers } from "ethers";
+
 
 const conectSigner = (contract) => {
   const signer = provider.getSigner();

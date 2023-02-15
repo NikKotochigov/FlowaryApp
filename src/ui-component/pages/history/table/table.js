@@ -13,7 +13,6 @@ const TableS = ({ rows }) => {
   const [open, setOpen] = useState(false);
 const handleClickOpen = () => setOpen(prev => !prev);
 
-  console.log({ rows });
   const theme = useTheme();
 
 
