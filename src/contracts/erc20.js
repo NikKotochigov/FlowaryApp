@@ -18,12 +18,12 @@ const connectContract = async (address, dispatch) => {
 //  dispatch(setContract(contract));
 // const admin = await contract.administrator()
 //  dispatch(setAdmin(admin));
- const name = await contract.name()
- dispatch(setName(name));
- const owner = await contract.owner()
- dispatch(setOwner(owner));
-const contractAdd = address
-dispatch(setContractAdd(contractAdd));
+//  const name = await contract.name()
+//  dispatch(setName(name));
+//  const owner = await contract.owner()
+//  dispatch(setOwner(owner));
+// const contractAdd = address
+// dispatch(setContractAdd(contractAdd));
 // const balance = (await contract.currentBalanceContract()).toString()
 // dispatch(setBalance(balance));
 }

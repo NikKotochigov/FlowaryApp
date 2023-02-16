@@ -7,6 +7,7 @@ import {
   Grid,
   Popover,
   TextField,
+  Toolbar,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -23,6 +24,7 @@ import companyContract from "../../../contracts/CompanyContract";
 import { useEffect } from "react";
 import { ethers } from "ethers";
 import provider from "../../../contracts/provider";
+import CompanyCreateStepper from "../Steps/companyCreateStepper";
 
 
 const Main = () => {
@@ -36,9 +38,9 @@ const Main = () => {
 
   const navigate = useNavigate();
   const handleConnectCompany = async () => {
-    connectContract(add,dispatch)
+    connectContract(add, dispatch)
     navigate("/personal-page")
-};
+  };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -47,16 +49,39 @@ const Main = () => {
   };
   const openA = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
- const {contractAdd} = useSelector(contractSelector)
+  const { contractAdd } = useSelector(contractSelector)
 
 
-const [arrayBlock , setArrayBlock] = useState([])
+  const [arrayBlock, setArrayBlock] = useState([])
+
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+
+  const handleCreateCompany = () => {
+    console.log("hello");
+    setIsCreateOpen(true);
+  }
 
   return (
     <>
       {isConnecting && <div>Connect</div>}
       {isDisconnected && <div>Not Connect</div>}
       {address && <div>{address}</div>}
+
+      <>
+        <Toolbar>
+          <Box sx={{ display: 'flex', gap: '8px' }}>
+            <Button variant="outlined" onClick={handleCreateCompany}>
+              Create company
+            </Button>
+            <Button variant="outlined">
+              Choose company
+            </Button>
+
+          </Box>
+        </Toolbar>
+        {isCreateOpen && <CompanyCreateStepper />}
+      </>
+
 
 
       <Button size="large" variant="outlined"
