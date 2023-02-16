@@ -1,7 +1,4 @@
 
-
-// ==============================|| DEFAULT DASHBOARD ||============================== //
-
 import {
     Box,
     Button,
@@ -127,17 +124,4 @@ const [arrayBlock , setArrayBlock] = useState([])
   };
   
   export default Main;
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+ 
