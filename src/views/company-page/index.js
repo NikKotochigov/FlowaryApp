@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { ethers } from "ethers";
 import CompanyContract from "../../contracts/CompanyContract";
 import conectSigner from "../../contracts/SIGNER";
+import { useNavigate } from 'react-router';
 
 
 // ==============================|| SAMPLE PAGE ||============================== //
@@ -48,19 +49,10 @@ const contract = new ethers.Contract(contractAdd, abi, provider)
           }
         })()
       }),[])
-//      const [adNew, setAdNew] = useState('')
-//      const [rate, setRate] = useState(0)
-// const hadleNewUser = async() => {
-//     try {
-//         const contractSigner = conectSigner(contract)
-//         console.log('add :', adNew, 'rate :', rate)
-//         const addUser = await contractSigner.addEmployee(adNew, rate)
-//         const res = await addUser.wait()
-//         console.log(res)
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+
+      const navigate = useNavigate();
+      
+
 
     return (
         <>
@@ -89,12 +81,13 @@ const contract = new ethers.Contract(contractAdd, abi, provider)
                         COMPANY {name}
                     </Typography>
 
-                    {/* <Button variant="outlined" size="large"
+                    <Button variant="outlined" size="large"
+                    // onClick={navigate("/company-page")}
                         sx={{
-                            minWidth: "200px",
+                            minWidth: "100px",
                         }}
-                    >Activity history</Button> */}
-                    <CustomSelector />
+                    >Activity history</Button>
+                    {/* <CustomSelector /> */}
                 </Box>
                 <Box
                     sx={{
@@ -106,7 +99,7 @@ const contract = new ethers.Contract(contractAdd, abi, provider)
                     }}
                 >
                     <Typography variant="h2" color="common.main">
-                        Avaibale balance: {balance.slice(0,5)}
+                        Avaibale balance: {balance}
                     </Typography>
                     <LoadDepositModal />
                 </Box>

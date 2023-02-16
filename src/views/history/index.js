@@ -23,97 +23,11 @@ import companyContract from "contracts/CompanyContract";
 import provider from "contracts/provider";
 
 
-// const rowSS = table.map(
-//   ({ id, status, date, token, from, txhash, chain, time }) =>
-//     createData(
-//       { id },
-//       { status },
-//       { date },
-//       { token },
-//       { from },
-//       { txhash },
-//       { chain },
-//       time
-//     )
-// );
-// console.log(rowSS);
 
 const History = () => {
-  const theme = useTheme();
   const [valueStart, setValueStart] = useState(dayjs("2023-01-01"));
-  const [valueStop, setValueStop] = useState(dayjs("2023-01-02"));
-  function createData(id, status, date, token, from, txhash, chain, time) {
-    return { id, status, date, token, from, txhash, chain, time };
-  }
-
-  //----------------------------------------------- MY FUNCS ----------------------------
-//   const handleEvents = async()=>{
-//     try {
-      
-// //--------  EVENT#1   StartFlow ---------------
-//       let eventFilterStart = companyContract.filters.StartFlow();
-//       let eventStart = await companyContract.queryFilter(eventFilterStart);
-
-//       // console.log("Amount Events: ", eventStart.length)
-//       // console.log("All Events: ", eventStart)
-
-//       for (let i = 0; i < eventStart.length; i++) {
-
-//         //@dev SET IN OBJ as you like
-
-//         console.log("#1 Event name: Start Stream")
-
-//         // TIME
-//         const timeStamp = (await provider.getBlock(eventStart[0].blockNumber)).timestamp;
-//         console.log("#2 Time: ", timeStamp)
-
-//         // Employee address:
-//         const addressEmployee = eventStart[i].args[0]
-//         console.log("#3 Employee: ", addressEmployee)
-
-//         // Transaction Hash:
-//         const txHash = eventStart[i].transactionHash
-//         console.log("#4 TX hash: ", txHash)
-        
-//         //@dev DO YOU NEED RATE????
-//       }
-
-// //--------  EVENT#2   FinishFlow ---------------
-//     let eventFinish = await companyContract.queryFilter(companyContract.filters.FinishFlow());
-//     console.log("Amount Events FINISH: ", eventFinish.length)
-//     console.log("All Events: ", eventFinish)
-
-//     for (let i = 0; i < eventStart.length; i++) {
-
-//       console.log("🏁 #1 Event name: FINSIH Stream")
-
-//          // TIME
-//         const timeStamp = (await provider.getBlock(eventFinish[0].blockNumber)).timestamp;
-//         console.log("🏁 #2 Time: ", timeStamp)
-
-//         // Employee address:
-//         const addressEmployee = eventFinish[i].args[0]
-//         console.log("🏁 #3 Employee: ", addressEmployee)
-
-//         // Employee EARNED:
-//         const earnedTokens = eventFinish[i].args[1]
-//         console.log("🏁 #3 Earned: ", earnedTokens.toNumber())
-
-//         // Transaction Hash:
-//         const txHash = eventFinish[i].transactionHash
-//         console.log("#4 TX hash: ", txHash)
-//     }
-// //--------  EVENT#3   ADD_EMPLOYEE ---------------
-// const eventAddEmployee = await companyContract.queryFilter(companyContract.filters.AddEmployee());
-// console.log("All Events ADD EMPLOYEE: ", eventAddEmployee)
-
-
-  
-//     } catch (error) {
-//       console.log("DEV>>>>", error)
-//     }
-//   }
-const [arrayBlock , setArrayBlock] = useState([])
+  const [valueStop, setValueStop] = useState(dayjs("2023-01-02"));  
+  const [arrayBlock , setArrayBlock] = useState([])
 
 const handleEvents = async()=>{
   try {
@@ -150,7 +64,7 @@ const result = []
 
       const finishTime = eventFinish[i].args[2].toNumber()
 
-      const earnedTokens = eventFinish[i].args[1].toNumber()
+      const earnedTokens = eventFinish[i].args[1].toString()
 
       const txHash = eventFinish[i].transactionHash
 
@@ -254,85 +168,11 @@ setArrayBlock(result)
   }
 }
 console.log('all events',arrayBlock)
-const arrayStreams = arrayBlock.filter(i => (i.name == 'Active' || i.name == 'Finish' || i.name == 'Finish All'))
+const arrayStreams = arrayBlock.filter(i => (i.name == 'Active' || i.name == 'Finish'))
 console.log('streams',arrayStreams)
-
-  const rows = [
-   { 
-      id: 11,
-      status: 'hui',
-      date: '111',
-      token: '222',
-      from: '333',
-      txhash: '444',
-      chain: '555',
-      time: '666'
-   },
-    // createData(
-    //   table[0].id,
-    //   table[0].status,
-    //   table[0].date,
-    //   table[0].token,
-    //   table[0].from,
-    //   table[0].txhash,
-    //   table[0].chain,
-    //   table[0].time
-    // ),
-    createData(
-      table[1].id,
-      table[1].status,
-      table[1].date,
-      table[1].token,
-      table[1].from,
-      table[1].txhash,
-      table[1].chain,
-      table[1].time
-    ),
-    // createData(
-    //   table[2].id,
-    //   table[2].status,
-    //   table[2].date,
-    //   table[2].token,
-    //   table[2].from,
-    //   table[2].txhash,
-    //   table[2].chain,
-    //   table[2].time
-    // ),
-    // createData(
-    //   table[3].id,
-    //   table[3].status,
-    //   table[3].date,
-    //   table[3].token,
-    //   table[3].from,
-    //   table[3].txhash,
-    //   table[3].chain,
-    //   table[3].time
-    // ),
-    // createData(
-    //   table[4].id,
-    //   table[4].status,
-    //   table[4].date,
-    //   table[4].token,
-    //   table[4].from,
-    //   table[4].txhash,
-    //   table[4].chain,
-    //   table[4].time
-    // ),
-    // createData(
-    //   table[5].id,
-    //   table[5].status,
-    //   table[5].date,
-    //   table[5].token,
-    //   table[5].from,
-    //   table[5].txhash,
-    //   table[5].chain,
-    //   table[5].time
-    // ),
-
-  ];
-console.log(rows)
-  const newRows = rows.filter(i => valueStart.format('DD/MM/YYYY') < dayjs(i.date).format('DD/MM/YYYY') < valueStop.format('DD/MM/YYYY'))
-  
+// console.log('ebanaya data :', dayjs.unix(arrayStreams[0].time).$d.toString())
+// console.log('ebanaya data :', dayjs.unix(arrayStreams[0].time).format('HH:mm DD/MM/YYYY') )
+ 
   return (
     <>
       <Typography variant="h1" m={5} color="red">
@@ -440,7 +280,7 @@ console.log(rows)
         </Box>
       </Box>
 
-      <TableS rows={rows} />
+      <TableS rows={arrayStreams} />
     </>
   );
 };

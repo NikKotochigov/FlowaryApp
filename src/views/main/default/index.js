@@ -20,7 +20,7 @@ import {
   import connectContract from "contracts/erc20";
   // import prepareContract from "contracts/erc20";
   // import contract from "contracts/erc20";
-
+  import { redirect, useNavigate } from "react-router-dom";
   import { amountEmployee, contractSelector } from "store/reducers/contract/reducer";
   import companyContract from "../../../contracts/CompanyContract";
 import { useEffect } from "react";
@@ -37,9 +37,10 @@ import provider from "../../../contracts/provider";
     const { address, isConnecting, isDisconnected } = useAccount()
     const [anchorEl, setAnchorEl] = useState(null);
 
-  
+    const navigate = useNavigate();
     const handleConnectCompany = async () => {
       connectContract(add,dispatch)
+      navigate("/company-page")
  };
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
