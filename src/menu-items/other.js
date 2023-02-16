@@ -19,10 +19,10 @@ const other = {
             breadcrumbs: false
         },
         {
-            id: 'company-page',
-            title: 'Company Page',
+            id: 'persnal-page',
+            title: 'Personal Page',
             type: 'item',
-            url: '/company-page',
+            url: '/personal-page',
             icon: icons.IconBrandChrome,
             breadcrumbs: false
         },

@@ -7,14 +7,12 @@ import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import { table } from "../../../../consts/table";
 import { useState } from "react";
 import tableImg from 'assets/images/tableImg.gif';
+import dayjs, { Dayjs } from "dayjs";
 
 
 const TableS = ({ rows }) => {
   const [open, setOpen] = useState(false);
 const handleClickOpen = () => setOpen(prev => !prev);
-
-  console.log({ rows });
-  const theme = useTheme();
 
 
   return (<>
@@ -39,7 +37,7 @@ const handleClickOpen = () => setOpen(prev => !prev);
             {rows.map((row) => (
               <>
                 <TableRow
-                  key={row.id}
+                  key={row.time}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell
@@ -51,63 +49,53 @@ const handleClickOpen = () => setOpen(prev => !prev);
                       // border: 1
                     }}
                   >
-                    {row.status == "finished" ? (
+                    {row.name == "Finish" || row.name == 'Finish All' ? (
                       <HighlightOffIcon style={{fontSize: '250%', color: 'red'}}/>
                     ) : (
-                      // <img
-                      //   alt="logo"
-                      //   src="tableImg.gif"
-                      //   width={40}
-                      //   height={40}
-                      // />
                       <img src={tableImg} alt="gif" width="45" />
 
                     )}
                   </TableCell>
 
                   <TableCell
-                    align="left"
+                    align="center"
                     // sx={{border: 0}}
                   >
                     <Typography
-                      color={row.status == 'finished' ? 'red' : 'green'}
+                      color={row.name == 'finished' ? 'red' : 'green'}
                       sx={{ fontSize: 16 }}
                     >
                       {" "}
-                      {`Stream ${row.status}`}
+                      {`Stream ${row.name}`}
                     </Typography>
-                    <Typography fontSize={12}>{row.time}</Typography>
+                    <Typography fontSize={12}>
+                      {dayjs.unix(row.time).format('HH:mm DD/MM/YYYY')}
+                       </Typography>
                   </TableCell>
 
                   <TableCell
                     // align="center"
                     sx={{
-                      alignItems: "center",
+                      justifyContent: "center",
                       display: {
                         xs: "none", // 100%
                         sm: "none", //600px
                         md: "flex", //900px
                       },
-                      gap: 2,
-                      fontSize: 14,
-                      p: 3,
-                      // border: 1
+                      // // fontSize: 14,
+                      py: 3.5,
+                      //  border: 1
                     }}
                   >
-                    <img
-                      alt="coin"
-                      src={`https://assets.coincap.io/assets/icons/${row.token.toLowerCase()}@2x.png`}
-                      width={30}
-                      height={30}
-                    />
-                    {row.token.toUpperCase()}
+                                      {row.earned}
+    
                   </TableCell>
 
                   <TableCell
-                    align="right"
+                    align="center"
                     sx={{
                       pt: 0.5,
-                      // border:0
+                      // border:1
                     }}
                   >
                     <Box
@@ -127,14 +115,15 @@ const handleClickOpen = () => setOpen(prev => !prev);
                       >
                         <Jazzicon
                           diameter={30}
-                          seed={jsNumberForAddress(row.from)}
+                          seed={jsNumberForAddress(row.addr)}
                         />
-                        {row.from.toString().slice(0, 5) +
+                        {row.addr.slice(0, 5) +
                           "..." +
-                          row.from.toString().slice(38)}
+                          row.addr.slice(38)}
                       </Box>
                     </Box>
                   </TableCell>
+
                   <TableCell
                     align="center"
                     sx={{
@@ -143,13 +132,14 @@ const handleClickOpen = () => setOpen(prev => !prev);
                   >
                     <Tooltip title={"see tx on Etherscan"}>
                       <a
-                        href={`https://goerli.etherscan.io/tx/${row.txhash}`}
+                        href={`https://goerli.etherscan.io/tx/${row.txHash}`}
                         target="_blank"
                       >
                         <OpenInNewOutlinedIcon />
                       </a>
                     </Tooltip>
                   </TableCell>
+
                   <TableCell align="center">
                     <BasicModal 
                     nameModal={"Info"}
