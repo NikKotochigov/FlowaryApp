@@ -37,7 +37,7 @@ import provider from "../../../contracts/provider";
     const navigate = useNavigate();
     const handleConnectCompany = async () => {
       connectContract(add,dispatch)
-      navigate("/company-page")
+      navigate("/personal-page")
  };
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
