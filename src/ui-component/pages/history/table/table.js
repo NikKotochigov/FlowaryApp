@@ -52,12 +52,6 @@ const handleClickOpen = () => setOpen(prev => !prev);
                     {row.name == "Finish" || row.name == 'Finish All' ? (
                       <HighlightOffIcon style={{fontSize: '250%', color: 'red'}}/>
                     ) : (
-                      // <img
-                      //   alt="logo"
-                      //   src="tableImg.gif"
-                      //   width={40}
-                      //   height={40}
-                      // />
                       <img src={tableImg} alt="gif" width="45" />
 
                     )}
@@ -79,35 +73,29 @@ const handleClickOpen = () => setOpen(prev => !prev);
                        </Typography>
                   </TableCell>
 
-                  {/* <TableCell
+                  <TableCell
                     // align="center"
                     sx={{
-                      alignItems: "center",
+                      justifyContent: "center",
                       display: {
                         xs: "none", // 100%
                         sm: "none", //600px
                         md: "flex", //900px
                       },
-                      gap: 2,
-                      fontSize: 14,
-                      p: 3,
-                      // border: 1
+                      // // fontSize: 14,
+                      py: 3.5,
+                      //  border: 1
                     }}
                   >
-                    <img
-                      alt="coin"
-                      src={`https://assets.coincap.io/assets/icons/${row.token.toLowerCase()}@2x.png`}
-                      width={30}
-                      height={30}
-                    />
-                    {row.token.toUpperCase()}
-                  </TableCell> */}
+                                      {row.earned}
+    
+                  </TableCell>
 
                   <TableCell
                     align="center"
                     sx={{
                       pt: 0.5,
-                      // border:0
+                      // border:1
                     }}
                   >
                     <Box
