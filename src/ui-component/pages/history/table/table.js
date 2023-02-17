@@ -8,12 +8,14 @@ import { table } from "../../../../consts/table";
 import { useState } from "react";
 import tableImg from 'assets/images/tableImg.gif';
 import dayjs, { Dayjs } from "dayjs";
+import { v4 as uuidv4 } from 'uuid';
 
 
-const TableS = ({ rows }) => {
+const TableS = ({ rows, arrayItem }) => {
   const [open, setOpen] = useState(false);
 const handleClickOpen = () => setOpen(prev => !prev);
-
+console.log('1 id',uuidv4())
+console.log('2 id',uuidv4())
 
   return (<>
 
@@ -26,7 +28,7 @@ const handleClickOpen = () => setOpen(prev => !prev);
     >
       <TableContainer
         sx={{
-          boxShadow:     '0 2px 14px 0 rgb(32 40 45 / 30%)',
+          boxShadow: "0 2px 14px 0px rgb(41 109 198 / 80%)",
           borderRadius: 2,
           maxWidth: 850,
           background: 'white'
@@ -37,24 +39,27 @@ const handleClickOpen = () => setOpen(prev => !prev);
             {rows.map((row) => (
               <>
                 <TableRow
-                  key={row.time}
+                  key={uuidv4()}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell
                     component="th"
                     scope="row"
-                    align="center"
+                    align="right"
                     sx={{
                       p: "1px",
                       // border: 1
                     }}
                   >
-                    {row.name == "Finish" || row.name == 'Finish All' ? (
+               {arrayItem == '1' 
+               ? (row.name == "Finish" || row.name == 'Finish All') 
+               ? (
                       <HighlightOffIcon style={{fontSize: '250%', color: 'red'}}/>
                     ) : (
                       <img src={tableImg} alt="gif" width="45" />
 
-                    )}
+                    )
+                  : null}
                   </TableCell>
 
                   <TableCell
@@ -62,11 +67,10 @@ const handleClickOpen = () => setOpen(prev => !prev);
                     // sx={{border: 0}}
                   >
                     <Typography
-                      color={row.name == 'finished' ? 'red' : 'green'}
+                      color={row.name == 'Finish' || row.name == 'Withdraw' ? 'red' : 'green'}
                       sx={{ fontSize: 16 }}
                     >
-                      {" "}
-                      {`Stream ${row.name}`}
+                       {arrayItem == '1' ? `Stream ${row.name}` : row.name}
                     </Typography>
                     <Typography fontSize={12}>
                       {dayjs.unix(row.time).format('HH:mm DD/MM/YYYY')}
@@ -87,10 +91,10 @@ const handleClickOpen = () => setOpen(prev => !prev);
                       //  border: 1
                     }}
                   >
-                                      {row.earned}
+                                      {arrayItem == '1' ? row.earned : row.amount.slice(0,4)}
     
                   </TableCell>
-
+                  {arrayItem == '1' &&
                   <TableCell
                     align="center"
                     sx={{
@@ -122,8 +126,8 @@ const handleClickOpen = () => setOpen(prev => !prev);
                           row.addr.slice(38)}
                       </Box>
                     </Box>
-                  </TableCell>
-
+                  </TableCell>}
+                  {arrayItem && <>
                   <TableCell
                     align="center"
                     sx={{
@@ -159,6 +163,7 @@ const handleClickOpen = () => setOpen(prev => !prev);
                       </Box>
                     </BasicModal>
                   </TableCell>
+           </> }
                 </TableRow>
               </>
             ))}

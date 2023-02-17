@@ -20,29 +20,35 @@ import TableS from '../../ui-component/pages/history/table/table';
 import { useAccount } from 'wagmi';
 
 import { ethers } from 'ethers';
-import companyContract from 'contracts/CompanyContract';
+// import companyContract from 'contracts/CompanyContract';
 import provider from 'contracts/provider';
 import CustomSelector from 'ui-component/elements/customSelector';
 import usePagination from './pagination';
+import useContract from '../../contracts/prepareContract'
+import Loader from '../../ui-component/elements/loader';
 
 const History = ({ employeeOrNot }) => {
     const [valueStart, setValueStart] = useState(dayjs('2023-01-01'));
     const [valueStop, setValueStop] = useState(dayjs('2023-01-02'));
     const [arrayBlock, setArrayBlock] = useState([]);
+    const { contract } = useContract();
+    const { address } = useAccount();
+    const [loader, setLoader] = useState(false);
 
     useEffect(() => {
         (async () => {
             try {
-              const decimals = (await companyContract.getDecimals()).toNumber()
+                setLoader(true);
+              const decimals = (await contract.getDecimals()).toNumber()
               //--------  EVENT#1 (from Blockchain)   StartFlow ---------------
                 const result = [];
 
-                const numActive = (await companyContract.amountActiveStreams()).toNumber();
+                const numActive = (await contract.amountActiveStreams()).toNumber();
 
                 if (numActive > 0) {
                     for (let i = 0; i < numActive; i++) {
-                        const addressEmployee = await companyContract.activeStreamAddress(i);
-                        const timeStarted = await companyContract.getStream(addressEmployee);
+                        const addressEmployee = await contract.activeStreamAddress(i);
+                        const timeStarted = await contract.getStream(addressEmployee);
 
                         const obj = {
                             name: 'Active',
@@ -56,7 +62,7 @@ const History = ({ employeeOrNot }) => {
                 // console.log("RESSSS: ", result)
 
                 //--------  EVENT#2   StreamFinished ---------------
-                const eventFinish = await companyContract.queryFilter(companyContract.filters.StreamFinished());
+                const eventFinish = await contract.queryFilter(contract.filters.StreamFinished());
 
                 for (let i = 0; i < eventFinish.length; i++) {
                     const addressEmployee = eventFinish[i].args[0];
@@ -89,7 +95,7 @@ const History = ({ employeeOrNot }) => {
                 // console.log("RESSSS 2:", result)
 
                 //--------  EVENT#3   StreamAllFinished ---------------
-                const eventAllFinish = await companyContract.queryFilter(companyContract.filters.StreamAllFinished());
+                const eventAllFinish = await contract.queryFilter(contract.filters.StreamAllFinished());
 
                 for (let i = 0; i < eventAllFinish.length; i++) {
                     const amountEmployee = eventAllFinish[i].args[0].toNumber();
@@ -110,7 +116,7 @@ const History = ({ employeeOrNot }) => {
 
                 //--------  EVENT#4   Deposit -------------
 
-                const tokenAddr = await companyContract.token();
+                const tokenAddr = await contract.token();
 
                 const abi = [
                     { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
@@ -284,8 +290,7 @@ const History = ({ employeeOrNot }) => {
                 ];
 
                 const contractStableCoin = new ethers.Contract(tokenAddr, abi, provider);
-                console.log('token', contractStableCoin)
-                const filterTo = contractStableCoin.filters.Transfer(null, companyContract.address);
+                const filterTo = contractStableCoin.filters.Transfer(null, contract.address);
 
                 const transerEvents = await contractStableCoin.queryFilter(filterTo);
 
@@ -308,7 +313,7 @@ const History = ({ employeeOrNot }) => {
 
                 //--------  EVENT#5   Withdraw -------------
 
-                const filterFrom = contractStableCoin.filters.Transfer(companyContract.address, await companyContract.owner());
+                const filterFrom = contractStableCoin.filters.Transfer(contract.address, await contract.owner());
 
                 const withdrawEvents = await contractStableCoin.queryFilter(filterFrom);
 
@@ -335,20 +340,29 @@ const History = ({ employeeOrNot }) => {
                 // const eventAddEmployee = await companyContract.queryFilter(companyContract.filters.AddEmployee());
                 // console.log("All Events ADD EMPLOYEE: ", eventAddEmployee)
                 setArrayBlock(result);
+                setLoader(false);
+
             } catch (error) {
                 console.log('DEV>>>>', error);
             }
         })();
     }, [employeeOrNot]);
-
+//=======arrays for company-page======//
     console.log('all events', arrayBlock);
     const arrayStreams = arrayBlock.filter((i) => i.name == 'Active' || i.name == 'Finish');
     console.log('streams', arrayStreams);
-    // console.log('ebanaya data :', dayjs.unix(arrayStreams[0].time).$d.toString())
-    // console.log('ebanaya data :', dayjs.unix(arrayStreams[0].time).format('HH:mm DD/MM/YYYY') )
-    const { address } = useAccount();
+    const arrayPayloads = arrayBlock.filter((i) => i.name == 'Deposit' || i.name == 'Withdraw');
+    console.log('payloads', arrayPayloads);
+//=====array for employee page===//
     const arraySingleEmployy = arrayStreams.filter((i) => i.addr == address);
-    const eventsLog = employeeOrNot ? arraySingleEmployy : arrayStreams;
+ //======data for selector=====//
+    const [arrayItem, setArrayItem] = useState(`1`);
+    // const handleChangeArray = (event) => {
+    //   setArrayItem(event.target.value);
+    // };
+    const chooseArray = arrayItem == 1 ? arrayStreams : arrayPayloads
+    //======data for pagination======//
+    const eventsLog = employeeOrNot ? arraySingleEmployy : chooseArray;
     const { length, currentTx, currentPage, setCurrentPage } = usePagination({ inArr: eventsLog });
     const handleChange = (event, value) => {
         setCurrentPage(value);
@@ -376,7 +390,7 @@ const History = ({ employeeOrNot }) => {
                 noValidate
                 autoComplete="off"
             >
-                {!employeeOrNot && (
+                {!employeeOrNot && (<>
                     <Box
                         sx={{
                             display: 'flex',
@@ -396,16 +410,19 @@ const History = ({ employeeOrNot }) => {
               },
             }}
           /> */}
-                        <CustomSelector />
-                        <Button
+                        <CustomSelector 
+                        setArrayItem={setArrayItem}
+                        arrayItem={arrayItem}
+                        />
+                        {/* <Button
                             // onClick={handleEvents}
                             variant="outlined"
                             sx={{ width: '150px', mb: 5 }}
                         >
                             show history
-                        </Button>
+                        </Button> */}
                     </Box>
-                )}
+                
 
                 <Box
                     sx={{
@@ -468,9 +485,20 @@ const History = ({ employeeOrNot }) => {
                         Show history
                     </Button>
                 </Box>
+              </>  )}
             </Box>
+{loader ? 
+<Box 
+sx={{
+    display: 'flex',
+    justifyContent: 'center'
+}}
+>
+<Loader />     
+</Box>
 
-            <TableS rows={currentTx} />
+: <TableS rows={currentTx} arrayItem={arrayItem}/>}
+            
 
             <Pagination 
             count={length} 

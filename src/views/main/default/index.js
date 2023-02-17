@@ -16,8 +16,6 @@ import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { useAccount } from 'wagmi'
 import connectContract from "contracts/erc20";
-// import prepareContract from "contracts/erc20";
-// import contract from "contracts/erc20";
 import { redirect, useNavigate } from "react-router-dom";
 import { amountEmployee, contractSelector } from "store/reducers/contract/reducer";
 import companyContract from "../../../contracts/CompanyContract";
@@ -49,11 +47,6 @@ const Main = () => {
   };
   const openA = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-  const { contractAdd } = useSelector(contractSelector)
-
-
-  const [arrayBlock, setArrayBlock] = useState([])
-
   const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   const handleCreateCompany = () => {

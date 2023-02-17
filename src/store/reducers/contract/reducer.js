@@ -1,17 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    address: undefined,
     token: undefined,
     admin: undefined,
     name: undefined,
-    owner: undefined
+    owner: undefined,
+    address: undefined,
+    decimalsToken: undefined,
+    addressContract: undefined
 }
 
 export const contractSlice = createSlice({
     name: 'contract',
     initialState,
     reducers: {
+        setAddressContract: (state, action) => {
+            state.addressContract = action.payload
+        },
         setAddress: (state, action) => {
             state.address = action.payload
         },
@@ -27,10 +32,14 @@ export const contractSlice = createSlice({
         setOwner: (state, action) => {
             state.owner = action.payload
         },
+        setDecimalsToken: (state, action) => {
+            state.decimalsToken = action.payload
+        },
+        
     },
 })
 
-export const { setAddress, setToken, setAdmin, setName, setOwner } = contractSlice.actions
+export const { setAddressContract, setAddress, setToken, setAdmin, setName, setOwner, setDecimalsToken } = contractSlice.actions
 
 export const contractSelector = (state) => state.contract;
 
