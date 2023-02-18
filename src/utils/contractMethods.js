@@ -1,6 +1,6 @@
 import { prepareWriteContract, readContract, writeContract } from '@wagmi/core'
 
-import { CONTRACT_ABI } from "consts/contract";
+import { CONTRACT_ABI } from "consts/contractAbi";
 
 export const setContractToken = async (tokenAddress, contractAddress) => {
     const config = await prepareWriteContract({
