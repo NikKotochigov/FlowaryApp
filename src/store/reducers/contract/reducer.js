@@ -7,16 +7,12 @@ const initialState = {
     owner: undefined,
     address: undefined,
     decimalsToken: undefined,
-    addressContract: undefined
 }
 
 export const contractSlice = createSlice({
     name: 'contract',
     initialState,
     reducers: {
-        setAddressContract: (state, action) => {
-            state.addressContract = action.payload
-        },
         setAddress: (state, action) => {
             state.address = action.payload
         },
@@ -39,7 +35,7 @@ export const contractSlice = createSlice({
     },
 })
 
-export const { setAddressContract, setAddress, setToken, setAdmin, setName, setOwner, setDecimalsToken } = contractSlice.actions
+export const { setAddress, setToken, setAdmin, setName, setOwner, setDecimalsToken } = contractSlice.actions
 
 export const contractSelector = (state) => state.contract;
 

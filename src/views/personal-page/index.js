@@ -23,8 +23,8 @@ import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import Loader from '../../ui-component/elements/loader';
 // ==============================|| SAMPLE PAGE ||============================== //
 const SamplePage = () => {
-    const { name, owner, addressContract } = useSelector(contractSelector);
-    const { address } = useAccount();
+    const { name, owner, address } = useSelector(contractSelector);
+    const { address: addressWallet } = useAccount();
     const [arrEmployee, setArrEmployee] = useState([]);
     const [balance, setBalance] = useState('');
     const [admin, setAdmin] = useState('');
@@ -63,13 +63,13 @@ const SamplePage = () => {
     }, []);
 
     console.log(arrEmployee);
-    const employeeOrNot = arrEmployee.find((i) => i.who == address);
+    const employeeOrNot = arrEmployee.find((i) => i.who == addressWallet);
 
     return (
         <>
-            {address == owner || address == admin ? (
+            {addressWallet == owner || addressWallet == admin ? (
                 <>
-                    <RoleBadge content={(address === owner && 'Your role is Owner') || (address === admin && 'Your role is Admin')} />
+                    <RoleBadge content={(addressWallet === owner && 'Your role is Owner') || (addressWallet === admin && 'Your role is Admin')} />
                     <Box
                         sx={{
                             display: {
@@ -224,9 +224,9 @@ const SamplePage = () => {
                                     height: '100%'
                                 }}
                             >
-                                <Jazzicon diameter={70} seed={jsNumberForAddress(addressContract)} />
+                                <Jazzicon diameter={70} seed={jsNumberForAddress(address)} />
                                 <Typography variant="h2" color="prime">
-                                    {addressContract.slice(0, 5) + '...' + addressContract.slice(38)}
+                                    {address.slice(0, 5) + '...' + address.slice(38)}
                                 </Typography>
                             </Box>
                         </Box>
@@ -257,9 +257,9 @@ const SamplePage = () => {
                                     height: '100%'
                                 }}
                             >
-                                <Jazzicon diameter={70} seed={jsNumberForAddress(address)} />
+                                <Jazzicon diameter={70} seed={jsNumberForAddress(addressWallet)} />
                                 <Typography variant="h2" color="prime">
-                                    {address.slice(0, 5) + '...' + address.slice(38)}
+                                    {addressWallet.slice(0, 5) + '...' + addressWallet.slice(38)}
                                 </Typography>
                             </Box>
                         </Box>
