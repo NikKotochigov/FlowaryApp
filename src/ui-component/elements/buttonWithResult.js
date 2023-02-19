@@ -10,7 +10,7 @@ import { useRef } from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-export default function ButtonWithResult({loading, success, hadleNewUser}) {
+export default function ButtonWithResult({loading, success, handler, children}) {
 //   const [loading, setLoading] = useState(false);
 //   const [success, setSuccess] = useState(false);
 //   const timer = useRef();
@@ -70,9 +70,9 @@ export default function ButtonWithResult({loading, success, hadleNewUser}) {
           variant="contained"
           sx={buttonSx}
           disabled={loading}
-          onClick={hadleNewUser}
+          onClick={handler}
         >
-          Add new employee
+        {children}
         </Button>
         {loading && (
           <CircularProgress

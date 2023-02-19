@@ -10,6 +10,10 @@ import { jsNumberForAddress } from 'react-jazzicon';
 import CustomModal from '../../elements/customModal';
 import ChangeRecieverModal from './changeRecieverModal/changeRecieverModal';
 import useContract from '../../../contracts/prepareContract'
+import getErrorMessage from 'utils/getErrorMessage';
+import { useSelector } from 'react-redux';
+import { contractSelector } from '../../../store/reducers/contract/reducer';
+import { ethers } from "ethers";
 
 const User = ({who, rate}) => {
     const [amountPerHour, setAmountPerHour] = useState(null);
@@ -17,6 +21,15 @@ const User = ({who, rate}) => {
     const [balance, setBalance] = useState(0);
     const [startstop, setStartstop] = useState(false);
     const { contractSigner } = useContract();
+    const [result, setResult] = useState('');
+    const { symbolToken } = useSelector(contractSelector);
+//    // Rate: {(Number(rate)*60*60).toString().substr(rate.length - decimalsToken)}
+//    console.log('rate',  rate)
+
+// //    console.log('nprmal rate',  Number(rate.substr(0, rate.length - decimalsToken).length)*60*60)
+//    console.log('nprmal rate', ethers.utils.formatUnits(rate)*60*60 )
+
+   
 
     function handleToggleClick() {
         setStartstop((prev) => !prev);
@@ -49,6 +62,12 @@ const hadleStartStream = async() => {
         console.log(res)
     } catch (error) {
         console.log(error)
+        const message = getErrorMessage(error);
+        setResult(message);
+        setTimeout(() => {
+            setResult('');
+        }, 2000);
+
     }
  }
  
@@ -101,14 +120,12 @@ const hadleStartStream = async() => {
                 // sx={{ border: 1 }}
                 >
                 
-                    <Typography variant="h2">
-                        Address:
-                        {who.slice(0, 5) +
-                            '...' +
-                            who.slice(38)}
+                    <Typography variant="h2" color='primary'>
+                        Address: {who.slice(0, 5) +  '...' + who.slice(38)}
                     </Typography>
-                    <Typography variant='h3'>
-                        Rate: {rate}
+                    <Typography variant='h4' color='secondary'>
+                        Rate: {(ethers.utils.formatUnits(rate)*60*60).toFixed(0)} {symbolToken} per hour
+
                     </Typography>
                     {startstop && (
                         <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'green' }}>
@@ -134,8 +151,11 @@ const hadleStartStream = async() => {
                             Start stream
                         </Button>
                     {/* )} */}
+                   
                 </CardActions>
-
+ <Typography variant="h4" color="red" fontSize="20px" fontWeight="bold">
+                        {result}
+                    </Typography>
                 <Box
                     sx={{
                         display: 'flex',
