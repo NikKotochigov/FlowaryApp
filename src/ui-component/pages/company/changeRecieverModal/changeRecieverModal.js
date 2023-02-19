@@ -1,45 +1,76 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { contractSelector } from "../../../../store/reducers/contract/reducer";
-import { Box, Button, CardMedia, TextField } from '@mui/material';
+import { contractSelector } from '../../../../store/reducers/contract/reducer';
+import { Box, Button, CardMedia, TextField, Typography } from '@mui/material';
 import CustomModal from '../../../elements/customModal';
-import useContract from '../../../../contracts/prepareContract'
+import useContract from '../../../../contracts/prepareContract';
+import ButtonWithResult from 'ui-component/elements/buttonWithResult';
+import getErrorMessage from 'utils/getErrorMessage';
 
 
-function ChangeRecieverModal({who}) {
+function ChangeRecieverModal({ who }) {
     const [rate, setRate] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
     const { contractSigner } = useContract();
+    const { decimalsToken } = useSelector(contractSelector);
 
     const handleOnClick = () => {
         setIsOpen((prev) => !prev);
     };
 
     const handleRateChangeInput = (e) => {
-        setRate(e.target.value);
+           setRate(e.target.value)
+console.log(e.target.value)
+        };
+
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [loadingDel, setLoadingDel] = useState(false);
+    const [successDel, setSuccessDel] = useState(false);
+
+    const [result, setResult] = useState('');
+    const [resultDel, setResultDel] = useState('');
+
+    const handleRateChange = async () => {
+        try {
+            setSuccess(false);
+            setLoading(true);
+            const changeRate = await contractSigner.modifyRate(who, BigInt(Math.ceil((rate/60/60)*(10**decimalsToken))));
+            const res = await changeRate.wait();
+            console.log(res);
+            setSuccess(true);
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+            const message = getErrorMessage(error);
+            setLoading(false);
+            setResult(message);
+            setTimeout(() => {
+                setResult('');
+            }, 2000);
+        }
     };
 
-    const handleRateChange = async() => {
-    try {
-     handleOnClick()
-     const changeRate = await contractSigner.modifyRate(who, rate)
-        const res = await changeRate.wait()
-        console.log(res)
-    } catch (error) {
-        console.log(error)
-    }
- }
+    const handleDelete = async () => {
+        try {
+            setSuccessDel(false);
+            setLoadingDel(true);
+            const deleteUser = await contractSigner.deleteEmployee(who);
+            const res = await deleteUser.wait();
+            console.log(res);
+            setSuccessDel(true);
+            setLoadingDel(false);
+        } catch (error) {
+            console.log(error);
+            if (error.code === 'UNPREDICTABLE_GAS_LIMIT') 
+                setLoadingDel(false);
+            setResultDel('You can delete employee while he has active stream');
+            setTimeout(() => {
+                setResultDel('');
+            }, 2000);
 
- const handleDelete = async() => {
-    try {
-     handleOnClick()
-     const deleteUser = await contractSigner.deleteEmployee(who)
-        const res = await deleteUser.wait()
-        console.log(res)
-    } catch (error) {
-        console.log(error)
-    }
- }
+        }
+    };
 
     return (
         <div>
@@ -62,27 +93,37 @@ function ChangeRecieverModal({who}) {
                     >
                         <TextField
                             value={rate}
+                            InputProps={{ inputProps: { min: 0 } }}
                             type="number"
                             label="Enter new rate per hour"
                             variant="outlined"
                             onChange={handleRateChangeInput}
                         />
-                        <Button
+                        {/* <Button
                             variant="outlined"
                             // sx={{ width: 170, }}
                             onClick={handleRateChange}
                         >
                             Set new rate
-                        </Button>
+                        </Button> */}
+                        <ButtonWithResult handler={success ? handleOnClick : handleRateChange} loading={loading} success={success}>
+                            {success ? 'OK' : 'Change rate'}
+                        </ButtonWithResult>
                     </Box>
-
-                    <Button
-                        variant="outlined"
-                        // sx={{ width: 170, }}
-                        onClick={handleDelete}
+                    <Typography variant="h4" color="red" fontSize="20px" fontWeight="bold">
+                        {result}
+                    </Typography>
+                    <ButtonWithResult
+                        handler={successDel ? handleOnClick : handleDelete}
+                        loading={loadingDel}
+                        success={successDel}
+                        alignItems="center"
                     >
-                        Delete reciever
-                    </Button>
+                        {successDel ? 'OK' : 'Delete reciever'}
+                    </ButtonWithResult>
+                    <Typography variant="h4" color="red" fontSize="20px" fontWeight="bold" textAlign={'center'}>
+                        {resultDel}
+                    </Typography>
                 </Box>
             </CustomModal>
         </div>

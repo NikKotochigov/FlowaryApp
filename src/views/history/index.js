@@ -82,7 +82,7 @@ const History = ({ employeeOrNot }) => {
                     const txHash = eventFinish[i].transactionHash;
 
                     const obj = {
-                        name: 'Finish',
+                        name: 'Finished',
                         addr: addressEmployee,
                         startAt: startTime,
                         time: finishTime, //endeddAt
@@ -349,7 +349,7 @@ const History = ({ employeeOrNot }) => {
     }, [employeeOrNot]);
 //=======arrays for company-page======//
     console.log('all events', arrayBlock);
-    const arrayStreams = arrayBlock.filter((i) => i.name == 'Active' || i.name == 'Finish');
+    const arrayStreams = arrayBlock.filter((i) => i.name == 'Active' || i.name == 'Finished');
     console.log('streams', arrayStreams);
     const arrayPayloads = arrayBlock.filter((i) => i.name == 'Deposit' || i.name == 'Withdraw');
     console.log('payloads', arrayPayloads);
