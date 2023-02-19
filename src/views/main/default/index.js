@@ -75,12 +75,9 @@ const Main = () => {
         {isCreateOpen && <CompanyCreateStepper />}
       </>
 
-
-
       <Button size="large" variant="outlined"
         sx={{ width: '400px', m: 5, fontSize: '20px' }}
       >Create company</Button>
-
 
       <BasicModal
         nameModal={"Company exist"}

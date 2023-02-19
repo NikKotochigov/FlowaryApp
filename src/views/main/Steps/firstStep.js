@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { contractSelector, setAddress } from "store/reducers/contract/reducer";
+import { useDispatch } from "react-redux";
+
 import { createCompany } from "utils/createCompany";
+import { LoadingButton } from "@mui/lab";
+import { Box, TextField } from "@mui/material";
 
-import { Box, Button, TextField } from "@mui/material";
-
-function FirstStep() {
+function FirstStep({ setActiveStep }) {
     const [name, setName] = useState("");
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
     const handleNameChange = (e) => {
@@ -14,8 +15,7 @@ function FirstStep() {
     }
 
     const handleAddCompany = () => {
-        const address = createCompany(name);
-        dispatch(setAddress(address ? address : undefined));
+        createCompany(name, dispatch, setLoading, setActiveStep);
     }
 
     return (
@@ -38,13 +38,15 @@ function FirstStep() {
                     onChange={handleNameChange}
                 />
                 <Box sx={{ display: "flex", gap: 2 }}>
-                    <Button
+                    <LoadingButton
+                        loading={loading}
+                        loadingIndicator="Creating..."
                         variant="outlined"
                         sx={{ width: 170, }}
                         onClick={handleAddCompany}
                     >
                         Create company
-                    </Button>
+                    </LoadingButton>
                 </Box>
             </Box>
         </>

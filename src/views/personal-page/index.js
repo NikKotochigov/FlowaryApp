@@ -153,7 +153,7 @@ const SamplePage = () => {
                 <>
                     <Typography>Page of employy</Typography>
 
-              <Box
+                    <Box
                         sx={{
                             display: {
                                 // xs: "block", // 100%
@@ -268,7 +268,7 @@ const SamplePage = () => {
                         <Button
                             variant="outlined"
                             size="large"
-                            //  onClick={() => navigate("/history")}
+                        //  onClick={() => navigate("/history")}
                         >
                             Get your earnings
                         </Button>

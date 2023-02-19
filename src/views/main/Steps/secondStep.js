@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
-import { setContractToken } from "utils/contractMethods";
 import { useDispatch, useSelector } from "react-redux";
-import { contractSelector, setToken } from "store/reducers/contract/reducer";
 
-function SecondStep() {
+import { Box, TextField, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { setContractToken } from "utils/contractMethods";
+import { contractSelector } from "store/reducers/contract/reducer";
+
+function SecondStep({ setActiveStep }) {
     const [tokenAddress, setTokenAddress] = useState("");
+    const [loading, setLoading] = useState(false);
+
     const dispatch = useDispatch();
     const { address } = useSelector(contractSelector);
 
@@ -14,8 +18,7 @@ function SecondStep() {
     }
 
     const handleSetToken = () => {
-        const contractToken = setContractToken(token, address);
-        dispatch(setToken(contractToken));
+        setContractToken(tokenAddress, address, dispatch, setLoading, setActiveStep);
     }
 
     return (
@@ -38,13 +41,15 @@ function SecondStep() {
                     onChange={handleTokenChange}
                 />
                 <Typography>Balance: </Typography>
-                <Button
+                <LoadingButton
+                    loading={loading}
+                    loadingIndicator="Setting..."
                     variant="outlined"
                     sx={{ width: 170, }}
                     onClick={handleSetToken}
                 >
                     Set token
-                </Button>
+                </LoadingButton>
             </Box>
         </>
     );

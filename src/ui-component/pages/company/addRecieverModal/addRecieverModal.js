@@ -13,31 +13,31 @@ function AddRecieverModal() {
 
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-  
+
     const handleOnClick = () => {
         setIsOpen(prev => !prev);
     }
 
-const hadleNewUser = async() => {
-   try {
-    setSuccess(false);
-    setLoading(true);
-    const addUser = await contractSigner.addEmployee(adNew, rate)
-       const res = await addUser.wait()
+    const hadleNewUser = async () => {
+        try {
+            setSuccess(false);
+            setLoading(true);
+            const addUser = await contractSigner.addEmployee(adNew, rate)
+            const res = await addUser.wait()
             console.log(res)
-     setSuccess(true);
-setLoading(false);
-   } catch (error) {
-       console.log(error)
-   }
-}
+            setSuccess(true);
+            setLoading(false);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const handleAddressChange = (e) => {
         setAdNew(e.target.value);
     }
 
     const handleRateChange = (e) => {
-        setRate(e.target.value);  
+        setRate(e.target.value);
         console.log(rate)
     }
 
@@ -85,10 +85,10 @@ setLoading(false);
                     >
                         Add reciever
                     </Button> */}
-                    <ButtonWithResult 
-                    hadleNewUser={hadleNewUser}
-                    loading={loading}
-                    success={success}
+                    <ButtonWithResult
+                        hadleNewUser={hadleNewUser}
+                        loading={loading}
+                        success={success}
                     />
                 </Box>
             </BasicModal>
