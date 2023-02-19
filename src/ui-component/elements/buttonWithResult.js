@@ -1,19 +1,9 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { green } from '@mui/material/colors';
-import Button from '@mui/material/Button';
-import Fab from '@mui/material/Fab';
-import CheckIcon from '@mui/icons-material/Check';
-import SaveIcon from '@mui/icons-material/Save';
-import { useRef } from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
 
 export default function ButtonWithResult({loading, success, handler, children}) {
-//   const [loading, setLoading] = useState(false);
-//   const [success, setSuccess] = useState(false);
-//   const timer = useRef();
 
   const buttonSx = {
     ...(success && {
@@ -24,47 +14,8 @@ export default function ButtonWithResult({loading, success, handler, children}) 
     }),
   };
 
-//   useEffect(() => {
-//     return () => {
-//       clearTimeout(timer.current);
-//     };
-//   }, []);
-
-//   const handleButtonClick = () => {
-//     if (!loading) {
-//       setSuccess(false);
-//       setLoading(true);
-//       timer.current = window.setTimeout(() => {
-//         setSuccess(true);
-//         setLoading(false);
-//       }, 2000);
-//     }
-//   };
-
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      {/* <Box sx={{ m: 1, position: 'relative' }}>
-        <Fab
-          aria-label="save"
-          color="primary"
-          sx={buttonSx}
-          onClick={handleButtonClick}
-        >
-          {success ? <CheckIcon /> : <SaveIcon />}
-        </Fab>
-        {loading && (
-          <CircularProgress
-            size={68}
-            sx={{
-              color: green[500],
-              position: 'absolute',
-              top: -6,
-              left: -6,
-              zIndex: 1,
-            }}
-          />
-        )}
-      </Box> */}
       <Box sx={{ m: 1, position: 'relative' }}>
         <Button
           variant="contained"

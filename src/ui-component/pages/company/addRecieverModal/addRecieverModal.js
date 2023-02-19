@@ -14,7 +14,6 @@ function AddRecieverModal() {
 
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-
     const [result, setResult] = useState('');
 
     const handleOnClick = () => {
@@ -47,7 +46,6 @@ function AddRecieverModal() {
 
     const handleRateChange = (e) => {
         setRate(e.target.value);
-        console.log(rate);
     };
 
     return (

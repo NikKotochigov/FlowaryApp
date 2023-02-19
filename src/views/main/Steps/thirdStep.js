@@ -1,21 +1,26 @@
 import { useState } from "react";
 
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { useDispatch, useSelector } from "react-redux";
-import { contractSelector, setAdmin } from "store/reducers/contract/reducer";
+import { contractSelector } from "store/reducers/contract/reducer";
+import { setContractAdmin } from "utils/contractMethods";
+import { useNavigate } from "react-router";
 
-function ThirdStep() {
+function ThirdStep({ setActiveStep }) {
     const [adminAddress, setAdminAddress] = useState("");
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const { address } = useSelector(contractSelector);
+    const navigate = useNavigate();
 
     const handleAddressChange = (e) => {
         setAdminAddress(e.target.value);
     }
 
     const handleSetAdmin = () => {
-        const admin = setContractAdmin(adminAddress, address);
-        dispatch(setAdmin(admin));
+        setContractAdmin(adminAddress, address, dispatch, setLoading, setActiveStep);
+        navigate("/personal-page");
     }
 
     return (
@@ -37,13 +42,15 @@ function ThirdStep() {
                     size='small'
                     onChange={handleAddressChange}
                 />
-                <Button
+                <LoadingButton
+                    loading={loading}
+                    loadingIndicator="Setting..."
                     variant="outlined"
                     sx={{ width: 170, }}
                     onClick={handleSetAdmin}
                 >
                     Set admin
-                </Button>
+                </LoadingButton>
             </Box>
         </>
     );
