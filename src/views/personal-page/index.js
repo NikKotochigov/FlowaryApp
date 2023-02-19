@@ -30,8 +30,9 @@ const SamplePage = () => {
     const [admin, setAdmin] = useState('');
     const navigate = useNavigate();
     const { contract } = useContract();
-
+    const [amountEmployy, setAmountEmployy] = useState(null)
     const [loader, setLoader] = useState(false);
+
 
     useEffect(() => {
         (async () => {
@@ -48,6 +49,7 @@ const SamplePage = () => {
                 setAdmin(adm);
                 //------get arr of employees---//
                 const amount = (await contract.amountEmployee()).toNumber();
+                setAmountEmployy(amount)
                 let employeeArr = [];
                 for (let i = 0; i < amount; i++) {
                     const addrEmpl = await contract.allEmployeeList(i);
@@ -60,7 +62,7 @@ const SamplePage = () => {
                 console.log(error);
             }
         })();
-    }, []);
+    }, [amountEmployy]);
 
     console.log(arrEmployee);
     const employeeOrNot = arrEmployee.find((i) => i.who == addressWallet);
@@ -89,7 +91,7 @@ const SamplePage = () => {
                                 m: 5
                             }}
                         >
-                            <Typography variant="h1" color="red">
+                            <Typography variant="h1" color="primary">
                                 COMPANY {name}
                             </Typography>
 
@@ -114,7 +116,7 @@ const SamplePage = () => {
                                 m: 5
                             }}
                         >
-                            <Typography variant="h2" color="common.main">
+                            <Typography variant="h2" color="primary">
                                 Avaibale balance: {balance}
                             </Typography>
                             <LoadDepositModal />

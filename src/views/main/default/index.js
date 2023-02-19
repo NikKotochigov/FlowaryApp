@@ -23,7 +23,7 @@ import { useEffect } from "react";
 import { ethers } from "ethers";
 import provider from "../../../contracts/provider";
 import CompanyCreateStepper from "../Steps/companyCreateStepper";
-
+import CustomPopover from "ui-component/elements/customPopover";
 
 const Main = () => {
   const [open, setOpen] = useState(false);
@@ -31,36 +31,44 @@ const Main = () => {
 
   const [add, setAdd] = useState('');
   const dispatch = useDispatch();
-  const { address, isConnecting, isDisconnected } = useAccount()
-  const [anchorEl, setAnchorEl] = useState(null);
-
+  const { address } = useAccount()
+  
   const navigate = useNavigate();
   const handleConnectCompany = async () => {
     connectContract(add, dispatch)
     navigate("/personal-page")
   };
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const openA = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
-
   const handleCreateCompany = () => {
     console.log("hello");
     setIsCreateOpen(true);
   }
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  //  const [anchorEl, setAnchorEl] = useState(null);
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
+  // const openA = Boolean(anchorEl);
+  // const id = open ? 'simple-popover' : undefined;
+
+  const handleOpenPopover = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const id = open ? 'simple-popover' : undefined;
+  const [anchorEl, setAnchorEl] = useState(null);
 
   return (
     <>
-      {isConnecting && <div>Connect</div>}
-      {isDisconnected && <div>Not Connect</div>}
-      {address && <div>{address}</div>}
+
+
 
       <>
+
+
         <Toolbar>
           <Box sx={{ display: 'flex', gap: '8px' }}>
             <Button variant="outlined" onClick={handleCreateCompany}>
@@ -82,7 +90,8 @@ const Main = () => {
       <BasicModal
         nameModal={"Company exist"}
         open={open}
-        handleClickOpen={address ? handleClickOpen : handleClick}
+        handleClickOpen={address ? handleClickOpen : handleOpenPopover}
+
         minW={400}
       >
         <Box
@@ -117,7 +126,20 @@ const Main = () => {
           </Button>
         </Box>
       </BasicModal>
-      <div>
+
+      <CustomPopover 
+text={'fucking shit'}
+handleOpenPopover={handleOpenPopover} 
+anchorEl={anchorEl}
+id={id}
+setAnchorEl={setAnchorEl}
+/>
+{/* <Button aria-describedby={id} variant="contained" onClick={handleOpenPopover}>
+        Open Popover
+      </Button>
+</CustomPopover> */}
+
+      {/* <div>
         <Popover
           id={id}
           open={openA}
@@ -130,7 +152,8 @@ const Main = () => {
         >
           <Typography sx={{ p: 2, color: 'red', fontSize: '20px' }}>Connect your Wallet, pls</Typography>
         </Popover>
-      </div>
+      </div> */}
+
       <Button size="large" variant="outlined"
         sx={{ width: '400px', m: 5, fontSize: '20px' }}
       >Demo page</Button>

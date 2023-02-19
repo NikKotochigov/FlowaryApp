@@ -7,6 +7,7 @@ const initialState = {
     owner: undefined,
     address: undefined,
     decimalsToken: undefined,
+    symbolToken: undefined
 }
 
 export const contractSlice = createSlice({
@@ -31,11 +32,13 @@ export const contractSlice = createSlice({
         setDecimalsToken: (state, action) => {
             state.decimalsToken = action.payload
         },
-        
+        setSymbolToken: (state, action) => {
+            state.symbolToken = action.payload
+        },
     },
 })
 
-export const { setAddress, setToken, setAdmin, setName, setOwner, setDecimalsToken } = contractSlice.actions
+export const { setAddress, setToken, setAdmin, setName, setOwner, setDecimalsToken, setSymbolToken } = contractSlice.actions
 
 export const contractSelector = (state) => state.contract;
 

@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { green } from '@mui/material/colors';
 
-export default function ButtonWithResult({ loading, success, hadleNewUser }) {
+export default function ButtonWithResult({loading, success, handler, children}) {
 
   const buttonSx = {
     ...(success && {
@@ -21,9 +21,9 @@ export default function ButtonWithResult({ loading, success, hadleNewUser }) {
           variant="contained"
           sx={buttonSx}
           disabled={loading}
-          onClick={hadleNewUser}
+          onClick={handler}
         >
-          Add new employee
+        {children}
         </Button>
         {loading && (
           <CircularProgress

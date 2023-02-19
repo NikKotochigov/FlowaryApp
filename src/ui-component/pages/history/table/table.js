@@ -9,13 +9,15 @@ import { useState } from "react";
 import tableImg from 'assets/images/tableImg.gif';
 import dayjs, { Dayjs } from "dayjs";
 import { v4 as uuidv4 } from 'uuid';
+import { useSelector } from 'react-redux';
+import { contractSelector } from '../../../../store/reducers/contract/reducer';
 
 
 const TableS = ({ rows, arrayItem }) => {
   const [open, setOpen] = useState(false);
 const handleClickOpen = () => setOpen(prev => !prev);
-console.log('1 id',uuidv4())
-console.log('2 id',uuidv4())
+const { symbolToken } = useSelector(contractSelector);
+
 
   return (<>
 
@@ -52,7 +54,7 @@ console.log('2 id',uuidv4())
                     }}
                   >
                {arrayItem == '1' 
-               ? (row.name == "Finish" || row.name == 'Finish All') 
+               ? (row.name == "Finished" || row.name == 'Finish All') 
                ? (
                       <HighlightOffIcon style={{fontSize: '250%', color: 'red'}}/>
                     ) : (
@@ -67,10 +69,10 @@ console.log('2 id',uuidv4())
                     // sx={{border: 0}}
                   >
                     <Typography
-                      color={row.name == 'Finish' || row.name == 'Withdraw' ? 'red' : 'green'}
+                      color={row.name == 'Finished' || row.name == 'Withdraw' ? 'red' : 'green'}
                       sx={{ fontSize: 16 }}
                     >
-                       {arrayItem == '1' ? `Stream ${row.name}` : row.name}
+                       {arrayItem == '1' ? `Stream is ${row.name}` : row.name}
                     </Typography>
                     <Typography fontSize={12}>
                       {dayjs.unix(row.time).format('HH:mm DD/MM/YYYY')}
@@ -91,7 +93,7 @@ console.log('2 id',uuidv4())
                       //  border: 1
                     }}
                   >
-                                      {arrayItem == '1' ? row.earned : row.amount.slice(0,4)}
+                                      {(arrayItem == '1' ? row.earned : row.amount.slice(0,4))} {symbolToken}
     
                   </TableCell>
                   {arrayItem == '1' &&
@@ -144,7 +146,15 @@ console.log('2 id',uuidv4())
                     </Tooltip>
                   </TableCell>
 
-                  <TableCell align="center">
+                  <TableCell align="center"
+                                 sx={{
+                                  display: {
+                                          xs: "none", // 100%
+                                          sm: "none", //600px
+                                          md: "flex", //900px
+                                        },
+                                 }}       
+                  >
                     <BasicModal 
                     nameModal={"Info"}
                     open={open}

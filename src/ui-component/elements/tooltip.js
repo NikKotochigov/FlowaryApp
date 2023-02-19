@@ -11,8 +11,8 @@ const Toolkit = ({children, title}) => {
         [`& .${tooltipClasses.tooltip}`]: {
           backgroundColor: theme.palette.common.white,
           color: 'rgba(0, 0, 0, 0.87)',
-          boxShadow: theme.shadows[25],
-          fontSize: 11,
+          boxShadow: theme.shadows[5],
+          fontSize: 14,
         },
       }));
 
