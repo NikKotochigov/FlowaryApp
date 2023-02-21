@@ -11,31 +11,32 @@ import { jsNumberForAddress } from 'react-jazzicon';
 import ChangeRecieverModal from './changeRecieverModal/changeRecieverModal';
 
 import useContract from '../../../contracts/prepareContract'
-import { getCurrentBalanceEmployee, setStreamBalance } from 'utils/contractMethods';
+import { setStreamBalance, setIsActiveStream } from 'utils/contractMethods';
 import getErrorMessage from 'utils/getErrorMessage';
 import { ethers } from "ethers";
 
 const User = ({ who, rate }) => {
-    const [amountPerHour, setAmountPerHour] = useState(null);
-    const moneyPerSec = amountPerHour / 60 / 60 / 10;
-    const [startstop, setStartstop] = useState(false);
-
+    const [isActive, setIsActive] = useState(false);
+    const [balance, setBalance] = useState(0);
     const { address } = useSelector(contractSelector);
     const { contractSigner } = useContract();
     const [result, setResult] = useState('');
-    const { symbolToken, decimalsToken } = useSelector(contractSelector);
-    const [balance, setBalance] = useState(async () => getCurrentBalanceEmployee(address, who));
     // console.log('rateAAA :', Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(2))
+    const { symbolToken } = useSelector(contractSelector);
+
+    const calcRate = ethers.utils.formatUnits(rate);
 
     function handleToggleClick() {
-        setStartstop((prev) => !prev);
+        setIsActive((prev) => !prev);
     }
 
     useEffect(() => {
-        if (!startstop) return
-        const intervalId = setStreamBalance(address, who, setBalance);
+        setIsActiveStream(address, who, setIsActive);
+        if (!isActive) return
+        setStreamBalance(address, who, setBalance);
+        const intervalId = setInterval(() => setBalance(prev => prev + calcRate / 10), 100)
         return () => clearInterval(intervalId)
-    }, [startstop]);
+    }, [address, isActive, who]);
 
     const hadleStartStream = async () => {
         try {
@@ -84,7 +85,7 @@ const User = ({ who, rate }) => {
 
                 }}
             >
-                {startstop ? (
+                {isActive ? (
                     <CustomBadge content={'Active stream'}>
                         {/* <CustomAvatar n={name}  /> */}
                         <Box sx={{ m: 2 }}>
@@ -106,33 +107,25 @@ const User = ({ who, rate }) => {
                         Address: {who.slice(0, 5) + '...' + who.slice(38)}
                     </Typography>
                     <Typography variant='h4' color='secondary'>
-  Rate: {Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(4)} {symbolToken} per hour
-
+  // Rate: {Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(4)} {symbolToken} per hour
+                        Rate: {(calcRate * 60 * 60).toFixed(0)} {symbolToken} per hour
                     </Typography>
-                    {/* {startstop && ( */}
-                    {/* <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'green' }}>
-                        Amount of stream: {balance}
-                    </Typography> */}
-                    {/* )} */}
+                    {isActive && (
+                        <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'green' }}>
+                            Amount of stream: {balance.toFixed(5)}
+                        </Typography>
+                    )}
                 </CardContent>
-                <CardActions
-                    sx={{
-                        // ml: {
-                        //     xs: 0, // 100%
-                        //     sm: 0 //600px
-                        // },
-                        // border: 1
-                    }}
-                >
-                    {/* {startstop ? ( */}
-                    <Button variant="outlined" sx={{ color: 'red' }} onClick={hadleStopStream}>
-                        Stop stream
-                    </Button>
-                    {/* ) : ( */}
-                    <Button variant="outlined" onClick={hadleStartStream}>
-                        Start stream
-                    </Button>
-                    {/* )} */}
+                <CardActions>
+                    {isActive ? (
+                        <Button variant="outlined" sx={{ color: 'red' }} onClick={hadleStopStream}>
+                            Stop stream
+                        </Button>)
+                        : (
+                            <Button variant="outlined" onClick={hadleStartStream}>
+                                Start stream
+                            </Button>
+                        )}
 
                 </CardActions>
                 <Typography variant="h4" color="red" fontSize="20px" fontWeight="bold">
