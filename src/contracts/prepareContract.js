@@ -7,7 +7,6 @@ import { CONTRACT_ABI } from "../consts/contractAbi";
 
 const useContract = () => {
 const { address } = useSelector(contractSelector); 
-console.log('address', address)
 let contract;
 if(address){
   contract = getContract({

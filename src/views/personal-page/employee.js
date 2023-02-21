@@ -15,66 +15,21 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { ethers } from 'ethers';
 import conectSigner from '../../contracts/SIGNER';
-import { useNavigate } from 'react-router';
 import History from '../../views//history//index';
 import useContract from '../../contracts/prepareContract';
 import data from 'assets/images/data.gif';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import Loader from '../../ui-component/elements/loader';
 import { v4 as uuidv4 } from 'uuid';
-import Demo from 'views/demo';
-import { getInfoForCompanyAndEmployee } from 'utils/contractMethods';
-import Company from './company';
 
 // ==============================|| SAMPLE PAGE ||============================== //
-const Employee = () => {
+const Employee = ({arrEmployee}) => {
     const { address: addressWallet } = useAccount();
-    const [arrEmployee, setArrEmployee] = useState([]);
-    const [balance, setBalance] = useState('');
-    const [admin, setAdmin] = useState('');
-    const navigate = useNavigate();
-    // const [amountEmployy, setAmountEmployy] = useState(null)
     const [loader, setLoader] = useState(false);
-    const { name, owner, address, symbolToken, decimalsToken } = useSelector(contractSelector);
-    const { contract } = useContract();
+    const { name, address, balance, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
+    // const { contract } = useContract();
        
-    useEffect(() => {
-        (async () => {
-            try {
-                setLoader(true);
-                //-----get balance----//
-                const bal = (await contract.currentBalanceContract());
-                const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
-                                const b = Number(bal)
-
-                console.log('bal', b)
-                // console.log({b})
-                // const balan  = ethers.utils.formatUnits(bal, decimalsToken)
-                // console.log({balan})
-
-                setBalance(balan);
-                //-------get admin----//
-                const adm = await contract.administrator();
-                setAdmin(adm);
-                //------get arr of employees---//
-                const amount = (await contract.amountEmployee()).toNumber();
-                // setAmountEmployy(amount)
-                let employeeArr = [];
-                for (let i = 0; i < amount; i++) {
-                    const addrEmpl = await contract.allEmployeeList(i);
-                    const employee = await contract.allEmployee(addrEmpl);
-                    employeeArr.push(employee);
-                }
-                setArrEmployee(employeeArr);
-                setLoader(false);
-            } catch (error) {
-                console.log(error);
-            }
-        })();
-    }, []);
-
-    console.log(arrEmployee);
-    const employeeOrNot = arrEmployee.find((i) => i.who == addressWallet);
+    const employeeOrNot = arrEmployee.find((i) => i[0] == addressWallet);
 
     return (
         <>
@@ -186,7 +141,9 @@ const Employee = () => {
                 Get your earnings
             </Button>
         </Box>
-        <History employeeOrNot={employeeOrNot} />
+        <History 
+        employeeOrNot={employeeOrNot} 
+        />
     </>
 
     );

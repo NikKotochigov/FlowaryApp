@@ -25,6 +25,7 @@ const User = ({ who, rate }) => {
     const [result, setResult] = useState('');
     const { symbolToken, decimalsToken } = useSelector(contractSelector);
     const [balance, setBalance] = useState(async () => getCurrentBalanceEmployee(address, who));
+    // console.log('rateAAA :', Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(2))
 
     function handleToggleClick() {
         setStartstop((prev) => !prev);
@@ -105,7 +106,7 @@ const User = ({ who, rate }) => {
                         Address: {who.slice(0, 5) + '...' + who.slice(38)}
                     </Typography>
                     <Typography variant='h4' color='secondary'>
-                        Rate: {(ethers.utils.formatUnits(rate, decimalsToken) * 60 * 60).toFixed(0)} {symbolToken} per hour
+  Rate: {Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(4)} {symbolToken} per hour
 
                     </Typography>
                     {/* {startstop && ( */}

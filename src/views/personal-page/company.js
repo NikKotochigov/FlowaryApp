@@ -26,57 +26,16 @@ import Demo from 'views/demo';
 import { getInfoForCompanyAndEmployee } from 'utils/contractMethods';
 
 // ==============================|| SAMPLE PAGE ||============================== //
-const Company = () => {
+const Company = ({arrEmployee}) => {
     const { address: addressWallet } = useAccount();
-    const [arrEmployee, setArrEmployee] = useState([]);
-    const [balance, setBalance] = useState('');
-    const [admin, setAdmin] = useState('');
     const navigate = useNavigate();
-    // const [amountEmployy, setAmountEmployy] = useState(null)
     const [loader, setLoader] = useState(false);
-    const { name, owner, address, symbolToken, decimalsToken } = useSelector(contractSelector);
-    const { contract } = useContract();
-       
-    useEffect(() => {
-        (async () => {
-            try {
-                setLoader(true);
-                //-----get balance----//
-                const bal = (await contract.currentBalanceContract());
-                const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
-                                const b = Number(bal)
-
-                console.log('bal', b)
-                // console.log({b})
-                // const balan  = ethers.utils.formatUnits(bal, decimalsToken)
-                // console.log({balan})
-
-                setBalance(balan);
-                //-------get admin----//
-                const adm = await contract.administrator();
-                setAdmin(adm);
-                //------get arr of employees---//
-                const amount = (await contract.amountEmployee()).toNumber();
-                // setAmountEmployy(amount)
-                let employeeArr = [];
-                for (let i = 0; i < amount; i++) {
-                    const addrEmpl = await contract.allEmployeeList(i);
-                    const employee = await contract.allEmployee(addrEmpl);
-                    employeeArr.push(employee);
-                }
-                setArrEmployee(employeeArr);
-                setLoader(false);
-            } catch (error) {
-                console.log(error);
-            }
-        })();
-    }, []);
-
+       const { name, owner, balance, amountEmployee, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
+    
     console.log(arrEmployee);
-    const employeeOrNot = arrEmployee.find((i) => i.who == addressWallet);
+    // const employeeOrNot = arrEmployee.find((i) => i.who == addressWallet);
 
     return (
-    
                 <>
                     <RoleBadge content={(addressWallet === owner && 'Your role is Owner') || (addressWallet === admin && 'Your role is Admin')} />
                    
@@ -150,20 +109,12 @@ const Company = () => {
                         ) : (
                             <Grid container spacing={3} maxWidth={800}>
                                 {arrEmployee.map((item) => (
-                                    <User key={uuidv4()} who={item[0]} rate={item[1].toString()} />
+                                    <User key={uuidv4()} who={item[0]} rate={item[1]} />
                                 ))}
                             </Grid>
                         )}
                     </Box>
                 </>
-
-
-
-    
-    
-    
-    
-    
     );
 };
 

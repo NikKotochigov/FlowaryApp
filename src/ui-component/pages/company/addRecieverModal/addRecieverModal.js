@@ -7,13 +7,16 @@ import getErrorMessage from 'utils/getErrorMessage';
 import CustomPopover from 'ui-component/elements/customPopover';
 import { useSelector } from 'react-redux';
 import { contractSelector } from 'store/reducers/contract/reducer';
+import { useDispatch } from "react-redux";
+import { setAmountEmployee } from '../../../../store/reducers/contract/reducer';
 
 function AddRecieverModal() {
-    const { contractSigner } = useContract();
+    const { contract, contractSigner } = useContract();
     const [adNew, setAdNew] = useState('');
     const [rate, setRate] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
     const { decimalsToken } = useSelector(contractSelector);
+    const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -30,6 +33,20 @@ function AddRecieverModal() {
             const addUser = await contractSigner.addEmployee(adNew, BigInt(Math.ceil((rate/60/60)*(10**decimalsToken))));
             const res = await addUser.wait();
             console.log(res);
+//========refresh array of employeees========//
+        // const amount = (await contract.amountEmployee()).toNumber();
+        // let employeeArr = [];
+        // for (let i = 0; i < amount; i++) {
+        // const addrEmpl = await contract.allEmployeeList(i);
+        // const employee = await contract.allEmployee(addrEmpl);
+        // employeeArr.push(employee);}
+       // dispatch(setArrEmployee(employeeArr));
+
+       const amountEmployee = (await contract.amountEmployee()).toNumber();
+       dispatch(setAmountEmployee(amountEmployee));
+       
+
+//==========end of refresh========//
             setSuccess(true);
             setLoading(false);
         } catch (error) {
@@ -42,6 +59,8 @@ function AddRecieverModal() {
             }, 2000);
         }
     };
+
+
 
     const handleAddressChange = (e) => {
         setAdNew(e.target.value);

@@ -30,38 +30,19 @@ import Employee from './employee';
 // ==============================|| SAMPLE PAGE ||============================== //
 const SamplePage = () => {
     const { address: addressWallet } = useAccount();
-    const [arrEmployee, setArrEmployee] = useState([]);
-    const [balance, setBalance] = useState('');
-    const [admin, setAdmin] = useState('');
     const navigate = useNavigate();
-    // const [amountEmployy, setAmountEmployy] = useState(null)
     const [loader, setLoader] = useState(false);
-    const { name, owner, address, symbolToken, decimalsToken } = useSelector(contractSelector);
+    const { owner, balance, admin, amountEmployee } = useSelector(contractSelector);
     const { contract } = useContract();
-    console.log('contract', contract)  
+    const [arrEmployee, setArrEmployee] = useState([]);
+
     useEffect(() => {
-    contract &&    (async () => {
+        (async () => {
             try {
                 setLoader(true);
-                //-----get balance----//
-                const bal = (await contract.currentBalanceContract());
-                const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
-                                const b = Number(bal)
 
-                console.log('bal', b)
-                // console.log({b})
-                // const balan  = ethers.utils.formatUnits(bal, decimalsToken)
-                // console.log({balan})
-
-                setBalance(balan);
-                //-------get admin----//
-                const adm = await contract.administrator();
-                setAdmin(adm);
-                //------get arr of employees---//
-                const amount = (await contract.amountEmployee()).toNumber();
-                // setAmountEmployy(amount)
                 let employeeArr = [];
-                for (let i = 0; i < amount; i++) {
+                for (let i = 0; i < amountEmployee; i++) {
                     const addrEmpl = await contract.allEmployeeList(i);
                     const employee = await contract.allEmployee(addrEmpl);
                     employeeArr.push(employee);
@@ -72,19 +53,26 @@ const SamplePage = () => {
                 console.log(error);
             }
         })();
-    }, []);
+    }, [amountEmployee]);
 
-    console.log(arrEmployee);
-    const employeeOrNot = arrEmployee.find((i) => i.who == addressWallet);
+    let employeeOrNot
+    if(contract)
+    {employeeOrNot = arrEmployee.find((i) => i[0] == addressWallet)};
 
     return (
         
 <>
 {contract && addressWallet ?
 (addressWallet == owner || addressWallet == admin 
-? <Company />
-: employeeOrNot && <Employee />)
+? <Company arrEmployee={arrEmployee}/>
+: employeeOrNot && <Employee arrEmployee={arrEmployee}/>)
 : <Demo />}
+
+{/* {contract && addressWallet 
+?(addressWallet == owner || addressWallet == admin 
+     ? <Company arrEmployee={arrEmployee}/>
+     : employeeOrNot && <Employee arrEmployee={arrEmployee}/>)
+: <Demo />} */}
         </>    
     );
 };
