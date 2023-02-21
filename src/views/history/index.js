@@ -395,35 +395,17 @@ const History = ({ employeeOrNot }) => {
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: 1,
+                            mb: 2,
                             alignItems: 'center'
                         }}
                     >
-                        {/* <TextField
-            id="outlined-basic"
-            label="Filter by address"
-            variant="outlined"
-            sx={{
-              width: "300px",
-              "& .MuiInputBase-input": {
-                height: "10px",
-              },
-            }}
-          /> */}
+                      
                         <CustomSelector 
                         setArrayItem={setArrayItem}
                         arrayItem={arrayItem}
                         />
-                        {/* <Button
-                            // onClick={handleEvents}
-                            variant="outlined"
-                            sx={{ width: '150px', mb: 5 }}
-                        >
-                            show history
-                        </Button> */}
                     </Box>
                 
-
                 <Box
                     sx={{
                         display: 'flex',

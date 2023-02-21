@@ -4,6 +4,7 @@ import { CONTRACT_ABI } from "consts/contractAbi";
 import { ethers } from 'ethers';
 import { setAdmin, setToken } from 'store/reducers/contract/reducer';
 
+
 export const setContractToken = async (tokenAddress, contractAddress, dispatch, setLoading, setActiveStep) => {
     try {
         setLoading(true);
@@ -87,3 +88,4 @@ export const setIsActiveStream = async (contractAddress, recieverAddress, setIsA
         console.log(error);
     }
 }
+

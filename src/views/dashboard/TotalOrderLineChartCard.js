@@ -103,7 +103,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                                             sx={{ color: 'inherit' }}
                                             onClick={(e) => handleChangeTime(e, true)}
                                         >
-                                            Month
+                                            Day
                                         </Button>
                                         <Button
                                             disableElevation
@@ -112,7 +112,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                                             sx={{ color: 'inherit' }}
                                             onClick={(e) => handleChangeTime(e, false)}
                                         >
-                                            Year
+                                            Week
                                         </Button>
                                     </Grid>
                                 </Grid>
@@ -133,7 +133,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                                                 )}
                                             </Grid>
                                             <Grid item>
-                                                <Avatar
+                                                {/* <Avatar
                                                     sx={{
                                                         ...theme.typography.smallAvatar,
                                                         cursor: 'pointer',
@@ -142,7 +142,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                                                     }}
                                                 >
                                                     <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
-                                                </Avatar>
+                                                </Avatar> */}
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <Typography
@@ -152,7 +152,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                                                         color: theme.palette.primary[200]
                                                     }}
                                                 >
-                                                    Total Order
+                                                    Total Sreams value
                                                 </Typography>
                                             </Grid>
                                         </Grid>

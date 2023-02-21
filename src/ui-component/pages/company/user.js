@@ -21,6 +21,7 @@ const User = ({ who, rate }) => {
     const { address } = useSelector(contractSelector);
     const { contractSigner } = useContract();
     const [result, setResult] = useState('');
+    // console.log('rateAAA :', Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(2))
     const { symbolToken } = useSelector(contractSelector);
 
     const calcRate = ethers.utils.formatUnits(rate);
@@ -106,8 +107,8 @@ const User = ({ who, rate }) => {
                         Address: {who.slice(0, 5) + '...' + who.slice(38)}
                     </Typography>
                     <Typography variant='h4' color='secondary'>
+  // Rate: {Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(4)} {symbolToken} per hour
                         Rate: {(calcRate * 60 * 60).toFixed(0)} {symbolToken} per hour
-
                     </Typography>
                     {isActive && (
                         <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'green' }}>

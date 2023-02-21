@@ -6,14 +6,16 @@ import CustomModal from '../../../elements/customModal';
 import useContract from '../../../../contracts/prepareContract';
 import ButtonWithResult from 'ui-component/elements/buttonWithResult';
 import getErrorMessage from 'utils/getErrorMessage';
+import { useDispatch } from "react-redux";
+import { setAmountEmployee } from '../../../../store/reducers/contract/reducer';
 
 
 function ChangeRecieverModal({ who }) {
     const [rate, setRate] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
-    const { contractSigner } = useContract();
+    const { contract, contractSigner } = useContract();
     const { decimalsToken } = useSelector(contractSelector);
-
+    const dispatch = useDispatch();
     const handleOnClick = () => {
         setIsOpen((prev) => !prev);
     };
@@ -58,20 +60,35 @@ console.log(e.target.value)
             const deleteUser = await contractSigner.deleteEmployee(who);
             const res = await deleteUser.wait();
             console.log(res);
+//========refresh array of employeees========//
+    //     const amount = (await contract.amountEmployee()).toNumber();
+    //     let employeeArr = [];
+    //     for (let i = 0; i < amount; i++) {
+    //     const addrEmpl = await contract.allEmployeeList(i);
+    //     const employee = await contract.allEmployee(addrEmpl);
+    //     employeeArr.push(employee);}
+    //    dispatch(setArrEmployee(employeeArr));
+           const amountEmployee = (await contract.amountEmployee()).toNumber();
+       dispatch(setAmountEmployee(amountEmployee));
+
+//==========end of refresh========//
             setSuccessDel(true);
             setLoadingDel(false);
         } catch (error) {
             console.log(error);
-            if (error.code === 'UNPREDICTABLE_GAS_LIMIT') 
+            if (error.code == 3) 
                 setLoadingDel(false);
             setResultDel('You can delete employee while he has active stream');
+            if (error.code === 'ACTION_REJECTED') 
+            setLoadingDel(false);
+            setResultDel("Transaction was Rejected ❌");
             setTimeout(() => {
                 setResultDel('');
             }, 2000);
 
         }
     };
-
+ 
     return (
         <div>
             <CustomModal handleClickOpen={handleOnClick} open={isOpen}>
