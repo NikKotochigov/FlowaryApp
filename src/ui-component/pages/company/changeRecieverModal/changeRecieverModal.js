@@ -62,16 +62,19 @@ console.log(e.target.value)
             setLoadingDel(false);
         } catch (error) {
             console.log(error);
-            if (error.code === 'UNPREDICTABLE_GAS_LIMIT') 
+            if (error.code == 3) 
                 setLoadingDel(false);
             setResultDel('You can delete employee while he has active stream');
+            if (error.code === 'ACTION_REJECTED') 
+            setLoadingDel(false);
+            setResultDel("Transaction was Rejected ❌");
             setTimeout(() => {
                 setResultDel('');
             }, 2000);
 
         }
     };
-
+ 
     return (
         <div>
             <CustomModal handleClickOpen={handleOnClick} open={isOpen}>

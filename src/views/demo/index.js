@@ -11,7 +11,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import BasicModal from "../../../ui-component/elements/modal";
+import BasicModal from "../../ui-component/elements/modal";
 import { useState } from "react";
 // import { useDispatch, useSelector } from 'react-redux'
 import { useAccount } from 'wagmi'
@@ -19,11 +19,11 @@ import connectContract from "contracts/erc20";
 import { redirect, useNavigate } from "react-router-dom";
 // import { useEffect } from "react";
 // import { ethers } from "ethers";
-import CompanyCreateStepper from "../../../views/main/Steps/companyCreateStepper";
-import CustomPopover from "../../../ui-component/elements/customPopover";
+import CompanyCreateStepper from "../../views/main/Steps/companyCreateStepper";
+import CustomPopover from "../../ui-component/elements/customPopover";
 import { useDispatch } from "react-redux";
 
-const Main = () => {
+const Demo = () => {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(prev => !prev);
 
@@ -33,7 +33,7 @@ const Main = () => {
   
   const navigate = useNavigate();
   const handleConnectCompany = async () => {
-    await connectContract(add, dispatch)
+    connectContract(add, dispatch)
     navigate("/personal-page")
   };
   const handleCreateCompany = () => {
@@ -52,7 +52,9 @@ const Main = () => {
 
   return (
     <>
-        <Toolbar>
+
+    <Typography variant="h1">Fucking demo</Typography>
+        {/* <Toolbar>
           <Box sx={{ display: 'flex', gap: '8px' }}>
             <Button variant="outlined" onClick={address ? handleCreateCompany : handleOpenPopover}>
               Create company
@@ -104,14 +106,12 @@ setAnchorEl={setAnchorEl}
 
           </Box>
         </Toolbar>
-        {isCreateOpen && <CompanyCreateStepper />}
-
- 
+        {isCreateOpen && <CompanyCreateStepper />} */}
     </>
   );
 };
 
-export default Main;
+export default Demo;
 
 
   

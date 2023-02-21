@@ -7,13 +7,19 @@ import { CONTRACT_ABI } from "../consts/contractAbi";
 
 const useContract = () => {
 const { address } = useSelector(contractSelector); 
-const contract = getContract({
+console.log('address', address)
+let contract;
+if(address){
+  contract = getContract({
   address: address,
   abi: CONTRACT_ABI,
   signerOrProvider: provider,
 })
-const contractSigner = conectSigner(contract)
-
+}
+let contractSigner;
+if(contract) {
+contractSigner = conectSigner(contract)
+}
     return {contract, contractSigner};
 }
 export default useContract;

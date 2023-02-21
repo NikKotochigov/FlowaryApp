@@ -35,6 +35,14 @@ const other = {
             breadcrumbs: false
         },
         {
+            id: 'demo',
+            title: 'Demo page',
+            type: 'item',
+            url: '/demo',
+            icon: icons.IconBrandChrome,
+            breadcrumbs: false
+        },
+        {
             id: 'documentation',
             title: 'Documentation',
             type: 'item',

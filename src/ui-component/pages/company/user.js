@@ -23,19 +23,18 @@ const User = ({ who, rate }) => {
     const { address } = useSelector(contractSelector);
     const { contractSigner } = useContract();
     const [result, setResult] = useState('');
-    const { symbolToken } = useSelector(contractSelector);
-
-    // const [balance, setBalance] = useState(async () => getCurrentBalanceEmployee(address, who));
+    const { symbolToken, decimalsToken } = useSelector(contractSelector);
+    const [balance, setBalance] = useState(async () => getCurrentBalanceEmployee(address, who));
 
     function handleToggleClick() {
         setStartstop((prev) => !prev);
     }
 
-    // useEffect(() => {
-    //     if (!startstop) return
-    //     const intervalId = setStreamBalance(address, who, setBalance);
-    //     return () => clearInterval(intervalId)
-    // }, [startstop]);
+    useEffect(() => {
+        if (!startstop) return
+        const intervalId = setStreamBalance(address, who, setBalance);
+        return () => clearInterval(intervalId)
+    }, [startstop]);
 
     const hadleStartStream = async () => {
         try {
@@ -106,7 +105,7 @@ const User = ({ who, rate }) => {
                         Address: {who.slice(0, 5) + '...' + who.slice(38)}
                     </Typography>
                     <Typography variant='h4' color='secondary'>
-                        Rate: {(ethers.utils.formatUnits(rate) * 60 * 60).toFixed(0)} {symbolToken} per hour
+                        Rate: {(ethers.utils.formatUnits(rate, decimalsToken) * 60 * 60).toFixed(0)} {symbolToken} per hour
 
                     </Typography>
                     {/* {startstop && ( */}

@@ -5,12 +5,15 @@ import BasicModal from '../../../elements/modal';
 import ButtonWithResult from 'ui-component/elements/buttonWithResult';
 import getErrorMessage from 'utils/getErrorMessage';
 import CustomPopover from 'ui-component/elements/customPopover';
+import { useSelector } from 'react-redux';
+import { contractSelector } from 'store/reducers/contract/reducer';
 
 function AddRecieverModal() {
     const { contractSigner } = useContract();
     const [adNew, setAdNew] = useState('');
     const [rate, setRate] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
+    const { decimalsToken } = useSelector(contractSelector);
 
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -24,7 +27,7 @@ function AddRecieverModal() {
         try {
             setSuccess(false);
             setLoading(true);
-            const addUser = await contractSigner.addEmployee(adNew, rate);
+            const addUser = await contractSigner.addEmployee(adNew, BigInt(Math.ceil((rate/60/60)*(10**decimalsToken))));
             const res = await addUser.wait();
             console.log(res);
             setSuccess(true);

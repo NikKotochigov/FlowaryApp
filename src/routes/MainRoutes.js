@@ -11,6 +11,7 @@ const Main = Loadable(lazy(() => import('views/main/default')));
 const Dashboard = Loadable(lazy(() => import('views/dashboard')));
 const SamplePage = Loadable(lazy(() => import('views/personal-page')));
 const History = Loadable(lazy(() => import('views/history')));
+const Demo = Loadable(lazy(() => import('views/demo')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -42,7 +43,12 @@ const MainRoutes = {
         {
             path: 'history',
             element: <History />
-        }
+        },
+        {
+            path: 'demo',
+            element: <Demo />
+        },
+       
     ]
 };
 

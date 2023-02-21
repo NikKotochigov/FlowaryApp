@@ -11,13 +11,14 @@ import dayjs, { Dayjs } from "dayjs";
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector } from 'react-redux';
 import { contractSelector } from '../../../../store/reducers/contract/reducer';
+import { ethers } from "ethers";
+import { IconArrowBigLeftLine, IconArrowBigRightLine, IconRun } from "@tabler/icons";
 
 
 const TableS = ({ rows, arrayItem }) => {
   const [open, setOpen] = useState(false);
 const handleClickOpen = () => setOpen(prev => !prev);
-const { symbolToken } = useSelector(contractSelector);
-
+const { symbolToken, decimalsToken } = useSelector(contractSelector);
 
   return (<>
 
@@ -55,13 +56,14 @@ const { symbolToken } = useSelector(contractSelector);
                   >
                {arrayItem == '1' 
                ? (row.name == "Finished" || row.name == 'Finish All') 
-               ? (
+                      ? (
                       <HighlightOffIcon style={{fontSize: '250%', color: 'red'}}/>
                     ) : (
                       <img src={tableImg} alt="gif" width="45" />
 
                     )
-                  : null}
+               : (row.name == 'Deposit' ? <IconArrowBigRightLine color='green' size={28}/> : <IconArrowBigLeftLine color='red' size={28}/>)
+               }
                   </TableCell>
 
                   <TableCell
@@ -90,10 +92,12 @@ const { symbolToken } = useSelector(contractSelector);
                       },
                       // // fontSize: 14,
                       py: 3.5,
-                      //  border: 1
+                        // border: 1
                     }}
                   >
-                                      {(arrayItem == '1' ? row.earned : row.amount.slice(0,4))} {symbolToken}
+{arrayItem == '1' 
+? (row.name == 'Finished' ? Number(row.earned).toFixed(2) : <IconRun color='green'/>) 
+: Number(ethers.utils.formatUnits(Number(row.amount), decimalsToken)).toFixed(2)} {symbolToken}
     
                   </TableCell>
                   {arrayItem == '1' &&
@@ -146,7 +150,7 @@ const { symbolToken } = useSelector(contractSelector);
                     </Tooltip>
                   </TableCell>
 
-                  <TableCell align="center"
+                  {/* <TableCell align="center"
                                  sx={{
                                   display: {
                                           xs: "none", // 100%
@@ -172,7 +176,7 @@ const { symbolToken } = useSelector(contractSelector);
                         <Typography>Additional info</Typography>
                       </Box>
                     </BasicModal>
-                  </TableCell>
+                  </TableCell> */}
            </> }
                 </TableRow>
               </>
