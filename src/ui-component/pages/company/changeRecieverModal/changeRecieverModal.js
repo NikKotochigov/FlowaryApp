@@ -7,7 +7,8 @@ import useContract from '../../../../contracts/prepareContract';
 import ButtonWithResult from 'ui-component/elements/buttonWithResult';
 import getErrorMessage from 'utils/getErrorMessage';
 import { useDispatch } from "react-redux";
-import { setAmountEmployee } from '../../../../store/reducers/contract/reducer';
+import { setAmountEmployee, setArrEmployee } from '../../../../store/reducers/contract/reducer';
+import { ethers } from "ethers";
 
 
 function ChangeRecieverModal({ who }) {
@@ -40,6 +41,18 @@ console.log(e.target.value)
             const changeRate = await contractSigner.modifyRate(who, BigInt(Math.ceil((rate/60/60)*(10**decimalsToken))));
             const res = await changeRate.wait();
             console.log(res);
+            //========refresh array of employeees========//
+       const amountEmployee = (await contract.amountEmployee()).toNumber();
+       dispatch(setAmountEmployee(amountEmployee));
+       let employeeArr = [];
+for (let i = 0; i < amountEmployee; i++) {
+    const addrEmpl = await contract.allEmployeeList(i);
+    const result = await contract.allEmployee(addrEmpl);
+    const employee = {who: result.who, rate: (Number(ethers.utils.formatUnits(result.flowRate, decimalsToken))*60*60).toFixed(2)}
+    employeeArr.push(employee);
+}
+dispatch(setArrEmployee(employeeArr));
+//==========end of refresh========//
             setSuccess(true);
             setLoading(false);
         } catch (error) {
@@ -61,15 +74,16 @@ console.log(e.target.value)
             const res = await deleteUser.wait();
             console.log(res);
 //========refresh array of employeees========//
-    //     const amount = (await contract.amountEmployee()).toNumber();
-    //     let employeeArr = [];
-    //     for (let i = 0; i < amount; i++) {
-    //     const addrEmpl = await contract.allEmployeeList(i);
-    //     const employee = await contract.allEmployee(addrEmpl);
-    //     employeeArr.push(employee);}
-    //    dispatch(setArrEmployee(employeeArr));
-           const amountEmployee = (await contract.amountEmployee()).toNumber();
-       dispatch(setAmountEmployee(amountEmployee));
+const amountEmployee = (await contract.amountEmployee()).toNumber();
+dispatch(setAmountEmployee(amountEmployee));
+let employeeArr = [];
+for (let i = 0; i < amountEmployee; i++) {
+const addrEmpl = await contract.allEmployeeList(i);
+const result = await contract.allEmployee(addrEmpl);
+const employee = {who: result.who, rate: (Number(ethers.utils.formatUnits(result.flowRate, decimalsToken))*60*60).toFixed(2)}
+employeeArr.push(employee);
+}
+dispatch(setArrEmployee(employeeArr));
 
 //==========end of refresh========//
             setSuccessDel(true);

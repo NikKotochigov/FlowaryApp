@@ -106,7 +106,8 @@ const User = ({ who, rate }) => {
                         Address: {who.slice(0, 5) + '...' + who.slice(38)}
                     </Typography>
                     <Typography variant='h4' color='secondary'>
-  Rate: {Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(4)} {symbolToken} per hour
+  {/* Rate: {Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(4)} {symbolToken} per hour */}
+  Rate: {rate} {symbolToken} per hour 
 
                     </Typography>
                     {/* {startstop && ( */}

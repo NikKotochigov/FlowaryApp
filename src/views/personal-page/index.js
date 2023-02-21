@@ -36,43 +36,40 @@ const SamplePage = () => {
     const { contract } = useContract();
     const [arrEmployee, setArrEmployee] = useState([]);
 
-    useEffect(() => {
-        (async () => {
-            try {
-                setLoader(true);
+    // useEffect(() => {
+    //     (async () => {
+    //         try {
+    //             setLoader(true);
 
-                let employeeArr = [];
-                for (let i = 0; i < amountEmployee; i++) {
-                    const addrEmpl = await contract.allEmployeeList(i);
-                    const employee = await contract.allEmployee(addrEmpl);
-                    employeeArr.push(employee);
-                }
-                setArrEmployee(employeeArr);
-                setLoader(false);
-            } catch (error) {
-                console.log(error);
-            }
-        })();
-    }, [amountEmployee]);
+    //             let employeeArr = [];
+    //             for (let i = 0; i < amountEmployee; i++) {
+    //                 const addrEmpl = await contract.allEmployeeList(i);
+    //                 const employee = await contract.allEmployee(addrEmpl);
+    //                 employeeArr.push(employee);
+    //             }
+    //             setArrEmployee(employeeArr);
+    //             setLoader(false);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     })();
+    // }, [amountEmployee]);
 
-    let employeeOrNot
-    if(contract)
-    {employeeOrNot = arrEmployee.find((i) => i[0] == addressWallet)};
+    // let employeeOrNot
+    // if(contract)
+    // {employeeOrNot = arrEmployee.find((i) => i[0] == addressWallet)};
 
     return (
         
 <>
-{contract && addressWallet ?
+{/* {contract && addressWallet ?
 (addressWallet == owner || addressWallet == admin 
 ? <Company arrEmployee={arrEmployee}/>
 : employeeOrNot && <Employee arrEmployee={arrEmployee}/>)
-: <Demo />}
-
-{/* {contract && addressWallet 
-?(addressWallet == owner || addressWallet == admin 
-     ? <Company arrEmployee={arrEmployee}/>
-     : employeeOrNot && <Employee arrEmployee={arrEmployee}/>)
 : <Demo />} */}
+
+<Company />
+
         </>    
     );
 };

@@ -26,13 +26,13 @@ import Demo from 'views/demo';
 import { getInfoForCompanyAndEmployee } from 'utils/contractMethods';
 
 // ==============================|| SAMPLE PAGE ||============================== //
-const Company = ({arrEmployee}) => {
+const Company = () => {
     const { address: addressWallet } = useAccount();
     const navigate = useNavigate();
     const [loader, setLoader] = useState(false);
-       const { name, owner, balance, amountEmployee, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
+       const { name, owner, balance, amountEmployee, arrEmployee, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
     
-    console.log(arrEmployee);
+    console.log('massiv sotrudnikov :', arrEmployee);
     // const employeeOrNot = arrEmployee.find((i) => i.who == addressWallet);
 
     return (
@@ -109,7 +109,7 @@ const Company = ({arrEmployee}) => {
                         ) : (
                             <Grid container spacing={3} maxWidth={800}>
                                 {arrEmployee.map((item) => (
-                                    <User key={uuidv4()} who={item[0]} rate={item[1]} />
+                                    <User key={uuidv4()} who={item.who} rate={item.rate} />
                                 ))}
                             </Grid>
                         )}
