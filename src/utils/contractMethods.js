@@ -61,17 +61,28 @@ export const getCurrentBalanceEmployee = async (contractAddress, recieverAddress
 
 export const setStreamBalance = async (contractAddress, recieverAddress, setBalance) => {
     try {
-        const { flowRate } = await readContract({
+        const currentBalanceEmployee = await readContract({
             address: contractAddress,
             abi: CONTRACT_ABI,
-            functionName: 'allEmployee',
+            functionName: 'currentBalanceEmployee',
             args: [recieverAddress]
         });
-        const rate = ethers.utils.formatUnits(Number(flowRate.toString()));
-        const intervalId = setInterval(() => {
-            setBalance(prev => prev + rate / 10);
-        }, 100);
-        return intervalId;
+        const currentBalance = Number(ethers.utils.formatUnits(currentBalanceEmployee.toString())) || 0;
+        setBalance(currentBalance);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const setIsActiveStream = async (contractAddress, recieverAddress, setIsActive) => {
+    try {
+        const { active } = await readContract({
+            address: contractAddress,
+            abi: CONTRACT_ABI,
+            functionName: 'getStream',
+            args: [recieverAddress]
+        });
+        setIsActive(active);
     } catch (error) {
         console.log(error);
     }
