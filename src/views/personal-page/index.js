@@ -32,43 +32,24 @@ const SamplePage = () => {
     const { address: addressWallet } = useAccount();
     const navigate = useNavigate();
     const [loader, setLoader] = useState(false);
-    const { owner, balance, admin, amountEmployee } = useSelector(contractSelector);
-    const { contract } = useContract();
-    const [arrEmployee, setArrEmployee] = useState([]);
+    // const { contract } = useContract();
+    const { address, owner, balance, amountEmployee, arrEmployee, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
 
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             setLoader(true);
 
-    //             let employeeArr = [];
-    //             for (let i = 0; i < amountEmployee; i++) {
-    //                 const addrEmpl = await contract.allEmployeeList(i);
-    //                 const employee = await contract.allEmployee(addrEmpl);
-    //                 employeeArr.push(employee);
-    //             }
-    //             setArrEmployee(employeeArr);
-    //             setLoader(false);
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     })();
-    // }, [amountEmployee]);
-
-    // let employeeOrNot
-    // if(contract)
-    // {employeeOrNot = arrEmployee.find((i) => i[0] == addressWallet)};
+    let employeeOrNot
+    if(address)
+    {employeeOrNot = arrEmployee.find((i) => i.who == addressWallet)};
 
     return (
         
 <>
-{/* {contract && addressWallet ?
+{address && addressWallet ?
 (addressWallet == owner || addressWallet == admin 
 ? <Company arrEmployee={arrEmployee}/>
 : employeeOrNot && <Employee arrEmployee={arrEmployee}/>)
-: <Demo />} */}
+: <Demo />}
 
-<Company />
+
 
         </>    
     );

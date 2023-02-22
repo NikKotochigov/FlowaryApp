@@ -33,10 +33,7 @@ let employeeArr = [];
 for (let i = 0; i < amountEmployee; i++) {
     const addrEmpl = await contract.allEmployeeList(i);
     const result = await contract.allEmployee(addrEmpl);
-
-    // console.log('CHTO prishlo:', result)
-    // console.log('RATE sotrud:', Number(ethers.utils.formatUnits(result.flowRate, decimalsToken))*60*60)
-const employee = {who: result.who, rate: (Number(ethers.utils.formatUnits(result.flowRate, decimalsToken))*60*60).toFixed(2)}
+    const employee = {who: result.who, rate: (Number(ethers.utils.formatUnits(result.flowRate, decimalsToken))*60*60).toFixed(2)}
     employeeArr.push(employee);
 }
 dispatch(setArrEmployee(employeeArr));

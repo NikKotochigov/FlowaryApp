@@ -89,7 +89,7 @@ dispatch(setArrEmployee(employeeArr));
             setSuccessDel(true);
             setLoadingDel(false);
         } catch (error) {
-            console.log(error);
+            console.log('ETO OSHIBKA :', error.message);
             if (error.code == 3) 
                 setLoadingDel(false);
             setResultDel('You can delete employee while he has active stream');

@@ -29,7 +29,7 @@ const Employee = ({arrEmployee}) => {
     const { name, address, balance, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
     // const { contract } = useContract();
        
-    const employeeOrNot = arrEmployee.find((i) => i[0] == addressWallet);
+    const employeeOrNot = arrEmployee.find((i) => i.who == addressWallet);
 
     return (
         <>
