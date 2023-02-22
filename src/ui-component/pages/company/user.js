@@ -18,9 +18,8 @@ const User = ({ who, rate }) => {
     const { address } = useSelector(contractSelector);
     const { contract, contractSigner } = useContract();
     const [result, setResult] = useState('');
-       const { symbolToken, decimalsToken, balance } = useSelector(contractSelector);
-       const dispatch = useDispatch();
-
+    const { symbolToken, decimalsToken, balance } = useSelector(contractSelector);
+    const dispatch = useDispatch();
     console.log('rateStart :', Number(rate)  )
 
     // console.log('rateUTILS :', Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(2))
