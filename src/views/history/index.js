@@ -18,6 +18,7 @@ import Tooltip from '../../ui-component/elements/tooltip';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import TableS from '../../ui-component/pages/history/table/table';
 import { useAccount } from 'wagmi';
+import { TOKEN_ABI } from "../../consts/contractAbi";
 
 import { ethers } from 'ethers';
 // import companyContract from 'contracts/CompanyContract';
@@ -26,14 +27,23 @@ import CustomSelector from 'ui-component/elements/customSelector';
 import usePagination from './pagination';
 import useContract from '../../contracts/prepareContract'
 import Loader from '../../ui-component/elements/loader';
+import { useSelector } from 'react-redux';
+import { contractSelector } from 'store/reducers/contract/reducer';
+import AllHistory from './allHistory';
+import Demo from 'views/demo';
 
-const History = ({ employeeOrNot }) => {
+const History = () => {
     const [valueStart, setValueStart] = useState(dayjs('2023-01-01'));
     const [valueStop, setValueStop] = useState(dayjs('2023-01-02'));
     const [arrayBlock, setArrayBlock] = useState([]);
     const { contract } = useContract();
-    const { address } = useAccount();
+    const { address: addressWallet } = useAccount();
     const [loader, setLoader] = useState(false);
+    const { address, token, decimalsToken, arrEmployee, owner, admin } = useSelector(contractSelector);
+    let employeeOrNot
+    if(address && addressWallet != (owner || admin))
+    {employeeOrNot = arrEmployee.find((i) => i.who == addressWallet)};
+console.log('rabotnik ili kto :', employeeOrNot)
 
     useEffect(() => {
         (async () => {
@@ -95,201 +105,27 @@ const History = ({ employeeOrNot }) => {
                 // console.log("RESSSS 2:", result)
 
                 //--------  EVENT#3   StreamAllFinished ---------------
-                const eventAllFinish = await contract.queryFilter(contract.filters.StreamAllFinished());
+                // const eventAllFinish = await contract.queryFilter(contract.filters.StreamAllFinished());
 
-                for (let i = 0; i < eventAllFinish.length; i++) {
-                    const amountEmployee = eventAllFinish[i].args[0].toNumber();
-                    const endsAt = eventAllFinish[i].args[1].toNumber();
-                    const txHash = eventAllFinish[i].transactionHash;
+                // for (let i = 0; i < eventAllFinish.length; i++) {
+                //     const amountEmployee = eventAllFinish[i].args[0].toNumber();
+                //     const endsAt = eventAllFinish[i].args[1].toNumber();
+                //     const txHash = eventAllFinish[i].transactionHash;
 
-                    const obj = {
-                        name: 'Finish All',
-                        time: endsAt,
-                        amountEmployee: amountEmployee,
-                        txHash: txHash
-                    };
+                //     const obj = {
+                //         name: 'Finish All',
+                //         time: endsAt,
+                //         amountEmployee: amountEmployee,
+                //         txHash: txHash
+                //     };
 
-                    result.push(obj);
-                }
+                //     result.push(obj);
+                // }
 
                 // console.log("RESSSS 3:", result)
 
                 //--------  EVENT#4   Deposit -------------
-
-                const tokenAddr = await contract.token();
-
-                const abi = [
-                    { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
-                    {
-                        anonymous: false,
-                        inputs: [
-                            { indexed: true, internalType: 'address', name: 'owner', type: 'address' },
-                            { indexed: true, internalType: 'address', name: 'spender', type: 'address' },
-                            { indexed: false, internalType: 'uint256', name: 'value', type: 'uint256' }
-                        ],
-                        name: 'Approval',
-                        type: 'event'
-                    },
-                    {
-                        anonymous: false,
-                        inputs: [
-                            { indexed: true, internalType: 'address', name: 'previousOwner', type: 'address' },
-                            { indexed: true, internalType: 'address', name: 'newOwner', type: 'address' }
-                        ],
-                        name: 'OwnershipTransferred',
-                        type: 'event'
-                    },
-                    {
-                        anonymous: false,
-                        inputs: [
-                            { indexed: true, internalType: 'address', name: 'from', type: 'address' },
-                            { indexed: true, internalType: 'address', name: 'to', type: 'address' },
-                            { indexed: false, internalType: 'uint256', name: 'value', type: 'uint256' }
-                        ],
-                        name: 'Transfer',
-                        type: 'event'
-                    },
-                    {
-                        inputs: [
-                            { internalType: 'address', name: 'owner', type: 'address' },
-                            { internalType: 'address', name: 'spender', type: 'address' }
-                        ],
-                        name: 'allowance',
-                        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-                        stateMutability: 'view',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [
-                            { internalType: 'address', name: 'spender', type: 'address' },
-                            { internalType: 'uint256', name: 'amount', type: 'uint256' }
-                        ],
-                        name: 'approve',
-                        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-                        stateMutability: 'nonpayable',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
-                        name: 'balanceOf',
-                        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-                        stateMutability: 'view',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
-                        name: 'burn',
-                        outputs: [],
-                        stateMutability: 'nonpayable',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [
-                            { internalType: 'address', name: 'account', type: 'address' },
-                            { internalType: 'uint256', name: 'amount', type: 'uint256' }
-                        ],
-                        name: 'burnFrom',
-                        outputs: [],
-                        stateMutability: 'nonpayable',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [],
-                        name: 'decimals',
-                        outputs: [{ internalType: 'uint8', name: '', type: 'uint8' }],
-                        stateMutability: 'view',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [
-                            { internalType: 'address', name: 'spender', type: 'address' },
-                            { internalType: 'uint256', name: 'subtractedValue', type: 'uint256' }
-                        ],
-                        name: 'decreaseAllowance',
-                        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-                        stateMutability: 'nonpayable',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [
-                            { internalType: 'address', name: 'spender', type: 'address' },
-                            { internalType: 'uint256', name: 'addedValue', type: 'uint256' }
-                        ],
-                        name: 'increaseAllowance',
-                        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-                        stateMutability: 'nonpayable',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [
-                            { internalType: 'address', name: 'to', type: 'address' },
-                            { internalType: 'uint256', name: 'amount', type: 'uint256' }
-                        ],
-                        name: 'mint',
-                        outputs: [],
-                        stateMutability: 'nonpayable',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [],
-                        name: 'name',
-                        outputs: [{ internalType: 'string', name: '', type: 'string' }],
-                        stateMutability: 'view',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [],
-                        name: 'owner',
-                        outputs: [{ internalType: 'address', name: '', type: 'address' }],
-                        stateMutability: 'view',
-                        type: 'function'
-                    },
-                    { inputs: [], name: 'renounceOwnership', outputs: [], stateMutability: 'nonpayable', type: 'function' },
-                    {
-                        inputs: [],
-                        name: 'symbol',
-                        outputs: [{ internalType: 'string', name: '', type: 'string' }],
-                        stateMutability: 'view',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [],
-                        name: 'totalSupply',
-                        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-                        stateMutability: 'view',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [
-                            { internalType: 'address', name: 'to', type: 'address' },
-                            { internalType: 'uint256', name: 'amount', type: 'uint256' }
-                        ],
-                        name: 'transfer',
-                        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-                        stateMutability: 'nonpayable',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [
-                            { internalType: 'address', name: 'from', type: 'address' },
-                            { internalType: 'address', name: 'to', type: 'address' },
-                            { internalType: 'uint256', name: 'amount', type: 'uint256' }
-                        ],
-                        name: 'transferFrom',
-                        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-                        stateMutability: 'nonpayable',
-                        type: 'function'
-                    },
-                    {
-                        inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
-                        name: 'transferOwnership',
-                        outputs: [],
-                        stateMutability: 'nonpayable',
-                        type: 'function'
-                    }
-                ];
-
-                const contractStableCoin = new ethers.Contract(tokenAddr, abi, provider);
+                const contractStableCoin = new ethers.Contract(token, TOKEN_ABI, provider);
                 const filterTo = contractStableCoin.filters.Transfer(null, contract.address);
 
                 const transerEvents = await contractStableCoin.queryFilter(filterTo);
@@ -304,7 +140,8 @@ const History = ({ employeeOrNot }) => {
                     const obj = {
                         name: 'Deposit',
                         time: blockTimestamp,
-                        amount: amountDeposit,
+                        amount: ethers.utils.formatUnits(amountDeposit, decimalsToken),
+                        // amount: Number(ethers.utils.formatUnits(Number(amountDeposit), decimalsToken)).toFixed(2)
                         txHash: txHash
                     };
 
@@ -327,7 +164,7 @@ const History = ({ employeeOrNot }) => {
                     const obj = {
                         name: 'Withdraw',
                         time: blockTimestamp,
-                        amount: amountDeposit,
+                        amount: ethers.utils.formatUnits(amountDeposit, decimalsToken),
                         txHash: txHash
                     };
 
@@ -354,7 +191,7 @@ const History = ({ employeeOrNot }) => {
     const arrayPayloads = arrayBlock.filter((i) => i.name == 'Deposit' || i.name == 'Withdraw');
     console.log('payloads', arrayPayloads);
 //=====array for employee page===//
-    const arraySingleEmployy = arrayStreams.filter((i) => i.addr == address);
+    const arraySingleEmployy = arrayStreams.filter((i) => i.addr == addressWallet);
  //======data for selector=====//
     const [arrayItem, setArrayItem] = useState(`1`);
     // const handleChangeArray = (event) => {
@@ -362,6 +199,8 @@ const History = ({ employeeOrNot }) => {
     // };
     const chooseArray = arrayItem == 1 ? arrayStreams : arrayPayloads
     //======data for pagination======//
+    // const eventsLog =  chooseArray;
+
     const eventsLog = employeeOrNot ? arraySingleEmployy : chooseArray;
     const { length, currentTx, currentPage, setCurrentPage } = usePagination({ inArr: eventsLog });
     const handleChange = (event, value) => {
@@ -369,132 +208,252 @@ const History = ({ employeeOrNot }) => {
     };
 
     return (
-        <>
-            {!employeeOrNot && (
-                <Typography variant="h1" m={3} color="red">
-                    Activity history
-                </Typography>
-            )}
+//         <>
+            // {!employeeOrNot && (
+            //     <Typography variant="h1" m={3} color="red">
+            //         Activity history
+            //     </Typography>
+            // )}
 
-            <Box
-                component="form"
-                sx={{
-                    justifyContent: 'space-between',
-                    display: {
-                        // xs: "block", // 100%
-                        sm: 'block', //600px
-                        md: 'flex' //900px
-                    },
-                    m: 2
-                }}
-                noValidate
-                autoComplete="off"
-            >
-                {!employeeOrNot && (<>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            mb: 2,
-                            alignItems: 'center'
-                        }}
-                    >
+//             <Box
+//                 component="form"
+//                 sx={{
+//                     justifyContent: 'space-between',
+//                     display: {
+//                         // xs: "block", // 100%
+//                         sm: 'block', //600px
+//                         md: 'flex' //900px
+//                     },
+//                     m: 2
+//                 }}
+//                 noValidate
+//                 autoComplete="off"
+//             >
+//                 {!employeeOrNot && (<>
+//                     <Box
+//                         sx={{
+//                             display: 'flex',
+//                             flexDirection: 'column',
+//                             mb: 2,
+//                             alignItems: 'center'
+//                         }}
+//                     >
                       
-                        <CustomSelector 
-                        setArrayItem={setArrayItem}
-                        arrayItem={arrayItem}
-                        />
-                    </Box>
+//                         <CustomSelector 
+//                         setArrayItem={setArrayItem}
+//                         arrayItem={arrayItem}
+//                         />
+//                     </Box>
                 
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 1,
-                        alignItems: 'center'
-                    }}
-                >
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            gap: 1
-                        }}
-                    >
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DesktopDatePicker
-                                label="Start from the date"
-                                value={valueStart}
-                                minDate={dayjs('2023-01-01')}
-                                onChange={(newValue) => {
-                                    setValueStart(newValue);
-                                }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        sx={{
-                                            width: '160px',
-                                            '& .MuiInputBase-input': {
-                                                height: '10px',
-                                                width: '100px'
-                                            }
-                                        }}
-                                    />
-                                )}
-                            />
-                            <DesktopDatePicker
-                                label="Till the date"
-                                value={valueStop}
-                                minDate={dayjs('2023-01-01')}
-                                onChange={(newValue) => {
-                                    setValueStop(newValue);
-                                }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        sx={{
-                                            width: '160px',
-                                            '& .MuiInputBase-input': {
-                                                height: '10px',
-                                                width: '100px'
-                                            }
-                                        }}
-                                    />
-                                )}
-                            />
-                        </LocalizationProvider>
-                    </Box>
-                    <Button variant="outlined" sx={{ width: '150px' }}>
-                        Show history
-                    </Button>
-                </Box>
-              </>  )}
-            </Box>
-{loader ? 
-<Box 
-sx={{
-    display: 'flex',
-    justifyContent: 'center'
-}}
+//                 <Box
+//                     sx={{
+//                         display: 'flex',
+//                         flexDirection: 'column',
+//                         gap: 1,
+//                         alignItems: 'center'
+//                     }}
+//                 >
+//                     <Box
+//                         sx={{
+//                             display: 'flex',
+//                             gap: 1
+//                         }}
+//                     >
+//                         <LocalizationProvider dateAdapter={AdapterDayjs}>
+//                             <DesktopDatePicker
+//                                 label="Start from the date"
+//                                 value={valueStart}
+//                                 minDate={dayjs('2023-01-01')}
+//                                 onChange={(newValue) => {
+//                                     setValueStart(newValue);
+//                                 }}
+//                                 renderInput={(params) => (
+//                                     <TextField
+//                                         {...params}
+//                                         sx={{
+//                                             width: '160px',
+//                                             '& .MuiInputBase-input': {
+//                                                 height: '10px',
+//                                                 width: '100px'
+//                                             }
+//                                         }}
+//                                     />
+//                                 )}
+//                             />
+//                             <DesktopDatePicker
+//                                 label="Till the date"
+//                                 value={valueStop}
+//                                 minDate={dayjs('2023-01-01')}
+//                                 onChange={(newValue) => {
+//                                     setValueStop(newValue);
+//                                 }}
+//                                 renderInput={(params) => (
+//                                     <TextField
+//                                         {...params}
+//                                         sx={{
+//                                             width: '160px',
+//                                             '& .MuiInputBase-input': {
+//                                                 height: '10px',
+//                                                 width: '100px'
+//                                             }
+//                                         }}
+//                                     />
+//                                 )}
+//                             />
+//                         </LocalizationProvider>
+//                     </Box>
+//                     <Button variant="outlined" sx={{ width: '150px' }}>
+//                         Show history
+//                     </Button>
+//                 </Box>
+//               </>  )}
+//             </Box>
+
+// {loader ? 
+// <Box 
+// sx={{
+//     display: 'flex',
+//     justifyContent: 'center'
+// }}
+// >
+// <Loader />     
+// </Box>
+// : <TableS rows={currentTx} arrayItem={arrayItem}/>}
+
+
+
+            
+//             <Pagination 
+//             count={length} 
+//             page={currentPage} 
+//             color="primary" 
+//             size="large" 
+//             onChange={handleChange}
+//             sx={{
+//               display: 'flex',
+//               justifyContent:'center',
+//               mt: 3
+//             }}
+//             />
+//         </>
+
+
+<>
+    <Typography variant="h1" m={3} color="red">
+        Activity history
+    </Typography>
+
+<Box
+    component="form"
+    sx={{
+        justifyContent: 'space-between',
+        display: {
+            // xs: "block", // 100%
+            sm: 'block', //600px
+            md: 'flex' //900px
+        },
+        m: 2
+    }}
+    noValidate
+    autoComplete="off"
 >
-<Loader />     
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                mb: 2,
+                alignItems: 'center'
+            }}
+        >
+          
+            <CustomSelector 
+            setArrayItem={setArrayItem}
+            arrayItem={arrayItem}
+            />
+        </Box>
+    
+    <Box
+        sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1,
+            alignItems: 'center'
+        }}
+    >
+        <Box
+            sx={{
+                display: 'flex',
+                gap: 1
+            }}
+        >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DesktopDatePicker
+                    label="Start from the date"
+                    value={valueStart}
+                    minDate={dayjs('2023-01-01')}
+                    onChange={(newValue) => {
+                        setValueStart(newValue);
+                    }}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            sx={{
+                                width: '160px',
+                                '& .MuiInputBase-input': {
+                                    height: '10px',
+                                    width: '100px'
+                                }
+                            }}
+                        />
+                    )}
+                />
+                <DesktopDatePicker
+                    label="Till the date"
+                    value={valueStop}
+                    minDate={dayjs('2023-01-01')}
+                    onChange={(newValue) => {
+                        setValueStop(newValue);
+                    }}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            sx={{
+                                width: '160px',
+                                '& .MuiInputBase-input': {
+                                    height: '10px',
+                                    width: '100px'
+                                }
+                            }}
+                        />
+                    )}
+                />
+            </LocalizationProvider>
+        </Box>
+        <Button variant="outlined" sx={{ width: '150px' }}>
+            Show history
+        </Button>
+    </Box>
 </Box>
 
-: <TableS rows={currentTx} arrayItem={arrayItem}/>}
-            
 
-            <Pagination 
-            count={length} 
-            page={currentPage} 
-            color="primary" 
-            size="large" 
-            onChange={handleChange}
-            sx={{
-              display: 'flex',
-              justifyContent:'center',
-              mt: 3
-            }}
-            />
-        </>
+{address && addressWallet ?
+
+<AllHistory 
+arrayItem={arrayItem}
+eventsLog={eventsLog}
+loader={loader}
+/>
+: <Demo />}
+
+</>
+
+
+
+
+
+
+
+
     );
 };
 

@@ -97,7 +97,8 @@ const { symbolToken, decimalsToken } = useSelector(contractSelector);
                   >
 {arrayItem == '1' 
 ? (row.name == 'Finished' ? Number(row.earned).toFixed(2) : <IconRun color='green'/>) 
-: Number(ethers.utils.formatUnits(Number(row.amount), decimalsToken)).toFixed(2)} {symbolToken}
+: Number(row.amount).toFixed(2)} {symbolToken}
+{/* : Number(ethers.utils.formatUnits(Number(row.amount), decimalsToken)).toFixed(2)} {symbolToken} */}
     
                   </TableCell>
                   {arrayItem == '1' &&

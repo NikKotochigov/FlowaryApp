@@ -1,30 +1,31 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
 import { contractSelector } from 'store/reducers/contract/reducer';
-
 import { Box, Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
-
 import CustomBadge from '../../elements/badge';
 import Jazzicon from 'react-jazzicon/dist/Jazzicon';
 import { jsNumberForAddress } from 'react-jazzicon';
 import ChangeRecieverModal from './changeRecieverModal/changeRecieverModal';
-
 import useContract from '../../../contracts/prepareContract'
 import { setStreamBalance, setIsActiveStream } from 'utils/contractMethods';
 import getErrorMessage from 'utils/getErrorMessage';
 import { ethers } from "ethers";
+import {  setBalance } from '../../../store/reducers/contract/reducer';
 
 const User = ({ who, rate }) => {
     const [isActive, setIsActive] = useState(false);
-    const [balance, setBalance] = useState(0);
+    const [localBalance, setLocalBalance] = useState(0);
     const { address } = useSelector(contractSelector);
-    const { contractSigner } = useContract();
+    const { contract, contractSigner } = useContract();
     const [result, setResult] = useState('');
-    // console.log('rateAAA :', Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(2))
-    const { symbolToken, decimalsToken } = useSelector(contractSelector);
+    const { symbolToken, decimalsToken, balance } = useSelector(contractSelector);
+    const dispatch = useDispatch();
+    console.log('rateStart :', Number(rate)  )
 
-    const calcRate = ethers.utils.formatUnits(rate);
+    // console.log('rateUTILS :', Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(2))
+
+    // const calcRate = ethers.utils.formatUnits(rate);
+    const calcRate = Number(rate)/60/60;
 
     function handleToggleClick() {
         setIsActive((prev) => !prev);
@@ -33,8 +34,9 @@ const User = ({ who, rate }) => {
     useEffect(() => {
         setIsActiveStream(address, who, setIsActive);
         if (!isActive) return
-        setStreamBalance(address, who, setBalance);
-        const intervalId = setInterval(() => setBalance(prev => prev + calcRate / 10), 100)
+        setStreamBalance(address, who, setLocalBalance);
+        const intervalId = setInterval(() => setLocalBalance(prev => prev + calcRate / 10), 100)
+
         return () => clearInterval(intervalId)
     }, [address, isActive, who]);
 
@@ -59,7 +61,10 @@ const User = ({ who, rate }) => {
             const stopStream = await contractSigner.finish(who)
             const res = await stopStream.wait()
             handleToggleClick()
-            console.log(res)
+            const bal = await contract.currentBalanceContract();
+            const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
+            dispatch(setBalance(balan));
+                        console.log(res)
         } catch (error) {
             console.log(error)
         }
@@ -107,12 +112,14 @@ const User = ({ who, rate }) => {
                         Address: {who.slice(0, 5) + '...' + who.slice(38)}
                     </Typography>
                     <Typography variant='h4' color='secondary'>
-                     {/* Rate: {Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(4)} {symbolToken} per hour */}
-                        Rate: {(calcRate * 60 * 60).toFixed(0)} {symbolToken} per hour
+  {/* Rate: {Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(4)} {symbolToken} per hour */}
+  Rate: {rate} {symbolToken} per hour 
+
+                        {/* Counter: {(calcRate).toFixed(0)} {symbolToken} per hour */}
                     </Typography>
                     {isActive && (
                         <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'green' }}>
-                            Amount of stream: {balance.toFixed(5)}
+                            Amount of stream: {localBalance.toFixed(5)}
                         </Typography>
                     )}
                 </CardContent>

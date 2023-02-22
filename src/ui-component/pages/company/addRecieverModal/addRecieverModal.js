@@ -8,7 +8,8 @@ import CustomPopover from 'ui-component/elements/customPopover';
 import { useSelector } from 'react-redux';
 import { contractSelector } from 'store/reducers/contract/reducer';
 import { useDispatch } from "react-redux";
-import { setAmountEmployee } from '../../../../store/reducers/contract/reducer';
+import { setAmountEmployee, setArrEmployee } from '../../../../store/reducers/contract/reducer';
+import { ethers } from "ethers";
 
 function AddRecieverModal() {
     const { contract, contractSigner } = useContract();
@@ -34,18 +35,16 @@ function AddRecieverModal() {
             const res = await addUser.wait();
             console.log(res);
 //========refresh array of employeees========//
-        // const amount = (await contract.amountEmployee()).toNumber();
-        // let employeeArr = [];
-        // for (let i = 0; i < amount; i++) {
-        // const addrEmpl = await contract.allEmployeeList(i);
-        // const employee = await contract.allEmployee(addrEmpl);
-        // employeeArr.push(employee);}
-       // dispatch(setArrEmployee(employeeArr));
-
        const amountEmployee = (await contract.amountEmployee()).toNumber();
        dispatch(setAmountEmployee(amountEmployee));
-       
-
+       let employeeArr = [];
+for (let i = 0; i < amountEmployee; i++) {
+    const addrEmpl = await contract.allEmployeeList(i);
+    const result = await contract.allEmployee(addrEmpl);
+    const employee = {who: result.who, rate: (Number(ethers.utils.formatUnits(result.flowRate, decimalsToken))*60*60).toFixed(2)}
+    employeeArr.push(employee);
+}
+dispatch(setArrEmployee(employeeArr));
 //==========end of refresh========//
             setSuccess(true);
             setLoading(false);

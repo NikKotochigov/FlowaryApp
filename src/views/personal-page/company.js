@@ -30,15 +30,32 @@ const Company = ({arrEmployee}) => {
     const { address: addressWallet } = useAccount();
     const navigate = useNavigate();
     const [loader, setLoader] = useState(false);
-       const { name, owner, balance, amountEmployee, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
+       const { name, owner, balance, address, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
     
-    console.log(arrEmployee);
-    // const employeeOrNot = arrEmployee.find((i) => i.who == addressWallet);
+       console.log('massiv sotrudnikov :', arrEmployee);
 
     return (
                 <>
-                    <RoleBadge content={(addressWallet === owner && 'Your role is Owner') || (addressWallet === admin && 'Your role is Admin')} />
-                   
+                 <Box
+                        sx={{
+                            display: {
+                                sm: 'block', //600px
+                                md: 'flex' //900px
+                            },
+                            direction: 'row',
+                            justifyContent: 'space-between'
+                        }}
+                    >
+ <RoleBadge 
+ content={`Address of contract: ${address.slice(0, 5) + '...' + address.slice(38)}`}
+ sx={{
+    minWidth: '200px',
+    display: 'flex'
+ }}
+ />
+                    <RoleBadge sx={{display: 'flex'}} content={(addressWallet === owner && 'Your role is Owner') || (addressWallet === admin && 'Your role is Admin')} />
+       
+</Box>
                     <Box
                         sx={{
                             display: {
@@ -109,7 +126,7 @@ const Company = ({arrEmployee}) => {
                         ) : (
                             <Grid container spacing={3} maxWidth={800}>
                                 {arrEmployee.map((item) => (
-                                    <User key={uuidv4()} who={item[0]} rate={item[1]} />
+                                    <User key={uuidv4()} who={item.who} rate={item.rate} />
                                 ))}
                             </Grid>
                         )}
