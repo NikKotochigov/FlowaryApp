@@ -32,7 +32,7 @@ import { contractSelector } from 'store/reducers/contract/reducer';
 import AllHistory from './allHistory';
 import Demo from 'views/demo';
 
-const History = () => {
+const History = ({areYouEmployee}) => {
     const [valueStart, setValueStart] = useState(dayjs('2023-01-01'));
     const [valueStop, setValueStop] = useState(dayjs('2023-01-02'));
     const [arrayBlock, setArrayBlock] = useState([]);
@@ -41,9 +41,12 @@ const History = () => {
     const [loader, setLoader] = useState(false);
     const { address, token, decimalsToken, arrEmployee, owner, admin } = useSelector(contractSelector);
     let employeeOrNot
-    if(address && addressWallet != (owner || admin))
-    {employeeOrNot = arrEmployee.find((i) => i.who == addressWallet)};
-console.log('rabotnik ili kto :', employeeOrNot)
+    if(address && addressWallet) {
+        if(addressWallet === owner) employeeOrNot = undefined
+        else if(addressWallet === admin) employeeOrNot = undefined
+        else {employeeOrNot = arrEmployee.find((i) => i.who == addressWallet)};
+    }
+
 
     useEffect(() => {
         (async () => {
@@ -208,138 +211,9 @@ console.log('rabotnik ili kto :', employeeOrNot)
     };
 
     return (
-//         <>
-            // {!employeeOrNot && (
-            //     <Typography variant="h1" m={3} color="red">
-            //         Activity history
-            //     </Typography>
-            // )}
-
-//             <Box
-//                 component="form"
-//                 sx={{
-//                     justifyContent: 'space-between',
-//                     display: {
-//                         // xs: "block", // 100%
-//                         sm: 'block', //600px
-//                         md: 'flex' //900px
-//                     },
-//                     m: 2
-//                 }}
-//                 noValidate
-//                 autoComplete="off"
-//             >
-//                 {!employeeOrNot && (<>
-//                     <Box
-//                         sx={{
-//                             display: 'flex',
-//                             flexDirection: 'column',
-//                             mb: 2,
-//                             alignItems: 'center'
-//                         }}
-//                     >
-                      
-//                         <CustomSelector 
-//                         setArrayItem={setArrayItem}
-//                         arrayItem={arrayItem}
-//                         />
-//                     </Box>
-                
-//                 <Box
-//                     sx={{
-//                         display: 'flex',
-//                         flexDirection: 'column',
-//                         gap: 1,
-//                         alignItems: 'center'
-//                     }}
-//                 >
-//                     <Box
-//                         sx={{
-//                             display: 'flex',
-//                             gap: 1
-//                         }}
-//                     >
-//                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-//                             <DesktopDatePicker
-//                                 label="Start from the date"
-//                                 value={valueStart}
-//                                 minDate={dayjs('2023-01-01')}
-//                                 onChange={(newValue) => {
-//                                     setValueStart(newValue);
-//                                 }}
-//                                 renderInput={(params) => (
-//                                     <TextField
-//                                         {...params}
-//                                         sx={{
-//                                             width: '160px',
-//                                             '& .MuiInputBase-input': {
-//                                                 height: '10px',
-//                                                 width: '100px'
-//                                             }
-//                                         }}
-//                                     />
-//                                 )}
-//                             />
-//                             <DesktopDatePicker
-//                                 label="Till the date"
-//                                 value={valueStop}
-//                                 minDate={dayjs('2023-01-01')}
-//                                 onChange={(newValue) => {
-//                                     setValueStop(newValue);
-//                                 }}
-//                                 renderInput={(params) => (
-//                                     <TextField
-//                                         {...params}
-//                                         sx={{
-//                                             width: '160px',
-//                                             '& .MuiInputBase-input': {
-//                                                 height: '10px',
-//                                                 width: '100px'
-//                                             }
-//                                         }}
-//                                     />
-//                                 )}
-//                             />
-//                         </LocalizationProvider>
-//                     </Box>
-//                     <Button variant="outlined" sx={{ width: '150px' }}>
-//                         Show history
-//                     </Button>
-//                 </Box>
-//               </>  )}
-//             </Box>
-
-// {loader ? 
-// <Box 
-// sx={{
-//     display: 'flex',
-//     justifyContent: 'center'
-// }}
-// >
-// <Loader />     
-// </Box>
-// : <TableS rows={currentTx} arrayItem={arrayItem}/>}
-
-
-
-            
-//             <Pagination 
-//             count={length} 
-//             page={currentPage} 
-//             color="primary" 
-//             size="large" 
-//             onChange={handleChange}
-//             sx={{
-//               display: 'flex',
-//               justifyContent:'center',
-//               mt: 3
-//             }}
-//             />
-//         </>
-
 
 <>
-    <Typography variant="h1" m={3} color="red">
+    {!areYouEmployee && <><Typography variant="h1" m={3} color="red">
         Activity history
     </Typography>
 
@@ -365,11 +239,13 @@ console.log('rabotnik ili kto :', employeeOrNot)
                 alignItems: 'center'
             }}
         >
-          
-            <CustomSelector 
+          {!employeeOrNot &&
+<CustomSelector 
             setArrayItem={setArrayItem}
             arrayItem={arrayItem}
             />
+          }
+            
         </Box>
     
     <Box
@@ -433,8 +309,7 @@ console.log('rabotnik ili kto :', employeeOrNot)
             Show history
         </Button>
     </Box>
-</Box>
-
+</Box></>}
 
 {address && addressWallet ?
 
@@ -446,14 +321,6 @@ loader={loader}
 : <Demo />}
 
 </>
-
-
-
-
-
-
-
-
     );
 };
 
