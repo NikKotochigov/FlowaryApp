@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
-import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import { Avatar, Box, Button, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -10,6 +10,11 @@ import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
+import AvatarChip from 'ui-component/elements/chip';
+import { useSelector } from 'react-redux';
+import { contractSelector } from 'store/reducers/contract/reducer';
+import copyTextToClipboard from 'utils/copyPast';
+import Toolkit from 'ui-component/elements/tooltip';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -41,6 +46,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const TotalIncomeLightCard = ({ isLoading }) => {
     const theme = useTheme();
+    const { name, owner, balance, address, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
 
     return (
         <>
@@ -48,7 +54,7 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                 <TotalIncomeCard />
             ) : (
                 <CardWrapper border={false} content={false}>
-                    <Box sx={{ p: 2 }}>
+                    <Box sx={{ p: 1.5 }}>
                         <List sx={{ py: 0 }}>
                             <ListItem alignItems="center" disableGutters sx={{ py: 0 }}>
                                 <ListItemAvatar>
@@ -67,19 +73,34 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                                 <ListItemText
                                     sx={{
                                         py: 0,
-                                        mt: 0.45,
-                                        mb: 0.45
+                                        mt: 0.05,
+                                        mb: 0.05
                                     }}
-                                    primary={<Typography variant="h4">$203k</Typography>}
+                                    primary={<Typography variant="h4">
+
+       Company contract:
+             
+                                                   
+         </Typography>}
                                     secondary={
                                         <Typography
                                             variant="subtitle2"
                                             sx={{
                                                 color: theme.palette.grey[500],
-                                                mt: 0.5
+                                              
                                             }}
                                         >
-                                            Total Income
+
+<Toolkit title={"Click on it to copy!"}>
+            <Button variant='text'
+                onClick={()=>{copyTextToClipboard(address)}}
+            >
+                     {address.slice(0, 5) + '...' + address.slice(38)}
+ 
+            </Button>
+                    </Toolkit>
+
+                                            
                                         </Typography>
                                     }
                                 />

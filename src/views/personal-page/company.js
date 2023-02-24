@@ -26,6 +26,7 @@ import Demo from 'views/demo';
 import { getInfoForCompanyAndEmployee } from 'utils/contractMethods';
 import AvatarChip from 'ui-component/elements/chip';
 import Toolkit from 'ui-component/elements/tooltip';
+import copyTextToClipboard from 'utils/copyPast';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 const Company = ({arrEmployee}) => {

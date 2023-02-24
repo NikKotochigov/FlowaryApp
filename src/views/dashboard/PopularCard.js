@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography } from '@mui/material';
+import { Avatar, Box, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography } from '@mui/material';
 
 // project imports
 import BajajAreaChartCard from './BajajAreaChartCard';
@@ -16,10 +17,12 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import Jazzicon from 'react-jazzicon/dist/Jazzicon';
+import { jsNumberForAddress } from 'react-jazzicon';
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
-const PopularCard = ({ isLoading }) => {
+const PopularCard = ({ isLoading, arrEmployee, symbolToken }) => {
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -43,9 +46,9 @@ const PopularCard = ({ isLoading }) => {
                             <Grid item xs={12}>
                                 <Grid container alignContent="center" justifyContent="space-between">
                                     <Grid item>
-                                        <Typography variant="h4">Popular Stocks</Typography>
+                                        <Typography variant="h4">Our bestperformers:</Typography>
                                     </Grid>
-                                    <Grid item>
+                                    {/* <Grid item>
                                         <MoreHorizOutlinedIcon
                                             fontSize="small"
                                             sx={{
@@ -76,29 +79,40 @@ const PopularCard = ({ isLoading }) => {
                                             <MenuItem onClick={handleClose}> This Month</MenuItem>
                                             <MenuItem onClick={handleClose}> This Year </MenuItem>
                                         </Menu>
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                             </Grid>
-                            <Grid item xs={12} sx={{ pt: '16px !important' }}>
+                            {/* <Grid item xs={12} sx={{ pt: '16px !important' }}>
                                 <BajajAreaChartCard />
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={12}>
-                                <Grid container direction="column">
+                                  {arrEmployee.map((item) => (
+<>
+ <Grid container direction="column" key={uuidv4()}>
                                     <Grid item>
                                         <Grid container alignItems="center" justifyContent="space-between">
                                             <Grid item>
+                                                <Box 
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 1
+                                                    }}>
+                                                                                                   <Jazzicon diameter={18} seed={jsNumberForAddress(item.who)} />
                                                 <Typography variant="subtitle1" color="inherit">
-                                                    Bajaj Finery
+                                                {item.who.slice(0, 5) + '...' + item.who.slice(38)}   
                                                 </Typography>
+     
+                                                    </Box>
                                             </Grid>
                                             <Grid item>
                                                 <Grid container alignItems="center" justifyContent="space-between">
                                                     <Grid item>
-                                                        <Typography variant="subtitle1" color="inherit">
+                                                        {/* <Typography variant="subtitle1" color="inherit">
                                                             $1839.00
-                                                        </Typography>
+                                                        </Typography> */}
                                                     </Grid>
-                                                    <Grid item>
+                                                    {/* <Grid item>
                                                         <Avatar
                                                             variant="rounded"
                                                             sx={{
@@ -112,19 +126,22 @@ const PopularCard = ({ isLoading }) => {
                                                         >
                                                             <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
                                                         </Avatar>
-                                                    </Grid>
+                                                    </Grid> */}
                                                 </Grid>
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid item>
                                         <Typography variant="subtitle2" sx={{ color: 'success.dark' }}>
-                                            10% Profit
+                                            rate: {item.rate} {symbolToken}
                                         </Typography>
                                     </Grid>
                                 </Grid>
                                 <Divider sx={{ my: 1.5 }} />
-                                <Grid container direction="column">
+</>
+                                ))}
+
+                                {/* <Grid container direction="column">
                                     <Grid item>
                                         <Grid container alignItems="center" justifyContent="space-between">
                                             <Grid item>
@@ -286,16 +303,16 @@ const PopularCard = ({ isLoading }) => {
                                             10% loss
                                         </Typography>
                                     </Grid>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Grid>
                     </CardContent>
-                    <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
+                    {/* <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
                         <Button size="small" disableElevation>
                             View All
                             <ChevronRightOutlinedIcon />
                         </Button>
-                    </CardActions>
+                    </CardActions> */}
                 </MainCard>
             )}
         </>

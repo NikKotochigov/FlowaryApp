@@ -10,6 +10,8 @@ import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
+import { useSelector } from 'react-redux';
+import { contractSelector } from 'store/reducers/contract/reducer';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -43,6 +45,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const TotalIncomeDarkCard = ({ isLoading }) => {
     const theme = useTheme();
+    const { name, owner, balance, address, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
 
     return (
         <>
@@ -74,13 +77,14 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
                                     }}
                                     primary={
                                         <Typography variant="h4" sx={{ color: '#fff' }}>
-                                           Company name
+                                         Company name: {name}
                                         </Typography>
                                     }
                                     secondary={
-                                        <Typography variant="subtitle2" sx={{ color: 'primary.light', mt: 0.25 }}>
-                                            Address
+                                        <Typography variant="subtitle" sx={{ color: 'primary.light', mt: 0.25 }}>
+                                            Owner: {owner.slice(0, 5) + '...' + owner.slice(38)}
                                         </Typography>
+                                      
                                     }
                                 />
                             </ListItem>

@@ -22,8 +22,8 @@ const chartData = {
             width: 3
         },
         yaxis: {
-            min: 0,
-            max: 100
+             min: 0,
+            max: 500
         },
         tooltip: {
             theme: 'dark',
@@ -43,7 +43,7 @@ const chartData = {
     },
     series: [
         {
-            name: 'series1',
+            name: 'Amount of sreams',
             data: [45, 66, 41, 89, 25, 44, 9, 54]
         }
     ]
