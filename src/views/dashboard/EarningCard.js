@@ -17,6 +17,8 @@ import GetAppTwoToneIcon from '@mui/icons-material/GetAppOutlined';
 import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined';
 import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined';
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveOutlined';
+import { useSelector } from 'react-redux';
+import { contractSelector } from 'store/reducers/contract/reducer';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.dark,
@@ -58,6 +60,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const EarningCard = ({ isLoading }) => {
     const theme = useTheme();
+const { name, owner, balance, address, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -144,7 +147,7 @@ const EarningCard = ({ isLoading }) => {
                                 <Grid container alignItems="center">
                                     <Grid item>
                                         <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                            баланс компании $500.00
+                                         {balance} {symbolToken}
                                         </Typography>
                                     </Grid>
                                     <Grid item>
@@ -169,7 +172,7 @@ const EarningCard = ({ isLoading }) => {
                                         color: theme.palette.secondary[200]
                                     }}
                                 >
-                                    Total Earning
+                                    Total Balance
                                 </Typography>
                             </Grid>
                         </Grid>

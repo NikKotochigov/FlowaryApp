@@ -2,7 +2,7 @@ import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
 import BasicModal from "../../../elements/modal";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import Tooltip from "../../../elements/tooltip"
+import Toolkit from "../../../elements/tooltip"
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import { table } from "../../../../consts/table";
 import { useState } from "react";
@@ -141,14 +141,14 @@ const { symbolToken, decimalsToken } = useSelector(contractSelector);
                       pt: 3,
                     }}
                   >
-                    <Tooltip title={"see tx on Etherscan"}>
+                    <Toolkit title={"see tx on Etherscan"}>
                       <a
                         href={`https://goerli.etherscan.io/tx/${row.txHash}`}
                         target="_blank"
                       >
                         <OpenInNewOutlinedIcon />
                       </a>
-                    </Tooltip>
+                    </Toolkit>
                   </TableCell>
 
                   {/* <TableCell align="center"

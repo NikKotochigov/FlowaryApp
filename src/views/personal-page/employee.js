@@ -21,19 +21,36 @@ import data from 'assets/images/data.gif';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import Loader from '../../ui-component/elements/loader';
 import { v4 as uuidv4 } from 'uuid';
+import AvatarChip from 'ui-component/elements/chip';
+import Toolkit from 'ui-component/elements/tooltip';
+import copyTextToClipboard from 'utils/copyPast';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 const Employee = ({arrEmployee}) => {
     const { address: addressWallet } = useAccount();
     const [loader, setLoader] = useState(false);
-    const { name, address, balance, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
+    const { name, address, admin, owner } = useSelector(contractSelector);
     // const { contract } = useContract();
-       
-    const employeeOrNot = arrEmployee.find((i) => i.who == addressWallet);
+    let areYouEmployee
+    if(address && addressWallet) {
+        if(addressWallet === owner) areYouEmployee = undefined
+        else if(addressWallet === admin) areYouEmployee = undefined
+        else {areYouEmployee = arrEmployee.find((i) => i.who == addressWallet)};
+    }
+    console.log('rabotnik ili kto :', areYouEmployee)
 
     return (
         <>
-        <Typography>Page of employy</Typography>
+        
+          <Toolkit title={"Click on it to copy!"}>
+            <Button variant='text'
+                onClick={()=>{copyTextToClipboard(address)}}
+            >
+          <AvatarChip 
+         address={address} />        
+            </Button>
+                    </Toolkit>
+   
 
         <Box
             sx={{
@@ -51,10 +68,10 @@ const Employee = ({arrEmployee}) => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: 1,
-                    m: 5
+                    m: 3
                 }}
             >
-                <Typography variant="h1" color="red">
+                <Typography variant="h2" color="primary">
                     Your employer is {name}
                 </Typography>
 
@@ -142,7 +159,7 @@ const Employee = ({arrEmployee}) => {
             </Button>
         </Box>
         <History 
-        employeeOrNot={employeeOrNot} 
+        areYouEmployee={areYouEmployee} 
         />
     </>
 

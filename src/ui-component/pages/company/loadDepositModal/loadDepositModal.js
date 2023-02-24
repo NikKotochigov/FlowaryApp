@@ -2,11 +2,15 @@ import { Box, Button, CardMedia, TextField } from "@mui/material";
 import { useState } from "react";
 import BasicModal from "../../../elements/modal";
 import provider from "../../../../contracts/provider";
-import { Contract, ethers } from "ethers";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { contractSelector } from "store/reducers/contract/reducer";
 import SIGNER from "../../../../contracts/SIGNER";
 import conectSigner from "../../../../contracts/SIGNER";
+import { TOKEN_ABI } from "../../../../consts/contractAbi";
+import ButtonWithResult from "ui-component/elements/buttonWithResult";
+import { ethers } from "ethers";
+import {  setBalance } from '../../../../store/reducers/contract/reducer';
+import useContract from '../../../../contracts/prepareContract'
 
 
 function LoadDepositModal() {
@@ -15,28 +19,47 @@ function LoadDepositModal() {
         setIsOpen(prev => !prev);
     }
     const [money, setMoney] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const { contract } = useContract();
 
     const handleInputMoney = (e) => {
         setMoney(e.target.value)
 console.log(e.target.value)
      };
-     const { address } = useSelector(contractSelector);
-const abiToken = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"burnFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]
-const addressToken = '0xD049815A3d490CBCF73415A65384652D5F15a367'
-const contractToken = new ethers.Contract(addressToken, abiToken, provider);
+
+const { address, token, decimalsToken } = useSelector(contractSelector);
+const contractToken = new ethers.Contract(token, TOKEN_ABI, provider);
 const contractSigner = conectSigner(contractToken)
-    const handleLoadMoney = async() => {
-        const deposit = await contractSigner.transfer(address, money)
+const dispatch = useDispatch();
+    
+const handleLoadMoney = async() => {
+    try {
+        setSuccess(false);
+        setLoading(true);
+        const deposit = await contractSigner.transfer(address, BigInt(Math.ceil((money)*(10**decimalsToken))))
         const tx = await deposit.wait()
         console.log('transfer:', tx)
+        const bal = await contract.currentBalanceContract();
+        const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
+        dispatch(setBalance(balan));
+
+        setSuccess(true);
+        setLoading(false);
+    }
+    catch(error){
+        console.log(error);
+        setLoading(false);
+    } 
     }
 
     return (
-        <BasicModal
+        <BasicModal size="small"
             nameModal={"Load deposit"}
             open={isOpen}
             handleClickOpen={handleOnClick}
-            minW={400}
+
+            // minW={400}
         >
             <Box
                 sx={{
@@ -60,17 +83,20 @@ const contractSigner = conectSigner(contractToken)
                     type="number"
                     value={money}
                     onChange={handleInputMoney}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
+                    InputProps={{ inputProps: { min: 0 } }}
+
                 />
-                <Button
+                   <ButtonWithResult handler={success ? handleOnClick : handleLoadMoney} loading={loading} success={success}>
+                            {success ? 'Success' : 'Send money'}
+                        </ButtonWithResult>
+                {/* <Button
                     variant="outlined"
                     sx={{ width: 170, }}
                     onClick={handleLoadMoney}
                 >
                     Send transaction
-                </Button>
+                </Button> */}
+
             </Box>
         </BasicModal>
     );

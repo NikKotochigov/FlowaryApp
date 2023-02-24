@@ -24,6 +24,9 @@ import Loader from '../../ui-component/elements/loader';
 import { v4 as uuidv4 } from 'uuid';
 import Demo from 'views/demo';
 import { getInfoForCompanyAndEmployee } from 'utils/contractMethods';
+import AvatarChip from 'ui-component/elements/chip';
+import Toolkit from 'ui-component/elements/tooltip';
+import copyTextToClipboard from 'utils/copyPast';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 const Company = ({arrEmployee}) => {
@@ -31,31 +34,18 @@ const Company = ({arrEmployee}) => {
     const navigate = useNavigate();
     const [loader, setLoader] = useState(false);
        const { name, owner, balance, address, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
-    
+        console.log('ADDF :', typeof address)
        console.log('massiv sotrudnikov :', arrEmployee);
 
     return (
                 <>
-                 <Box
-                        sx={{
-                            display: {
-                                sm: 'block', //600px
-                                md: 'flex' //900px
-                            },
-                            direction: 'row',
-                            justifyContent: 'space-between'
-                        }}
-                    >
- <RoleBadge 
- content={`Address of contract: ${address.slice(0, 5) + '...' + address.slice(38)}`}
- sx={{
-    minWidth: '200px',
-    display: 'flex'
- }}
- />
-                    <RoleBadge sx={{display: 'flex'}} content={(addressWallet === owner && 'Your role is Owner') || (addressWallet === admin && 'Your role is Admin')} />
+             
+                    <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                                          <RoleBadge
+                    content={(addressWallet === owner && 'Your role is Owner') || (addressWallet === admin && 'Your role is Admin')} />
+                    </Box>
        
-</Box>
+
                     <Box
                         sx={{
                             display: {
@@ -70,15 +60,21 @@ const Company = ({arrEmployee}) => {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
-                                gap: 1,
-                                m: 5
+                                m: 3
                             }}
                         >
                             <Typography variant="h2" color="primary">
                                 Company {name}
                             </Typography>
-
-                            <Button
+                            <Toolkit title={"Click on it to copy!"}>
+            <Button variant='text'
+                onClick={()=>{copyTextToClipboard(address)}}
+            >
+          <AvatarChip 
+         address={address} />        
+            </Button>
+                    </Toolkit>
+                            {/* <Button
                                 variant="outlined"
                                 size="large"
                                 onClick={() => navigate('/history')}
@@ -87,7 +83,7 @@ const Company = ({arrEmployee}) => {
                                 }}
                             >
                                 Activity history
-                            </Button>
+                            </Button> */}
                         </Box>
                         <Box
                             sx={{
@@ -95,13 +91,18 @@ const Company = ({arrEmployee}) => {
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 gap: 1,
-                                m: 5
+                                m: 4
                             }}
                         >
-                            <Typography variant="h2" color="primary">
-                                    Avaibale balance: {balance} {symbolToken}
+                            <Typography variant="h4" color="primary">
+                                    Available balance:   {balance} {symbolToken}
                             </Typography>
+                            <Box sx={{display: 'flex',
+                        gap: 1}}>
                             <LoadDepositModal />
+                            <LoadDepositModal />
+      
+                            </Box>
                         </Box>
                     </Box>
                     <Box

@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
-        right: -60,
+        right: 0,
         top: 0,
         width: 140,
         height: 26,

@@ -51,7 +51,7 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function BasicModal({ nameModal, children, open, handleClickOpen, minW }) {
+export default function BasicModal({ nameModal, children, open, handleClickOpen, size='large' }) {
   // const [open, setOpen] = useState(false);
 
   // const handleClickOpen = () => {
@@ -64,10 +64,8 @@ export default function BasicModal({ nameModal, children, open, handleClickOpen,
 
   return (
     <div>
-      <Button variant="outlined" size="large" onClick={handleClickOpen}
-       sx={{
-        minWidth: {minW},
-      }}>
+      <Button variant="outlined" size={size} onClick={handleClickOpen}
+      >
         {nameModal}
       </Button>
       <Dialog
