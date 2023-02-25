@@ -10,6 +10,7 @@ import { contractSelector } from 'store/reducers/contract/reducer';
 import { useDispatch } from "react-redux";
 import { setAmountEmployee, setArrEmployee } from '../../../../store/reducers/contract/reducer';
 import { ethers } from "ethers";
+import newUser from '../../../../assets/images/newUser.png'
 
 function AddRecieverModal() {
     const { contract, contractSigner } = useContract();
@@ -81,7 +82,7 @@ dispatch(setArrEmployee(employeeArr));
                         width: 400
                     }}
                 >
-                    <CardMedia component="img" height="160" image="/static/images/stream.jpg" alt="stream picture" />
+                                      <img src={newUser} alt="gif" width="145" />
                     <TextField value={adNew} fullWidth label="Address of new reciever" variant="outlined" onChange={handleAddressChange} />
                     <TextField
                         value={rate}

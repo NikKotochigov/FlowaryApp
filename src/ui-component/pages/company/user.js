@@ -10,6 +10,7 @@ import useContract from '../../../contracts/prepareContract'
 import { setStreamBalance, setIsActiveStream } from 'utils/contractMethods';
 import getErrorMessage from 'utils/getErrorMessage';
 import { ethers } from "ethers";
+import { LoadingButton } from '@mui/lab';
 import { setBalance } from '../../../store/reducers/contract/reducer';
 import { useIsActiveBalanceData } from './hooks/useIsActiveBalanceData';
 
@@ -19,8 +20,9 @@ const User = ({ who, rate }) => {
     const [result, setResult] = useState('');
     const { symbolToken, decimalsToken, balance } = useSelector(contractSelector);
     const dispatch = useDispatch();
-    // console.log('rateStart :', Number(rate))
-
+    const [loading, setLoading] = useState(false);
+    console.log('rateStart :', Number(rate)  )
+    
     // console.log('rateUTILS :', Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(2))
 
     // const calcRate = ethers.utils.formatUnits(rate);
@@ -29,13 +31,16 @@ const User = ({ who, rate }) => {
 
     const hadleStartStream = async () => {
         try {
+            setLoading(true)
             const startStream = await contractSigner.start(who)
             const res = await startStream.wait()
+            setLoading(false)
             console.log("hadleStartStream");
             setIsActive(true);
             // console.log(res)
         } catch (error) {
             console.log(error)
+            setLoading(false)
             const message = getErrorMessage(error);
             setResult(message);
             setTimeout(() => {
@@ -45,9 +50,11 @@ const User = ({ who, rate }) => {
     }
 
     const hadleStopStream = async () => {
-        try {
+        try {           
+            setLoading(true)
             const stopStream = await contractSigner.finish(who)
             const res = await stopStream.wait()
+            setLoading(false)
             const bal = await contract.currentBalanceContract();
             const balan = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
             dispatch(setBalance(balan));
@@ -113,13 +120,34 @@ const User = ({ who, rate }) => {
                 </CardContent>
                 <CardActions>
                     {isActive ? (
-                        <Button variant="outlined" sx={{ color: 'red' }} onClick={hadleStopStream}>
-                            Stop stream
-                        </Button>)
+                         <LoadingButton
+                         size="small"
+                         onClick={hadleStopStream}
+                         loading={loading}
+                         loadingIndicator="Loading…"
+                         variant="outlined"
+                         sx={{ color: 'red' }}
+                       >
+                         <span>Stop stream</span>
+                       </LoadingButton>
+
+                        // <Button variant="outlined" sx={{ color: 'red' }} onClick={hadleStopStream}>
+                        //     Stop stream
+                        // </Button>
+                        )
                         : (
-                            <Button variant="outlined" onClick={hadleStartStream}>
-                                Start stream
-                            </Button>
+                            // <Button variant="outlined" onClick={hadleStartStream}>
+                            //     Start stream
+                            // </Button>
+                              <LoadingButton
+                              size="small"
+                              onClick={hadleStartStream}
+                              loading={loading}
+                              loadingIndicator="Loading…"
+                              variant="outlined"
+                            >
+                              <span>Start stream</span>
+                            </LoadingButton>
                         )}
 
                 </CardActions>

@@ -11,7 +11,7 @@ import ButtonWithResult from "ui-component/elements/buttonWithResult";
 import { ethers } from "ethers";
 import {  setBalance } from '../../../../store/reducers/contract/reducer';
 import useContract from '../../../../contracts/prepareContract'
-
+import walletTwo from '../../../../assets/images/walletTwo.png'
 
 function LoadDepositModal() {
     const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +21,10 @@ function LoadDepositModal() {
     const [money, setMoney] = useState(0);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const { contract } = useContract();
+    const [loadingW, setLoadingW] = useState(false);
+    const [successW, setSuccessW] = useState(false);
+
+    const { contract, contractSigner } = useContract();
 
     const handleInputMoney = (e) => {
         setMoney(e.target.value)
@@ -30,20 +33,19 @@ console.log(e.target.value)
 
 const { address, token, decimalsToken } = useSelector(contractSelector);
 const contractToken = new ethers.Contract(token, TOKEN_ABI, provider);
-const contractSigner = conectSigner(contractToken)
+const contractSignerToken = conectSigner(contractToken)
 const dispatch = useDispatch();
     
 const handleLoadMoney = async() => {
     try {
         setSuccess(false);
         setLoading(true);
-        const deposit = await contractSigner.transfer(address, BigInt(Math.ceil((money)*(10**decimalsToken))))
+        const deposit = await contractSignerToken.transfer(address, BigInt(Math.ceil((money)*(10**decimalsToken))))
         const tx = await deposit.wait()
         console.log('transfer:', tx)
         const bal = await contract.currentBalanceContract();
         const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
         dispatch(setBalance(balan));
-
         setSuccess(true);
         setLoading(false);
     }
@@ -53,7 +55,27 @@ const handleLoadMoney = async() => {
     } 
     }
 
-    return (
+    const handleWithdrawMoney = async() => {
+        try {
+            setSuccessW(false);
+            setLoadingW(true);
+            const withdraw = await contractSigner.withdrawTokens()
+            const tx = await withdraw.wait()
+            console.log('transfer:', tx)
+            const bal = await contract.currentBalanceContract();
+            const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
+            dispatch(setBalance(balan));
+            setSuccessW(true);
+            setLoadingW(false);
+        }
+        catch(error){
+            console.log(error);
+            setLoadingW(false);
+        } 
+        }
+
+
+    return (<>
         <BasicModal size="small"
             nameModal={"Load deposit"}
             open={isOpen}
@@ -70,12 +92,14 @@ const handleLoadMoney = async() => {
                     width: 400
                 }}
             >
-                <CardMedia
+                {/* <CardMedia
                     component='img'
-                    height='160'
-                    image="/static/images/stream.jpg"
-                    alt='stream picture'
-                />
+                    height='200'
+                    image={wallet}
+                    alt='wallet'
+                /> */}
+                                      <img src={walletTwo} alt="gif" width="145" />
+
                 <TextField
                     fullWidth
                     label="Amount of payment"
@@ -89,16 +113,14 @@ const handleLoadMoney = async() => {
                    <ButtonWithResult handler={success ? handleOnClick : handleLoadMoney} loading={loading} success={success}>
                             {success ? 'Success' : 'Send money'}
                         </ButtonWithResult>
-                {/* <Button
-                    variant="outlined"
-                    sx={{ width: 170, }}
-                    onClick={handleLoadMoney}
-                >
-                    Send transaction
-                </Button> */}
+             
 
             </Box>
         </BasicModal>
+        <Button size='small' 
+        onClick={handleWithdrawMoney}
+        variant='outlined'>Withdraw money</Button>
+    </>
     );
 }
 

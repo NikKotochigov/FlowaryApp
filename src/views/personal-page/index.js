@@ -26,7 +26,9 @@ import Demo from 'views/demo';
 import { getInfoForCompanyAndEmployee } from 'utils/contractMethods';
 import Company from './company';
 import Employee from './employee';
-
+import { CONTRACT_ABI, TOKEN_ABI } from "../../consts/contractAbi";
+import { demoArrayEmployee } from 'consts/demoCompany';
+import Main from 'views/main/default';
 // ==============================|| SAMPLE PAGE ||============================== //
 const SamplePage = () => {
     const { address: addressWallet } = useAccount();
@@ -34,7 +36,6 @@ const SamplePage = () => {
     const [loader, setLoader] = useState(false);
     // const { contract } = useContract();
     const { address, owner, balance, amountEmployee, arrEmployee, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
-
 
     let employeeOrNot
     if(address)
@@ -47,7 +48,7 @@ const SamplePage = () => {
 (addressWallet == owner || addressWallet == admin 
 ? <Company arrEmployee={arrEmployee}/>
 : employeeOrNot && <Employee arrEmployee={arrEmployee}/>)
-: <Demo />}
+ : <Main />} 
 
 
 

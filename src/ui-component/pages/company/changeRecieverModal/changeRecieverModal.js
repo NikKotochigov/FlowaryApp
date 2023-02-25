@@ -9,6 +9,7 @@ import getErrorMessage from 'utils/getErrorMessage';
 import { useDispatch } from "react-redux";
 import { setAmountEmployee, setArrEmployee } from '../../../../store/reducers/contract/reducer';
 import { ethers } from "ethers";
+import settings from '../../../../assets/images/settings.png'
 
 
 function ChangeRecieverModal({ who }) {
@@ -115,7 +116,9 @@ dispatch(setArrEmployee(employeeArr));
                         width: 400
                     }}
                 >
-                    <CardMedia component="img" height="160" image="/static/images/stream.jpg" alt="stream picture" />
+                    {/* <CardMedia component="img" height="160" image="/static/images/stream.jpg" alt="stream picture" /> */}
+                    <img src={settings} alt="gif" width="195" />
+
                     <Box
                         sx={{
                             display: 'flex',

@@ -22,6 +22,7 @@ import { redirect, useNavigate } from "react-router-dom";
 import CompanyCreateStepper from "../../../views/main/Steps/companyCreateStepper";
 import CustomPopover from "../../../ui-component/elements/customPopover";
 import { useDispatch } from "react-redux";
+import choiceThree from '../../../assets/images/choiceThree.png'
 
 const Main = () => {
   const [open, setOpen] = useState(false);
@@ -51,18 +52,39 @@ const Main = () => {
 
 
   return (
-    <>
-        <Toolbar>
-          <Box sx={{ display: 'flex', gap: '8px' }}>
-            <Button variant="outlined" onClick={address ? handleCreateCompany : handleOpenPopover}>
+  <>
+
+      {isCreateOpen ? <CompanyCreateStepper />
+      : <>
+        <Box sx={{
+    display: 'flex',
+    justifyContent: 'center',
+    mt: 6
+  }}>
+             <img src={choiceThree} alt="gif" width="445"/>
+
+  </Box>
+
+   <Toolbar 
+   sx={{
+    display: 'flex',
+    justifyContent: 'center',
+    mt: '50px'}}>
+          <Box sx={{ display: 'flex', gap: 5 }}>
+            <Button variant="contained"
+            sx={{background: 'red', 
+            fontSize: '30px',
+          }}
+            size='large'
+            onClick={address ? handleCreateCompany : handleOpenPopover}>
               Create company
             </Button>
       <BasicModal
+      fontSize = '30px'
         nameModal={"Company exist"}
         open={open}
         handleClickOpen={address ? handleClickOpen : handleOpenPopover}
-
-        minW={400}
+variant='contained'
       >
         <Box
           sx={{
@@ -103,11 +125,14 @@ setAnchorEl={setAnchorEl}
 />
 
           </Box>
-        </Toolbar>
-        {isCreateOpen && <CompanyCreateStepper />}
+        </Toolbar> 
+      </>}
+      
+  </>
+    
 
  
-    </>
+    
   );
 };
 
