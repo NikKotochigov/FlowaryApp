@@ -10,12 +10,11 @@ import useContract from '../../../contracts/prepareContract'
 import { setStreamBalance, setIsActiveStream } from 'utils/contractMethods';
 import getErrorMessage from 'utils/getErrorMessage';
 import { ethers } from "ethers";
-import {  setBalance } from '../../../store/reducers/contract/reducer';
 import { LoadingButton } from '@mui/lab';
+import { setBalance } from '../../../store/reducers/contract/reducer';
+import { useIsActiveBalanceData } from './hooks/useIsActiveBalanceData';
 
 const User = ({ who, rate }) => {
-    const [isActive, setIsActive] = useState(false);
-    const [localBalance, setLocalBalance] = useState(0);
     const { address } = useSelector(contractSelector);
     const { contract, contractSigner } = useContract();
     const [result, setResult] = useState('');
@@ -23,33 +22,22 @@ const User = ({ who, rate }) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     console.log('rateStart :', Number(rate)  )
-
+    
     // console.log('rateUTILS :', Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(2))
 
     // const calcRate = ethers.utils.formatUnits(rate);
-    const calcRate = Number(rate)/60/60;
-
-    function handleToggleClick() {
-        setIsActive((prev) => !prev);
-    }
-
-    useEffect(() => {
-        setIsActiveStream(address, who, setIsActive);
-        if (!isActive) return
-        setStreamBalance(address, who, setLocalBalance);
-        const intervalId = setInterval(() => setLocalBalance(prev => prev + calcRate / 10), 100)
-
-        return () => clearInterval(intervalId)
-    }, [address, isActive, who]);
+    const calcRate = Number(rate) / 60 / 60;
+    const { isActive, setIsActive, amountOfStream, isLoading } = useIsActiveBalanceData(address, who);
 
     const hadleStartStream = async () => {
         try {
             setLoading(true)
             const startStream = await contractSigner.start(who)
             const res = await startStream.wait()
-            handleToggleClick()
-            console.log(res)
             setLoading(false)
+            console.log("hadleStartStream");
+            setIsActive(true);
+            // console.log(res)
         } catch (error) {
             console.log(error)
             setLoading(false)
@@ -67,11 +55,11 @@ const User = ({ who, rate }) => {
             const stopStream = await contractSigner.finish(who)
             const res = await stopStream.wait()
             setLoading(false)
-            handleToggleClick()
             const bal = await contract.currentBalanceContract();
-            const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
+            const balan = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
             dispatch(setBalance(balan));
-                        console.log(res)
+            setIsActive(false);
+            // console.log(res)
         } catch (error) {
             console.log(error)
         }
@@ -119,14 +107,14 @@ const User = ({ who, rate }) => {
                         Address: {who.slice(0, 5) + '...' + who.slice(38)}
                     </Typography>
                     <Typography variant='h4' color='secondary'>
-  {/* Rate: {Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(4)} {symbolToken} per hour */}
-  Rate: {rate} {symbolToken} per hour 
+                        {/* Rate: {Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(4)} {symbolToken} per hour */}
+                        Rate: {rate} {symbolToken} per hour
 
                         {/* Counter: {(calcRate).toFixed(0)} {symbolToken} per hour */}
                     </Typography>
                     {isActive && (
                         <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'green' }}>
-                            Amount of stream: {localBalance.toFixed(5)}
+                            Amount of stream: {amountOfStream.toFixed(5)}
                         </Typography>
                     )}
                 </CardContent>
