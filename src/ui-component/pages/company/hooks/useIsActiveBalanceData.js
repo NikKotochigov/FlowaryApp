@@ -16,7 +16,6 @@ export const useIsActiveBalanceData = (address, recieverAddress) => {
     const [intervalId, setIntervalId] = useState(0);
 
     useEffect(() => {
-        console.log("useEffect");
         const readContractInfo = async () => {
             try {
                 setIsLoading(true);
@@ -42,7 +41,7 @@ export const useIsActiveBalanceData = (address, recieverAddress) => {
                 console.log({ balance, rate });
                 setIsActive(isActiveStream);
                 if (!isActiveStream) return
-                setAmountOfStream(balance)
+                setAmountOfStream(balance);
                 const id = setInterval(() => setAmountOfStream(prev => prev + rate / 10), 100);
                 setIntervalId(id);
                 setIsLoading(false);

@@ -51,35 +51,33 @@ const Employee = ({ arrEmployee }) => {
                         address={address} />
                 </Button>
             </Toolkit>
+            <Box
+                sx={{
+                    display: {
+                        // xs: "block", // 100%
+                        sm: 'block', //600px
+                        md: 'flex' //900px
+                    },
+                    justifyContent: 'center'
+                }}
+            >
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: 1,
+                        m: 3
+                    }}
+                >
+                    <Typography variant="h2" color="primary">
+                        Your employer is {name}
+                    </Typography>
 
+                </Box>
+            </Box>
             {isActive &&
                 <>
-                    <Box
-                        sx={{
-                            display: {
-                                // xs: "block", // 100%
-                                sm: 'block', //600px
-                                md: 'flex' //900px
-                            },
-                            justifyContent: 'center'
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                gap: 1,
-                                m: 3
-                            }}
-                        >
-                            <Typography variant="h2" color="primary">
-                                Your employer is {name}
-                            </Typography>
-
-                        </Box>
-
-                    </Box>
                     <Box
                         sx={{
                             display: {
@@ -159,7 +157,7 @@ const Employee = ({ arrEmployee }) => {
                             </Box>
                         </Box>
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                    {/* <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
                         <Button
                             variant="outlined"
                             size="large"
@@ -167,7 +165,7 @@ const Employee = ({ arrEmployee }) => {
                         >
                             Get your earnings
                         </Button>
-                    </Box>
+                    </Box> */}
                 </>
             }
 
