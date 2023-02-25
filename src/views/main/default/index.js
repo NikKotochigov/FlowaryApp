@@ -23,6 +23,9 @@ import CompanyCreateStepper from "../../../views/main/Steps/companyCreateStepper
 import CustomPopover from "../../../ui-component/elements/customPopover";
 import { useDispatch } from "react-redux";
 import choiceThree from '../../../assets/images/choiceThree.png'
+import companyExists from '../../../assets/images/companyExists.png'
+
+
 
 const Main = () => {
   const [open, setOpen] = useState(false);
@@ -95,12 +98,14 @@ variant='contained'
             width: 400
           }}
         >
-          <CardMedia
+          {/* <CardMedia
             component='img'
             height='160'
             image="/static/images/stream.jpg"
             alt='stream picture'
-          />
+          /> */}
+                       <img src={companyExists} alt="gif" width="145"/>
+
           <TextField
             fullWidth
             label="Address of your company"
