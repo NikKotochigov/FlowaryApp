@@ -109,7 +109,7 @@ const TotalGrowthBarChart = ({ isLoading, chartData, valueOfStreamsPerDay  }) =>
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                {/* <Grid item>
+                                <Grid item>
                                     <TextField
                                         id="standard-select-currency"
                                         select
@@ -122,7 +122,7 @@ const TotalGrowthBarChart = ({ isLoading, chartData, valueOfStreamsPerDay  }) =>
                                             </MenuItem>
                                         ))}
                                     </TextField>
-                                </Grid> */}
+                                </Grid>
                             </Grid>
                         </Grid>
                         <Grid item xs={12}>

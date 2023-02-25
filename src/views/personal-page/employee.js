@@ -155,7 +155,7 @@ const Employee = ({arrEmployee}) => {
                 size="large"
             //  onClick={() => navigate("/history")}
             >
-                Get your earnings
+                Get your funds
             </Button>
         </Box>
         <History 

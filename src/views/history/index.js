@@ -32,6 +32,7 @@ import { contractSelector } from 'store/reducers/contract/reducer';
 import AllHistory from './allHistory';
 import Demo from 'views/demo';
 import { getAllLogs } from 'utils/getAllLogs';
+import Main from 'views/main/default';
 
 const History = ({areYouEmployee}) => {
     const [valueStart, setValueStart] = useState(dayjs('2023-01-01'));
@@ -356,7 +357,7 @@ arrayItem={arrayItem}
 eventsLog={eventsLog}
 loader={loader}
 />
-: <Demo />}
+: <Main />}
 
 </>
     );

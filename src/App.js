@@ -49,7 +49,7 @@ import Lending from 'ui-component/pages/lending/lending';
 
 const App = () => {
     const customization = useSelector(customizationSelector);
-    // const [app, setApp] = useState(false)
+    const [app, setApp] = useState(false)
     
 
     return (<>
@@ -60,13 +60,13 @@ const App = () => {
                 <StyledEngineProvider injectFirst>
                     <ThemeProvider theme={themes(customization)}>
                         <CssBaseline />
-{/* {app ? <> */}
+{app ? <>
 <NavigationScroll>
                             <Routes />
                         </NavigationScroll>
-{/* </>
+</>
    : <Lending setApp={setApp}/>                    
-} */}
+}
                     </ThemeProvider>
                 </StyledEngineProvider>
             </RainbowKitProvider>

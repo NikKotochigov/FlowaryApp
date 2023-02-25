@@ -21,6 +21,8 @@ import { getAllLogs } from 'utils/getAllLogs';
 import { TOKEN_ABI } from 'consts/contractAbi';
 import provider from 'contracts/provider';
 import dayjs, { Dayjs } from 'dayjs';
+import Main from 'views/main/default';
+import { useAccount } from 'wagmi';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -35,15 +37,16 @@ const Dashboard = () => {
 
     const [loader, setLoader] = useState(false);
 
+  const [earnArraySortedByDateForChart, setEarnArraySortedByDateForChart] = useState([])
+const [dateArraySortedByDateForChart, setDateArraySortedByDateForChart] = useState([])
+const [valueArraySortedByDateForChart, setValueArraySortedByDateForChart] = useState([])
+  
     useEffect(() =>{
         getAllLogs(contract, setLoader, token, TOKEN_ABI, provider, setArrayBlock, decimalsToken)
-    },[chartData])
+    },[])
 
 // const [sumOfStreamsPerDay, setSumOfStreamsPerDay] = useState([])
 // const [arraySortedByDateForChart, setArraySortedByDateForChart] = useState([])
-const [earnArraySortedByDateForChart, setEarnArraySortedByDateForChart] = useState([])
-const [dateArraySortedByDateForChart, setDateArraySortedByDateForChart] = useState([])
-const [valueArraySortedByDateForChart, setValueArraySortedByDateForChart] = useState([])
 
 useEffect(() => {
    if(arrayBlock.length != 0){
@@ -94,30 +97,39 @@ setValueArraySortedByDateForChart(preValueArraySortedByDateForChart)
 }, [arrayBlock])
 
 
-let sumOfStreamsPerDay
-let valueOfStreamsPerDay
+// let sumOfStreamsPerDay
+// let valueOfStreamsPerDay
 
-if(earnArraySortedByDateForChart.length != 0)
-{
- sumOfStreamsPerDay = earnArraySortedByDateForChart.reduce((sum, current) => sum + current).toFixed(0)
- valueOfStreamsPerDay = valueArraySortedByDateForChart.reduce((sum, current) => sum + current)
-} 
+const [sumOfStreamsPerDay, setSumOfStreamsPerDay] = useState(0)
+const [valueOfStreamsPerDay, setValueOfStreamsPerDay] = useState(0)
+
+const newchartData = chartData
 
  useEffect(() => {
-   ChartDataMonth.series[0].data  = earnArraySortedByDateForChart
- chartData.options.xaxis.categories = dateArraySortedByDateForChart
- chartData.series[0].data = valueArraySortedByDateForChart
+ if(earnArraySortedByDateForChart.length != 0)
+{
+    setSumOfStreamsPerDay(earnArraySortedByDateForChart.reduce((sum, current) => sum + current).toFixed(0))
+    setValueOfStreamsPerDay(valueArraySortedByDateForChart.reduce((sum, current) => sum + current))
+}    
+ChartDataMonth.series[0].data  = earnArraySortedByDateForChart
+// newchartData.options.xaxis.categories = dateArraySortedByDateForChart
+newchartData.series[0].data = valueArraySortedByDateForChart
   
-}, [sumOfStreamsPerDay, valueOfStreamsPerDay]) 
+}, [earnArraySortedByDateForChart, valueArraySortedByDateForChart, arrayBlock]) 
 
     console.log('Massiv DashBOARD :', earnArraySortedByDateForChart)
-     console.log('DashBOARD :', chartData.series[0].data)
+     console.log('DashBOARD :', dateArraySortedByDateForChart)
      console.log('OBOROT :', valueArraySortedByDateForChart)
      
+     const { address: addressWallet } = useAccount();
 
+ 
 
     return (
-        <Grid container spacing={gridSpacing}>
+<>
+ {address && addressWallet ?
+
+            <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
@@ -147,7 +159,7 @@ if(earnArraySortedByDateForChart.length != 0)
                     <Grid item xs={12} md={8}>
                         <TotalGrowthBarChart 
                         isLoading={isLoading} 
-                    chartData= {chartData}
+                    chartData= {newchartData}
                     valueOfStreamsPerDay={valueOfStreamsPerDay}
 
                         />
@@ -162,6 +174,11 @@ if(earnArraySortedByDateForChart.length != 0)
                 </Grid>
             </Grid>
         </Grid>
+            : <Main />}
+</>
+       
+        
+       
     );
 };
 

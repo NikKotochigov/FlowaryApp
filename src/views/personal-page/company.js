@@ -41,8 +41,9 @@ const Company = ({arrEmployee}) => {
                 <>
              
                     <Box sx={{display: 'flex', justifyContent: 'center'}}>
-                                          <RoleBadge
-                    content={(addressWallet === owner && 'Your role is Owner') || (addressWallet === admin && 'Your role is Admin')} />
+                  
+<RoleBadge content={(addressWallet === owner && 'Your role is Owner') || (addressWallet === admin && 'Your role is Admin')} />
+                    
                     </Box>
        
 
@@ -100,7 +101,7 @@ const Company = ({arrEmployee}) => {
                             <Box sx={{display: 'flex',
                         gap: 1}}>
                             <LoadDepositModal />
-                            <LoadDepositModal />
+                            {/* <LoadDepositModal /> */}
       
                             </Box>
                         </Box>

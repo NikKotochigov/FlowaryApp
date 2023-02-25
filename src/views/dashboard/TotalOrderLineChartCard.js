@@ -156,7 +156,7 @@ const TotalOrderLineChartCard = ({ isLoading, ChartDataMonth, sumOfStreamsPerDay
                                                         color: theme.palette.primary[200]
                                                     }}
                                                 >
-                                                    Total Sreams value
+                                                    Total Streams value
                                                 </Typography>
                                             </Grid>
                                         </Grid>
