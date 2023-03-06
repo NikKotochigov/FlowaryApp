@@ -27,6 +27,14 @@ const other = {
             breadcrumbs: false
         },
         {
+            id: 'outsource',
+            title: 'Outsource',
+            type: 'item',
+            url: '/outsource',
+            icon: icons.IconBrandChrome,
+            breadcrumbs: false
+        },
+        {
             id: 'history',
             title: 'Activity history',
             type: 'item',
@@ -34,14 +42,14 @@ const other = {
             icon: icons.IconBrandChrome,
             breadcrumbs: false
         },
-        // {
-        //     id: 'demo',
-        //     title: 'Demo page',
-        //     type: 'item',
-        //     url: '/demo',
-        //     icon: icons.IconBrandChrome,
-        //     breadcrumbs: false
-        // },
+        {
+            id: 'settings',
+            title: 'Settings',
+            type: 'item',
+            url: '/settings',
+            icon: icons.IconBrandChrome,
+            breadcrumbs: false
+        },
         {
             id: 'documentation',
             title: 'Documentation',

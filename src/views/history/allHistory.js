@@ -16,26 +16,26 @@ import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import Tooltip from '../../ui-component/elements/tooltip';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import TableS from '../../ui-component/pages/history/table/table';
+import TableS from './table';
 import { useAccount } from 'wagmi';
-import { TOKEN_ABI } from "../../consts/contractAbi";
+import { TOKEN_ABI } from '../../consts/contractAbi';
 
 import { ethers } from 'ethers';
 // import companyContract from 'contracts/CompanyContract';
 import provider from 'contracts/provider';
 import CustomSelector from 'ui-component/elements/customSelector';
 import usePagination from './pagination';
-import useContract from '../../contracts/prepareContract'
+import useContract from '../../contracts/prepareContract';
 import Loader from '../../ui-component/elements/loader';
 import { useSelector } from 'react-redux';
 import { contractSelector } from 'store/reducers/contract/reducer';
 
-const AllHistory = ({eventsLog, arrayItem, loader}) => {
+const AllHistory = ({ eventsLog, arrayItem, loader }) => {
     const { contract } = useContract();
     const { address: addressWallet } = useAccount();
     // const [loader, setLoader] = useState(false);
     const { address, token, decimalsToken, arrEmployee, owner, admin } = useSelector(contractSelector);
-    
+
     // const eventsLog =  chooseArray;
     const { length, currentTx, currentPage, setCurrentPage } = usePagination({ inArr: eventsLog });
     const handleChange = (event, value) => {
@@ -44,44 +44,32 @@ const AllHistory = ({eventsLog, arrayItem, loader}) => {
 
     return (
         <>
-             
-       
+            {loader ? (
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Loader />
+                </Box>
+            ) : (
+                <TableS rows={currentTx} arrayItem={arrayItem} />
+            )}
 
-{loader ? 
-<Box 
-sx={{
-    display: 'flex',
-    justifyContent: 'center'
-}}
->
-<Loader />     
-</Box>
-: <TableS rows={currentTx} arrayItem={arrayItem}/>}
-
-
-
-            
-            <Pagination 
-            count={length} 
-            page={currentPage} 
-            color="primary" 
-            size="large" 
-            onChange={handleChange}
-            sx={{
-              display: 'flex',
-              justifyContent:'center',
-              mt: 3
-            }}
+            <Pagination
+                count={length}
+                page={currentPage}
+                color="primary"
+                size="large"
+                onChange={handleChange}
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mt: 3
+                }}
             />
         </>
-
-
-
-
-
-
-
-
     );
 };
 

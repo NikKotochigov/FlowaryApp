@@ -35,7 +35,7 @@ const chartData = {
         xaxis: {
             type: 'category',
             // categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            categories: ['22/02/2023', '23/02/2023', '24/02/2023', '25/02/2023']
+            categories: [0]
 
         },
         legend: {
@@ -70,7 +70,7 @@ const chartData = {
     series: [
         {
             name: 'Amount of streams',
-            data: ['13', '4', '6']
+            data: []
         },
         // {
         //     name: 'Loss',

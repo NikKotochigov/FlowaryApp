@@ -92,12 +92,6 @@ const handleLoadMoney = async() => {
                     width: 400
                 }}
             >
-                {/* <CardMedia
-                    component='img'
-                    height='200'
-                    image={wallet}
-                    alt='wallet'
-                /> */}
                                       <img src={walletTwo} alt="gif" width="145" />
 
                 <TextField

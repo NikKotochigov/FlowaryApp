@@ -1,17 +1,15 @@
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material";
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
-import BasicModal from "../../../elements/modal";
+import BasicModal from "../../ui-component/elements/modal";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import Toolkit from "../../../elements/tooltip"
+import Toolkit from "../../ui-component/elements/tooltip"
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
-import { table } from "../../../../consts/table";
 import { useState } from "react";
 import tableImg from 'assets/images/tableImg.gif';
 import dayjs, { Dayjs } from "dayjs";
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector } from 'react-redux';
-import { contractSelector } from '../../../../store/reducers/contract/reducer';
-import { ethers } from "ethers";
+import { contractSelector } from '../../store/reducers/contract/reducer';
 import { IconArrowBigLeftLine, IconArrowBigRightLine, IconRun } from "@tabler/icons";
 
 
@@ -51,7 +49,6 @@ const { symbolToken, decimalsToken } = useSelector(contractSelector);
                     align="right"
                     sx={{
                       p: "1px",
-                      // border: 1
                     }}
                   >
                {arrayItem == '1' 
@@ -68,7 +65,6 @@ const { symbolToken, decimalsToken } = useSelector(contractSelector);
 
                   <TableCell
                     align="center"
-                    // sx={{border: 0}}
                   >
                     <Typography
                       color={row.name == 'Finished' || row.name == 'Withdraw' ? 'red' : 'green'}
@@ -82,7 +78,6 @@ const { symbolToken, decimalsToken } = useSelector(contractSelector);
                   </TableCell>
 
                   <TableCell
-                    // align="center"
                     sx={{
                       justifyContent: "center",
                       display: {
@@ -90,15 +85,12 @@ const { symbolToken, decimalsToken } = useSelector(contractSelector);
                         sm: "none", //600px
                         md: "flex", //900px
                       },
-                      // // fontSize: 14,
                       py: 3.5,
-                        // border: 1
                     }}
                   >
 {arrayItem == '1' 
 ? (row.name == 'Finished' ? Number(row.earned).toFixed(2) : <IconRun color='green'/>) 
 : Number(row.amount).toFixed(2)} {symbolToken}
-{/* : Number(ethers.utils.formatUnits(Number(row.amount), decimalsToken)).toFixed(2)} {symbolToken} */}
     
                   </TableCell>
                   {arrayItem == '1' &&
@@ -106,7 +98,6 @@ const { symbolToken, decimalsToken } = useSelector(contractSelector);
                     align="center"
                     sx={{
                       pt: 0.5,
-                      // border:1
                     }}
                   >
                     <Box

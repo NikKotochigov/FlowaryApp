@@ -18,8 +18,8 @@ function ThirdStep({ setActiveStep }) {
         setAdminAddress(e.target.value);
     }
 
-    const handleSetAdmin = () => {
-        setContractAdmin(adminAddress, address, dispatch, setLoading, setActiveStep);
+    const handleSetAdmin = async () => {
+        await setContractAdmin(adminAddress, address, dispatch, setLoading, setActiveStep);
         navigate("/personal-page");
     }
 

@@ -21,7 +21,7 @@ const User = ({ who, rate }) => {
     const { symbolToken, decimalsToken, balance } = useSelector(contractSelector);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
-    console.log('rateStart :', Number(rate)  )
+    // console.log('rateStart :', Number(rate)  )
     
     // console.log('rateUTILS :', Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(2))
 
