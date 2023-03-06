@@ -37,6 +37,7 @@ const status = [
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
 const TotalGrowthBarChart = ({ isLoading, chartData, valueOfStreamsPerDay  }) => {
+    console.log("CHTO ZDES", chartData)
     const [value, setValue] = useState('today');
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
@@ -53,42 +54,42 @@ const TotalGrowthBarChart = ({ isLoading, chartData, valueOfStreamsPerDay  }) =>
     const secondaryMain = theme.palette.secondary.main;
     const secondaryLight = theme.palette.secondary.light;
 
-    useEffect(() => {
-        const newChartData = {
-            ...chartData.options,
-            colors: [primary200, primaryDark, secondaryMain, secondaryLight],
-            xaxis: {
-                labels: {
-                    style: {
-                        colors: [primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary]
-                    }
-                }
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        colors: [primary]
-                    }
-                }
-            },
-            grid: {
-                borderColor: grey200
-            },
-            tooltip: {
-                theme: 'light'
-            },
-            legend: {
-                labels: {
-                    colors: grey500
-                }
-            }
-        };
+    // useEffect(() => {
+    //     const newChartData = {
+    //         ...chartData.options,
+    //         colors: [primary200, primaryDark, secondaryMain, secondaryLight],
+    //         xaxis: {
+    //             labels: {
+    //                 style: {
+    //                     colors: [primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary]
+    //                 }
+    //             }
+    //         },
+    //         yaxis: {
+    //             labels: {
+    //                 style: {
+    //                     colors: [primary]
+    //                 }
+    //             }
+    //         },
+    //         grid: {
+    //             borderColor: grey200
+    //         },
+    //         tooltip: {
+    //             theme: 'light'
+    //         },
+    //         legend: {
+    //             labels: {
+    //                 colors: grey500
+    //             }
+    //         }
+    //     };
 
-        // do not load chart when loading
-        if (!isLoading) {
-            ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
-        }
-    }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
+    //     // do not load chart when loading
+    //     if (!isLoading) {
+    //         ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
+    //     }
+    // }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
 
     return (
         <>

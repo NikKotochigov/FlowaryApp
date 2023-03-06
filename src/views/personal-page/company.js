@@ -22,7 +22,7 @@ import data from 'assets/images/data.gif';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import Loader from '../../ui-component/elements/loader';
 import { v4 as uuidv4 } from 'uuid';
-import Demo from 'views/demo';
+import Demo from 'views/settings';
 import { getInfoForCompanyAndEmployee } from 'utils/contractMethods';
 import AvatarChip from 'ui-component/elements/chip';
 import Toolkit from 'ui-component/elements/tooltip';
@@ -75,16 +75,6 @@ const Company = ({arrEmployee}) => {
          address={address} />        
             </Button>
                     </Toolkit>
-                            {/* <Button
-                                variant="outlined"
-                                size="large"
-                                onClick={() => navigate('/history')}
-                                sx={{
-                                    minWidth: '100px'
-                                }}
-                            >
-                                Activity history
-                            </Button> */}
                         </Box>
                         <Box
                             sx={{
@@ -100,7 +90,7 @@ const Company = ({arrEmployee}) => {
                             </Typography>
                             <Box sx={{display: 'flex',
                         gap: 1}}>
-                            <LoadDepositModal />
+                            {/* <LoadDepositModal /> */}
                             {/* <LoadDepositModal /> */}
       
                             </Box>

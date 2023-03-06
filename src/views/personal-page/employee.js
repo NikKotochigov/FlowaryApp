@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { goods } from 'consts/data';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { contractSelector } from 'store/reducers/contract/reducer';
 import CustomBadge from 'ui-component/elements/badge';
 import CustomSelector from 'ui-component/elements/customSelector';
@@ -25,13 +25,18 @@ import AvatarChip from 'ui-component/elements/chip';
 import Toolkit from 'ui-component/elements/tooltip';
 import copyTextToClipboard from 'utils/copyPast';
 import { useIsActiveBalanceData } from 'ui-component/pages/company/hooks/useIsActiveBalanceData';
-
+import { LoadingButton } from '@mui/lab';
+import { setBalance,  } from '../../store/reducers/contract/reducer';
+import HelperToolkit from '../../ui-component/elements/helperTooltip'
 // ==============================|| SAMPLE PAGE ||============================== //
 const Employee = ({ arrEmployee }) => {
+    const [loading, setLoading] = useState(false);
     const { address: addressWallet } = useAccount();
     const [loader, setLoader] = useState(false);
-    const { name, address, admin, owner } = useSelector(contractSelector);
-    // const { contract } = useContract();
+    const { name, address, admin, owner, decimalsToken } = useSelector(contractSelector);
+    const { contractSigner, contract } = useContract();
+    const dispatch = useDispatch();
+
     let areYouEmployee
     if (address && addressWallet) {
         if (addressWallet === owner) areYouEmployee = undefined
@@ -40,6 +45,20 @@ const Employee = ({ arrEmployee }) => {
     }
     // console.log('rabotnik ili kto :', areYouEmployee)
     const { isActive, setIsActive, amountOfStream, isLoading } = useIsActiveBalanceData(address, addressWallet);
+
+const handleWithdrawMoneyEmployee = async() => {
+    try {
+        const withdraw = await contractSigner.withdrawEmployee()
+        const tx = await withdraw.wait()
+        console.log('RESULT:', tx)
+        const bal = await contract.currentBalanceContract();
+        const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
+        dispatch(setBalance(balan));
+    }
+    catch(error){
+        console.log(error);
+    } 
+}
 
     return (
         <>
@@ -155,17 +174,27 @@ const Employee = ({ arrEmployee }) => {
                                     {addressWallet.slice(0, 5) + '...' + addressWallet.slice(38)}
                                 </Typography>
                             </Box>
-                        </Box>
+
+                        
+
+              </Box>
+  
                     </Box>
-                    {/* <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-                        <Button
-                            variant="outlined"
-                            size="large"
-                        //  onClick={() => navigate("/history")}
-                        >
-                            Get your earnings
-                        </Button>
-                    </Box> */}
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                    {/* <HelperToolkit title={'You can withdraw part of your salary while stream is going on'} /> */}
+                       <LoadingButton
+                         size="large"
+                         onClick={handleWithdrawMoneyEmployee}
+                         loading={loading}
+                         loadingIndicator="Setting..."
+                         variant="outlined"
+                         mt='30px'
+                       >
+                         <span>withdraw money</span>
+                       </LoadingButton>   
+                 
+                  
+                    </Box>
                 </>
             }
 

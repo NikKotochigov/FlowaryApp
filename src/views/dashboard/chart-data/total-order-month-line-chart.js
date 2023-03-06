@@ -22,7 +22,7 @@ const chartData = {
             width: 3
         },
         yaxis: {
-            min: 10,
+            min: 0,
             max: 1000
         },
         tooltip: {
@@ -44,7 +44,7 @@ const chartData = {
     series: [
         {
             name: 'sum of payments per day',
-            data: [45, 66, 41, 89, 25, 44, 9, 54]
+            data: []
         }
     ]
 };

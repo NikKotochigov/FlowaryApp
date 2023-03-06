@@ -17,12 +17,13 @@ import useContract from 'contracts/prepareContract';
 import ChartDataMonth from './chart-data/total-order-month-line-chart';
 import ChartDataYear from './chart-data/total-order-year-line-chart';
 import chartData from './chart-data/total-growth-bar-chart';
-import { getAllLogs } from 'utils/getAllLogs';
+import { getAllLogs, useGetAllLogs } from 'utils/getAllLogs';
 import { TOKEN_ABI } from 'consts/contractAbi';
 import provider from 'contracts/provider';
 import dayjs, { Dayjs } from 'dayjs';
 import Main from 'views/main/default';
 import { useAccount } from 'wagmi';
+import { FlashOffTwoTone } from '@mui/icons-material';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -31,27 +32,27 @@ const Dashboard = () => {
     useEffect(() => {
         setLoading(false);
     }, []);
-    const { address, token, decimalsToken, arrEmployee, symbolToken, admin } = useSelector(contractSelector);
+    const { address, token, decimalsToken, arrEmployee, symbolToken, owner, admin } = useSelector(contractSelector);
     const { contract } = useContract();
     const [arrayBlock, setArrayBlock] = useState([]);
-
+    const { address: addressWallet } = useAccount();
     const [loader, setLoader] = useState(false);
 
-  const [earnArraySortedByDateForChart, setEarnArraySortedByDateForChart] = useState([])
-const [dateArraySortedByDateForChart, setDateArraySortedByDateForChart] = useState([])
-const [valueArraySortedByDateForChart, setValueArraySortedByDateForChart] = useState([])
-  
-    useEffect(() =>{
-        getAllLogs(contract, setLoader, token, TOKEN_ABI, provider, setArrayBlock, decimalsToken)
-    },[])
+    let employeeOrNot;
+    if (address && addressWallet) {
+        if (addressWallet === owner) employeeOrNot = undefined;
+        else if (addressWallet === admin) employeeOrNot = undefined;
+        else {
+            employeeOrNot = arrEmployee.find((i) => i.who == addressWallet);
+        }
+    }
 
-// const [sumOfStreamsPerDay, setSumOfStreamsPerDay] = useState([])
-// const [arraySortedByDateForChart, setArraySortedByDateForChart] = useState([])
+    useEffect(() => {
+        getAllLogs(contract, setLoader, token, setArrayBlock, decimalsToken);
+    }, [employeeOrNot]);
 
-useEffect(() => {
-   if(arrayBlock.length != 0){
   //========prerpare array for dashboard=======//
-  const arrayFinishedStreams = arrayBlock.filter((i) => i.name == 'Finished');
+  const arrayFinishedStreams = (arrayBlock.length != 0 && arrayBlock.filter((i) => i.name == 'Finished'));
 
   const arrayOfErningsForDashboard = []
   for(let i=0; i < arrayFinishedStreams.length; i++){
@@ -77,54 +78,26 @@ useEffect(() => {
       resultObject[item.date] = { ...item };
     }
   }
-  const arraySortedByDateForChart = Object.values(resultObject);
-  //setArraySortedByDateForChart(preArraySortedByDateForChart)
+  const arraySortedByDateForChart = Object.values(resultObject);//arr with sums & # of streams per date
+  const earnArraySortedByDateForChart = arraySortedByDateForChart.map(i => Number(i.earn.toFixed(2)))// only sums - for graph
+  const dateArraySortedByDateForChart = arraySortedByDateForChart.map(i => i.date)// only dates for legenda
+  const valueArraySortedByDateForChart = arraySortedByDateForChart.map(i => i.id)// only # for columns
 
-  const preEarnArraySortedByDateForChart = arraySortedByDateForChart.map(i => Number(i.earn.toFixed(2)))
-  setEarnArraySortedByDateForChart(preEarnArraySortedByDateForChart)
+ //sum of ALL streams in money
+const sumOfStreamsPerDay = (earnArraySortedByDateForChart.length != 0 && earnArraySortedByDateForChart.reduce((sum, current) => sum + current).toFixed(0))
+//number of all streams, count
+const valueOfStreamsPerDay = (valueArraySortedByDateForChart.length != 0 && valueArraySortedByDateForChart.reduce((sum, current) => sum + current)) || 0
 
-  const preDateArraySortedByDateForChart = arraySortedByDateForChart.map(i => i.date)
-setDateArraySortedByDateForChart(preDateArraySortedByDateForChart)
+const newchartData = {...chartData}
 
-const preValueArraySortedByDateForChart = arraySortedByDateForChart.map(i => i.id)
-setValueArraySortedByDateForChart(preValueArraySortedByDateForChart)
-//  let sumOfStreamsPerDay 
-//      if(EarnArraySortedByDateForChart.length != 0) 
-//   const sumOfStreamsPerDay = earnArraySortedByDateForChart.reduce((sum, current) => sum + current).toFixed(0);
-
- }
-
-}, [arrayBlock])
-
-
-// let sumOfStreamsPerDay
-// let valueOfStreamsPerDay
-
-const [sumOfStreamsPerDay, setSumOfStreamsPerDay] = useState(0)
-const [valueOfStreamsPerDay, setValueOfStreamsPerDay] = useState(0)
-
-const newchartData = chartData
-
- useEffect(() => {
- if(earnArraySortedByDateForChart.length != 0)
-{
-    setSumOfStreamsPerDay(earnArraySortedByDateForChart.reduce((sum, current) => sum + current).toFixed(0))
-    setValueOfStreamsPerDay(valueArraySortedByDateForChart.reduce((sum, current) => sum + current))
-}    
 ChartDataMonth.series[0].data  = earnArraySortedByDateForChart
-// newchartData.options.xaxis.categories = dateArraySortedByDateForChart
+
+newchartData.options.xaxis.categories = dateArraySortedByDateForChart
 newchartData.series[0].data = valueArraySortedByDateForChart
   
-}, [earnArraySortedByDateForChart, valueArraySortedByDateForChart, arrayBlock]) 
 
-    console.log('Massiv DashBOARD :', earnArraySortedByDateForChart)
-     console.log('DashBOARD :', dateArraySortedByDateForChart)
-     console.log('OBOROT :', valueArraySortedByDateForChart)
+    console.log('MASSIV:', arrayBlock)
      
-     const { address: addressWallet } = useAccount();
-
- 
-
     return (
 <>
  {address && addressWallet ?
@@ -138,7 +111,7 @@ newchartData.series[0].data = valueArraySortedByDateForChart
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <TotalOrderLineChartCard 
                         isLoading={isLoading} 
-                        ChartDataMonth={ChartDataMonth} 
+                        ChartDataMonth={{...ChartDataMonth}} 
                         sumOfStreamsPerDay={sumOfStreamsPerDay}
                         />
                     </Grid>
@@ -159,7 +132,7 @@ newchartData.series[0].data = valueArraySortedByDateForChart
                     <Grid item xs={12} md={8}>
                         <TotalGrowthBarChart 
                         isLoading={isLoading} 
-                    chartData= {newchartData}
+                    chartData= {{...newchartData}}
                     valueOfStreamsPerDay={valueOfStreamsPerDay}
 
                         />

@@ -22,7 +22,7 @@ import data from 'assets/images/data.gif';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import Loader from '../../ui-component/elements/loader';
 import { v4 as uuidv4 } from 'uuid';
-import Demo from 'views/demo';
+import Demo from 'views/settings';
 import { getInfoForCompanyAndEmployee } from 'utils/contractMethods';
 import Company from './company';
 import Employee from './employee';
