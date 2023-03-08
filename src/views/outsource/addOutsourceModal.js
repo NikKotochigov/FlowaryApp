@@ -4,13 +4,15 @@ import { Box, Button, CardMedia, TextField, Typography } from '@mui/material';
 import BasicModal from '../../ui-component/elements/modal';
 import ButtonWithResult from '../../ui-component/elements/buttonWithResult';
 import getErrorMessage from '../../utils/getErrorMessage';
-import { useDispatch } from "react-redux";
-import { setArrOutsource } from '../../store/reducers/contract/reducer';
+import { useDispatch, useSelector } from "react-redux";
+import { contractSelector, setArrOutsource } from '../../store/reducers/contract/reducer';
 import newUser from '../../assets/images/newUser.png'
 import dayjs from 'dayjs';
+import { ethers } from "ethers";
 
 function AddOutsourceModal() {
     const { contract, contractSigner } = useContract();
+    const { decimalsToken } = useSelector(contractSelector);
 
     const [adNew, setAdNew] = useState('');
     const [wage, setWage] = useState(0);
@@ -32,7 +34,7 @@ function AddOutsourceModal() {
         try {
             setSuccess(false);
             setLoading(true);
-            const addOutsource = await contractSigner.createOutsourceJob(adNew, taskName, wage, (deadLine*3600), true);
+            const addOutsource = await contractSigner.createOutsourceJob(adNew, taskName, BigInt(Math.ceil((wage)*(10**decimalsToken))), (deadLine*3600), true);
             const res = await addOutsource.wait();
             console.log(res);
 //========refresh array of outsource========//
@@ -43,9 +45,11 @@ for (let i = 0; i < amountOutsources; i++) {
     const result = await contract.listOutsource(i);
     const outsourceJob = {taskName: result.task, 
       who: result.who,
-      startDate: dayjs.unix(result.startAt).format('HH:mm DD/MM/YYYY'),
-      deadline: dayjs.unix(result.deadline).format('HH:mm DD/MM/YYYY'),
-      wage: Number(result.wage),
+      startDate: Number(result.startAt),
+      deadline: Number(result.deadline),
+      wage: Number(ethers.utils.formatUnits(result.wage, decimalsToken)).toFixed(2),
+      status: Number(result.status),
+      id: i
     }
     outsourcesArr.push(outsourceJob);
 }

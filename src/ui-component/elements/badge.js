@@ -8,17 +8,20 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
         right: 25,
         top: 17,
         width: 98,
-        height: 26,
-        background: 'red',
+        height: 29,
+        // background: 'red',
         border: `2px solid ${theme.palette.background.paper}`
         // padding: '0 px',
     }
 }));
 
-export default function CustomBadge({ children, content }) {
+export default function CustomBadge({ children, content, color = 'red' }) {
     return (
         <IconButton aria-label="cart">
-            <StyledBadge badgeContent={content} color="secondary">
+            <StyledBadge 
+            sx={{'& .MuiBadge-badge': {background: color}}}
+            badgeContent={content} 
+            color="secondary">
                 {children}
             </StyledBadge>
         </IconButton>

@@ -11,14 +11,15 @@ import copyTextToClipboard from "utils/copyPast";
 import AddOutsourceModal from "./addOutsourceModal";
 import OutsourceCard from "./outsourceCard";
 import { v4 as uuidv4 } from 'uuid';
+import TableOutsource from "./tableOutsource";
 
 const Outsource = () => {
-    const { name, balance, address, symbolToken, arrOutsource } = useSelector(contractSelector);
-console.log("MAssiv AUTSORSA", arrOutsource)
-console.log('VREM111',  arrOutsource[0].deadline)
-console.log('VREM222',  dayjs().unix() < arrOutsource[0].deadline )
+    const { name, balance, address, symbolToken, arrOutsource, decimalsToken } = useSelector(contractSelector);
 
+const arrOutsorceAlive = arrOutsource.filter(i => i.status !=3)
+const arrOutsorceFinished = arrOutsource.filter(i => i.status ===3)
 
+console.log("MAssiv AUTSORSA", arrOutsorceFinished)
 return ( <>
                         <Box
                         sx={{
@@ -71,17 +72,23 @@ return ( <>
 </Box>
 <Box
 sx={{ display: 'flex', justifyContent: 'center', m:5}}>
-<Grid container spacing={3} maxWidth={800}>
-{arrOutsource.map(({taskName, wage, who, startDate, deadline}) => (
+<Grid container spacing={3} maxWidth={600}>
+{arrOutsorceAlive.map(({taskName, wage, who, startDate, deadline, id, status}) => (
                                     <OutsourceCard 
                                     key={uuidv4()} 
                                     who={who} 
                                     wage={wage} 
                                     taskName={taskName}
                                     startDate={startDate}
-                                    deadline={deadline} />
+                                    deadline={deadline}
+                                    id={id}
+                                    status={status} />
                                 ))}
                                 </Grid></Box>
+
+                                <TableOutsource 
+                                arrOutsorceFinished={arrOutsorceFinished}
+                                />
 
     </> );
 }
