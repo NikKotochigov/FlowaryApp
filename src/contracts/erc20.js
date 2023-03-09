@@ -46,9 +46,11 @@ for (let i = 0; i < amountOutsources; i++) {
     const result = await contract.listOutsource(i);
     const outsourceJob = {taskName: result.task, 
       who: result.who,
-      startDate: dayjs.unix(result.startAt).format('HH:mm DD/MM/YYYY'),
+      startDate: Number(result.startAt),
       deadline: Number(result.deadline),
-      wage: Number(result.wage),
+      wage: Number(ethers.utils.formatUnits(result.wage, decimalsToken)).toFixed(2),
+      status: Number(result.status),
+      id: i
     }
     outsourcesArr.push(outsourceJob);
 }

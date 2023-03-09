@@ -116,7 +116,7 @@ const Company = ({arrEmployee}) => {
                         {loader ? (
                             <Loader />
                         ) : (
-                            <Grid container spacing={3} maxWidth={800}>
+                            <Grid container spacing={3} maxWidth={700}>
                                 {arrEmployee.map((item) => (
                                     <User key={uuidv4()} who={item.who} rate={item.rate} />
                                 ))}

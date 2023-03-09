@@ -67,11 +67,8 @@ console.log('VALUE', value)
   );
 }
 
-
-
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 const top100Films = [
   { company: '0x77BF84946F07c041B5bA077fa7F99a89b8C3f41d' },
-  // { company: '0x73dfA11adfcAC3706e7B6AaD893e5C32Ec8eF91f' },
+  { company: '0x7ff2C6165f486356014729f9dA2FF7b7c18386a7' },
 
 ];

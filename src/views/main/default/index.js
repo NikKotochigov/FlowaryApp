@@ -25,6 +25,7 @@ import { useDispatch } from "react-redux";
 import companyMatrix from '../../../assets/images/companyMatrix.png'
 import companyExists from '../../../assets/images/companyExists.png'
 import SelectAutoComplete from "ui-component/pages/main/selectAutoComplete/selectAutoComplete";
+import { LoadingButton } from "@mui/lab";
 
 
 
@@ -32,6 +33,7 @@ const Main = () => {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(prev => !prev);
   const [value, setValue] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // const [add, setAdd] = useState('');
   const dispatch = useDispatch();
@@ -39,7 +41,7 @@ const Main = () => {
   
   const navigate = useNavigate();
   const handleConnectCompany = async () => {
-    console.log(value.company)
+    setLoading(true )
     await connectContract(value.company, dispatch)
     navigate("/personal-page")
   };
@@ -114,11 +116,15 @@ variant='contained'
                setValue={setValue}
                />
 
-          <Button 
-          onClick={handleConnectCompany}
-          variant="outlined">
-              Choose company
-            </Button>
+            <LoadingButton
+                              size="small"
+                              onClick={handleConnectCompany}
+                              loading={loading}
+                              loadingIndicator="Loading…"
+                              variant="outlined"
+                            >
+                              <span>Choose company</span>
+                            </LoadingButton>
         </Box>
       </BasicModal>
 
