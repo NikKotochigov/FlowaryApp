@@ -15,7 +15,6 @@ import {
   import { useState } from "react";
   // import { useDispatch, useSelector } from 'react-redux'
   import { useAccount } from 'wagmi'
-  import connectContract from "contracts/erc20";
   import { redirect, useNavigate } from "react-router-dom";
   // import { useEffect } from "react";
   // import { ethers } from "ethers";
