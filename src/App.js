@@ -35,7 +35,6 @@ import {
   import BasicModal from "../src/ui-component/elements/modal";
   // import { useDispatch, useSelector } from 'react-redux'
   import { useAccount } from 'wagmi'
-  import connectContract from "../src/contracts/erc20";
   import { redirect, useNavigate } from "react-router-dom";
   // import { useEffect } from "react";
   // import { ethers } from "ethers";
