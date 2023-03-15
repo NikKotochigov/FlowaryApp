@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import provider from "./provider";
-import { setArrOutsource, setHl, setArrEmployee, setBalance, setAmountEmployee, setName, setOwner, setAdmin, setAddress, setToken, setDecimalsToken, setSymbolToken } from "../store/reducers/contract/reducer";
+import { setliquidation, setArrOutsource, setHl, setArrEmployee, setBalance, setAmountEmployee, setName, setOwner, setAdmin, setAddress, setToken, setDecimalsToken, setSymbolToken } from "../store/reducers/contract/reducer";
 import { CONTRACT_ABI } from "../consts/contractAbi";
 import { TOKEN_ABI } from "../consts/contractAbi";
 import dayjs from "dayjs";
@@ -23,6 +23,9 @@ const decimalsToken = (await contract.getDecimals()).toNumber()
 dispatch(setDecimalsToken(decimalsToken));
 const hl = (await contract.tokenLimitMaxHoursPerPerson()).toNumber();
 dispatch(setHl(hl));
+const liqudation = await contract.liqudation();
+dispatch(setliquidation(liqudation));
+
 //=========get variable info=====//
 const bal = await contract.currentBalanceContract();
 const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)

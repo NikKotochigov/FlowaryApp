@@ -27,6 +27,7 @@ import { getInfoForCompanyAndEmployee } from 'utils/contractMethods';
 import AvatarChip from 'ui-component/elements/chip';
 import Toolkit from 'ui-component/elements/tooltip';
 import copyTextToClipboard from 'utils/copyPast';
+import HeaderCompanyBalance from 'ui-component/elements/headerCompanyBalance';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 const Company = ({arrEmployee}) => {
@@ -46,56 +47,9 @@ const Company = ({arrEmployee}) => {
                     
                     </Box>
        
+                    <HeaderCompanyBalance />
 
-                    <Box
-                        sx={{
-                            display: {
-                                sm: 'block', //600px
-                                md: 'flex' //900px
-                            },
-                            justifyContent: 'space-between'
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                m: 3
-                            }}
-                        >
-                            <Typography variant="h2" color="primary">
-                                Company {name}
-                            </Typography>
-                            <Toolkit title={"Click on it to copy!"}>
-            <Button variant='text'
-                onClick={()=>{copyTextToClipboard(address)}}
-            >
-          <AvatarChip 
-         address={address} />        
-            </Button>
-                    </Toolkit>
-                        </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                gap: 1,
-                                m: 4
-                            }}
-                        >
-                            <Typography variant="h4" color="primary">
-                                    Available balance:   {balance} {symbolToken}
-                            </Typography>
-                            <Box sx={{display: 'flex',
-                        gap: 1}}>
-                            {/* <LoadDepositModal /> */}
-                            {/* <LoadDepositModal /> */}
-      
-                            </Box>
-                        </Box>
-                    </Box>
+                    
                     <Box
                         sx={{
                             display: 'flex',

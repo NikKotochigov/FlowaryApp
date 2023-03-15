@@ -23,7 +23,7 @@ import CompanyCreateStepper from "../../../views/main/Steps/companyCreateStepper
 import CustomPopover from "../../../ui-component/elements/customPopover";
 import { useDispatch } from "react-redux";
 import companyMatrix from '../../../assets/images/companyMatrix.png'
-import companyExists from '../../../assets/images/companyExists.png'
+import existCompany from '../../../assets/images/existCompany.png'
 import SelectAutoComplete from "ui-component/pages/main/selectAutoComplete/selectAutoComplete";
 import { LoadingButton } from "@mui/lab";
 
@@ -103,7 +103,7 @@ variant='contained'
           }}
         >
       
-                       <img src={companyExists} alt="gif" width="145"/>
+                       <img src={existCompany} alt="gif" width="445"/>
 
           {/* <TextField
             fullWidth

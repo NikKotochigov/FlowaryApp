@@ -26,36 +26,36 @@ import { LoadingButton } from '@mui/lab';
 import { useDispatch, useSelector } from "react-redux";
 import { contractSelector } from "store/reducers/contract/reducer";
 import {  setOwner, setAdmin, setHl } from '../../store/reducers/contract/reducer';
+import { ethers } from "ethers";
+import { symbol } from "prop-types";
+import Jazzicon from "react-jazzicon/dist/Jazzicon";
+import { jsNumberForAddress } from "react-jazzicon";
+import HeaderCompanyBalance from "ui-component/elements/headerCompanyBalance";
+import LiquidationModal from "ui-component/elements/liquidationModal";
 
 const Settings = () => {
 
-  const { contract, contractSigner } = useContract();
+  const { contractSigner } = useContract();
 
   const [addrAdmin, setAddrAdmin] = useState('')
   const [addrOwner, setAddrOwner] = useState('')
   const [hlLimit, sethlLimit] = useState()
 
-  const [liquidation, setliquidation] = useState(false)
 
   const [loading, setLoading] = useState(false);
   const [loadingAdmin, setLoadingAdmin] = useState(false);
   const [loadingBuffer, setLoadingBuffer] = useState(false);
 
-  const { owner, admin, hl } = useSelector(contractSelector);
+  const { liquidation, owner, admin, hl} = useSelector(contractSelector);
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-        (async () => {
-            try {
-              const liq = await contract.liqudation();
-              setliquidation(liq)
-            } catch (error) {
-                console.log('DEV>>>>', error);
-            }
-        })();
-    }, []);
+  const handleOnClick = () => {
+    setIsOpen((prev) => !prev);
+};
 
-  
+
+
 //-----------------------------  Administration FUNC -----------------
   const handleSetAdmin = async() =>{
     try {
@@ -99,8 +99,11 @@ const Settings = () => {
     }
   }
 
+
+
   return (
     <>
+    <HeaderCompanyBalance />
        <Typography variant="h1" color='primary' textAlign='center' m='30px'>Administration function</Typography>
  
       <Typography variant="h3" color='secondary'>Current Owner: </Typography>
@@ -182,11 +185,12 @@ const Settings = () => {
 
 <Typography variant="h2" color='secondary' mt="30px">Liquidation</Typography>
       <Typography variant="h4" color='secondary'>🤷‍♀️ Happed if smart contract went bankrupt, and cant pay wages.</Typography>
-      <Typography variant="h4" color='secondary'>Status : {liquidation ? "WE FUNCKED" : "👌 Active"}</Typography>
-      <Button 
-            variant="outlined">
-                Start Liqudation procedure
-      </Button>
+      <Typography variant="h4" color='secondary' mb='14px'>Status : {liquidation ? "Liquidation" : "👌 Active"}</Typography>
+      {liquidation &&
+<LiquidationModal
+isOpen={isOpen} 
+handleOnClick={handleOnClick} 
+/>}
       </>
   );
 };

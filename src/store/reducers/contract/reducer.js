@@ -12,7 +12,8 @@ const initialState = {
     amountEmployee: undefined,
     arrEmployee: [],
     hl: undefined,
-    arrOutsource: []
+    arrOutsource: [],
+    liquidation: undefined
 }
 
 export const contractSlice = createSlice({
@@ -55,10 +56,14 @@ export const contractSlice = createSlice({
         setArrOutsource: (state, action) => {
             state.arrOutsource = action.payload
         },
+        setliquidation: (state, action) => {
+            state.liquidation = action.payload
+        },
+        
     },
 })
 
-export const { setArrOutsource, setHl, setArrEmployee, setBalance, setAmountEmployee, setAddress, setToken, setAdmin, setName, setOwner, setDecimalsToken, setSymbolToken } = contractSlice.actions
+export const { setliquidation, setArrOutsource, setHl, setArrEmployee, setBalance, setAmountEmployee, setAddress, setToken, setAdmin, setName, setOwner, setDecimalsToken, setSymbolToken } = contractSlice.actions
 
 export const contractSelector = (state) => state.contract;
 
