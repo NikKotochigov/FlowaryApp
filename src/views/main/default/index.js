@@ -13,7 +13,7 @@ import CompanyCreateStepper from "../../../views/main/Steps/companyCreateStepper
 import CustomPopover from "../../../ui-component/elements/customPopover";
 import { useDispatch } from "react-redux";
 import companyMatrix from '../../../assets/images/companyMatrix.png'
-import companyExists from '../../../assets/images/companyExists.png'
+import existCompany from '../../../assets/images/existCompany.png'
 import SelectAutoComplete from "ui-component/pages/main/selectAutoComplete/selectAutoComplete";
 import { LoadingButton } from "@mui/lab";
 
@@ -49,72 +49,89 @@ const Main = () => {
   return (
     <>
       {isCreateOpen ? <CompanyCreateStepper />
-        : <>
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            mt: 6
-          }}>
-            <img src={companyMatrix} alt="gif" width="445" />
+      : <>
+        <Box sx={{
+    display: 'flex',
+    justifyContent: 'center',
+    mt: 6
+  }}>
+             <img src={companyMatrix} alt="gif" width="445"/>
+
+  </Box>
+
+   <Toolbar 
+   sx={{
+    display: 'flex',
+    justifyContent: 'center',
+    }}>
+          <Box sx={{ display: 'flex', gap: 5 }}>
+            <Button variant="contained"
+            sx={{background: 'red', 
+            fontSize: '30px',
+          }}
+            size='large'
+            onClick={address ? handleCreateCompany : handleOpenPopover}>
+              Create company
+            </Button>
+      <BasicModal
+      fontSize = '30px'
+        nameModal={"Company exist"}
+        open={open}
+        handleClickOpen={address ? handleClickOpen : handleOpenPopover}
+variant='contained'
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 2,
+            width: 400
+          }}
+        >
+      
+                       <img src={existCompany} alt="gif" width="445"/>
+
+          {/* <TextField
+            fullWidth
+            label="Address of your company"
+            variant="outlined"
+            onChange={(event) => setAdd(event.target.value)}
+          /> */}
+               <SelectAutoComplete 
+               value={value}
+               setValue={setValue}
+               />
+
+            <LoadingButton
+                              size="small"
+                              onClick={handleConnectCompany}
+                              loading={loading}
+                              loadingIndicator="Loading…"
+                              variant="outlined"
+                            >
+                              <span>Choose company</span>
+                            </LoadingButton>
+        </Box>
+      </BasicModal>
+
+      <CustomPopover 
+text={'Connect wallet, pls'}
+handleOpenPopover={handleOpenPopover} 
+anchorEl={anchorEl}
+id={id}
+setAnchorEl={setAnchorEl}
+/>
+
           </Box>
-          <Toolbar
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-            }}>
-            <Box sx={{ display: 'flex', gap: 5 }}>
-              <Button variant="contained"
-                sx={{
-                  background: 'red',
-                  fontSize: '30px',
-                }}
-                size='large'
-                onClick={address ? handleCreateCompany : handleOpenPopover}>
-                Create company
-              </Button>
-              <BasicModal
-                fontSize='30px'
-                nameModal={"Company exist"}
-                open={open}
-                handleClickOpen={address ? handleClickOpen : handleOpenPopover}
-                variant='contained'
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 2,
-                    width: 400
-                  }}
-                >
-                  <img src={companyExists} alt="gif" width="145" />
-                  <SelectAutoComplete
-                    value={value}
-                    setValue={setValue}
-                  />
-                  <LoadingButton
-                    size="small"
-                    onClick={handleConnectCompany}
-                    loading={loading}
-                    loadingIndicator="Loading…"
-                    variant="outlined"
-                  >
-                    <span>Choose company</span>
-                  </LoadingButton>
-                </Box>
-              </BasicModal>
-              <CustomPopover
-                text={'Connect wallet, pls'}
-                handleOpenPopover={handleOpenPopover}
-                anchorEl={anchorEl}
-                id={id}
-                setAnchorEl={setAnchorEl}
-              />
-            </Box>
-          </Toolbar>
-        </>}
-    </>
+        </Toolbar> 
+      </>}
+      
+  </>
+    
+
+ 
+    
   );
 };
 
