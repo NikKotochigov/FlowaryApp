@@ -19,6 +19,8 @@ const connectContract = async (address, dispatch) => {
     const contractBalance = await contract.currentBalanceContract();
     const balance = Number(ethers.utils.formatUnits(contractBalance, decimalsToken)).toFixed(2);
     const amountEmployee = (await contract.amountEmployee()).toNumber();
+    const liquidation = await contract.liqudation();
+
     dispatch(setContractInfo({
       admin,
       name,
@@ -27,7 +29,8 @@ const connectContract = async (address, dispatch) => {
       decimalsToken,
       hl,
       balance,
-      amountEmployee
+      amountEmployee,
+      liquidation
     }));
     /* get employee info */
     const employeeArr = [];

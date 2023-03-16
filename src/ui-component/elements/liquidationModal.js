@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { contractSelector } from "store/reducers/contract/reducer";
 import { styled } from '@mui/material/styles';
 import { keyframes } from '@mui/system';
-import {  setliquidation, setBalance } from '../../store/reducers/contract/reducer';
+import {  setLiquidation, setBalance } from '../../store/reducers/contract/reducer';
 
 const LiquidationModal = ({isOpen, handleOnClick}) => {
 const [totalDebt, setTotalDebt] = useState(0)
@@ -60,7 +60,7 @@ const BlinkedBox = styled('div')({
       const tx = await contractSigner.finishLiqudation()
       await tx.wait();
       const liqudation = await contract.liqudation();
-     dispatch(setliquidation(liqudation));
+     dispatch(setLiquidation(liqudation));
      const bal = await contract.currentBalanceContract();
      const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
      dispatch(setBalance(balan));
