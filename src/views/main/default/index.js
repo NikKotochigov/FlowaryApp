@@ -2,23 +2,13 @@
 import {
   Box,
   Button,
-  Card,
-  CardMedia,
-  Grid,
-  Popover,
-  TextField,
   Toolbar,
-  Typography,
-  useTheme,
 } from "@mui/material";
 import BasicModal from "../../../ui-component/elements/modal";
 import { useState } from "react";
-// import { useDispatch, useSelector } from 'react-redux'
 import { useAccount } from 'wagmi'
 import connectContract from "contracts/erc20";
-import { redirect, useNavigate } from "react-router-dom";
-// import { useEffect } from "react";
-// import { ethers } from "ethers";
+import { useNavigate } from "react-router-dom";
 import CompanyCreateStepper from "../../../views/main/Steps/companyCreateStepper";
 import CustomPopover from "../../../ui-component/elements/customPopover";
 import { useDispatch } from "react-redux";
@@ -27,23 +17,21 @@ import existCompany from '../../../assets/images/existCompany.png'
 import SelectAutoComplete from "ui-component/pages/main/selectAutoComplete/selectAutoComplete";
 import { LoadingButton } from "@mui/lab";
 
-
-
 const Main = () => {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(prev => !prev);
   const [value, setValue] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // const [add, setAdd] = useState('');
   const dispatch = useDispatch();
   const { address } = useAccount()
-  
   const navigate = useNavigate();
+
   const handleConnectCompany = async () => {
-    setLoading(true )
+    setLoading(true)
     await connectContract(value.company, dispatch)
     navigate("/personal-page")
+    setLoading(false)
   };
   const handleCreateCompany = () => {
     console.log("hello");
@@ -59,8 +47,7 @@ const Main = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
-  <>
-
+    <>
       {isCreateOpen ? <CompanyCreateStepper />
       : <>
         <Box sx={{
@@ -149,7 +136,3 @@ setAnchorEl={setAnchorEl}
 };
 
 export default Main;
-
-
-  
-  

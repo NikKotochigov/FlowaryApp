@@ -1,17 +1,8 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
-import { Box, Button, Grid, Typography } from '@mui/material';
-import { goods } from 'consts/data';
+import { Box, Button, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { contractSelector } from 'store/reducers/contract/reducer';
-import CustomBadge from 'ui-component/elements/badge';
-import CustomSelector from 'ui-component/elements/customSelector';
-import AddRecieverModal from 'ui-component/pages/company/addRecieverModal/addRecieverModal';
-import LoadDepositModal from 'ui-component/pages/company/loadDepositModal/loadDepositModal';
-import RoleBadge from 'ui-component/pages/company/roleBadge/roleBadge';
-import User from '../../ui-component/pages/company/user';
 import { useAccount } from 'wagmi';
-import provider from '../../contracts/provider';
-import { useEffect } from 'react';
 import { useState } from 'react';
 import { ethers } from 'ethers';
 import conectSigner from '../../contracts/SIGNER';

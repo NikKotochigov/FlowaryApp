@@ -1,43 +1,25 @@
-/* eslint-disable jsx-a11y/iframe-has-title */
-import { Box, Button, Grid, Typography } from '@mui/material';
-import { goods } from 'consts/data';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useAccount } from 'wagmi';
+
+import { Box, Button, Grid, Typography } from '@mui/material';
+
 import { contractSelector } from 'store/reducers/contract/reducer';
-import CustomBadge from 'ui-component/elements/badge';
-import CustomSelector from 'ui-component/elements/customSelector';
 import AddRecieverModal from 'ui-component/pages/company/addRecieverModal/addRecieverModal';
-import LoadDepositModal from 'ui-component/pages/company/loadDepositModal/loadDepositModal';
 import RoleBadge from 'ui-component/pages/company/roleBadge/roleBadge';
 import User from '../../ui-component/pages/company/user';
-import { useAccount } from 'wagmi';
-import provider from '../../contracts/provider';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { ethers } from 'ethers';
-import conectSigner from '../../contracts/SIGNER';
-import { useNavigate } from 'react-router';
-import History from '../../views//history//index';
-import useContract from '../../contracts/prepareContract';
-import data from 'assets/images/data.gif';
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import Loader from '../../ui-component/elements/loader';
 import { v4 as uuidv4 } from 'uuid';
-import Demo from 'views/settings';
-import { getInfoForCompanyAndEmployee } from 'utils/contractMethods';
 import AvatarChip from 'ui-component/elements/chip';
 import Toolkit from 'ui-component/elements/tooltip';
 import copyTextToClipboard from 'utils/copyPast';
 import HeaderCompanyBalance from 'ui-component/elements/headerCompanyBalance';
 
-// ==============================|| SAMPLE PAGE ||============================== //
-const Company = ({arrEmployee}) => {
+const Company = () => {
     const { address: addressWallet } = useAccount();
-    const navigate = useNavigate();
     const [loader, setLoader] = useState(false);
-       const { name, owner, balance, address, admin, decimalsToken, symbolToken } = useSelector(contractSelector);
-        console.log('ADDF :', typeof address)
-       console.log('massiv sotrudnikov :', arrEmployee);
-
+    const { name, owner, balance, address, admin, arrEmployee, symbolToken } = useSelector(contractSelector);
+    console.log({ name, owner, balance, address, admin, arrEmployee, symbolToken });
     return (
                 <>
              
