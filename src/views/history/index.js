@@ -13,6 +13,8 @@ import AllHistory from './allHistory';
 import Demo from 'views/settings';
 import { getAllLogs } from 'utils/getAllLogs';
 import Main from 'views/main/default';
+import WalletPointer from 'ui-component/elements/walletPointer';
+import Sorry from 'ui-component/elements/sorry';
 
 const History = ({ areYouEmployee }) => {
     const [valueStart, setValueStart] = useState(dayjs('2023-01-01'));
@@ -147,7 +149,21 @@ const History = ({ areYouEmployee }) => {
                 </>
             )}
 
-            {address && addressWallet ? <AllHistory arrayItem={arrayItem} eventsLog={eventsLog} loader={loader} /> : <Main />}
+{/* {addressWallet ? (
+                addressWallet == owner || addressWallet == admin || employeeOrNot ? (
+                    <AllHistory arrayItem={arrayItem} eventsLog={eventsLog} loader={loader} /> 
+                ) : areYouEmployee ? (
+                    <AllHistory arrayItem={arrayItem} eventsLog={eventsLog} loader={loader} /> 
+                ) : (<Sorry />)
+            ) : (<WalletPointer />)} */}
+
+{addressWallet ?
+(addressWallet == owner || addressWallet == admin || employeeOrNot 
+? <AllHistory arrayItem={arrayItem} eventsLog={eventsLog} loader={loader} /> 
+: <Sorry />)
+: <WalletPointer /> 
+}
+
         </>
     );
 };

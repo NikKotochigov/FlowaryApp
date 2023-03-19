@@ -2,13 +2,14 @@
 import {
   Box,
   Button,
+  TextField,
   Toolbar,
 } from "@mui/material";
 import BasicModal from "../../../ui-component/elements/modal";
 import { useState } from "react";
 import { useAccount } from 'wagmi'
 import connectContract from "contracts/erc20";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import CompanyCreateStepper from "../../../views/main/Steps/companyCreateStepper";
 import CustomPopover from "../../../ui-component/elements/customPopover";
 import { useDispatch } from "react-redux";
@@ -17,7 +18,7 @@ import existCompany from '../../../assets/images/existCompany.png'
 import SelectAutoComplete from "ui-component/pages/main/selectAutoComplete/selectAutoComplete";
 import { LoadingButton } from "@mui/lab";
 
-const Main = () => {
+const Main = ({setApp}) => {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(prev => !prev);
   const [value, setValue] = useState(null);
@@ -26,11 +27,12 @@ const Main = () => {
   const dispatch = useDispatch();
   const { address } = useAccount()
   const navigate = useNavigate();
-
+// const [add, setAdd] = useState('');
   const handleConnectCompany = async () => {
     setLoading(true)
     await connectContract(value.company, dispatch)
-    navigate("/personal-page")
+   navigate("/dashboard")
+   setApp(true)
     setLoading(false)
   };
   const handleCreateCompany = () => {
@@ -77,7 +79,8 @@ const Main = () => {
       fontSize = '30px'
         nameModal={"Company exist"}
         open={open}
-        handleClickOpen={address ? handleClickOpen : handleOpenPopover}
+        //handleClickOpen={address ? handleClickOpen : handleOpenPopover}
+        handleClickOpen={handleClickOpen}
 variant='contained'
       >
         <Box
@@ -125,6 +128,7 @@ setAnchorEl={setAnchorEl}
 
           </Box>
         </Toolbar> 
+        <Button>DEMO</Button>
       </>}
       
   </>

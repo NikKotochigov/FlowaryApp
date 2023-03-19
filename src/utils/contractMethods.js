@@ -34,6 +34,7 @@ export const setContractAdmin = async (adminAddress, contractAddress, dispatch, 
             args: [adminAddress]
         })
         await writeContract(config);
+        console.log('WRITE CONTRACT')
         dispatch(setAdmin(adminAddress));
         setActiveStep(prev => prev + 1);
         setLoading(false);

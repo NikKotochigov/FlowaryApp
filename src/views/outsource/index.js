@@ -22,8 +22,18 @@ const arrOutsorceFinished = arrOutsource.filter(i => i.status ===3)
 
 console.log("MAssiv AUTSORSA", arrOutsorceFinished)
 return ( <>
-    <HeaderCompanyBalance />
 
+{/* {addressWallet ? (
+                addressWallet == owner || addressWallet == admin ? (
+                    <Company />
+                ) : isEmployee ? (
+                    <Employee arrEmployee={arrEmployee} />
+                ) : (<Sorry />)
+            ) : (<WalletPointer />)} */}
+
+
+
+    <HeaderCompanyBalance />
                     <Box sx={{ display: 'flex', justifyContent: 'center', m:5}}>
 <AddOutsourceModal />
 </Box>

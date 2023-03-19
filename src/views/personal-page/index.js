@@ -5,7 +5,10 @@ import { contractSelector } from 'store/reducers/contract/reducer';
 
 import Company from './company';
 import Employee from './employee';
-import Main from 'views/main/default';
+import { Box } from '@mui/system';
+import { Typography } from '@mui/material';
+import Sorry from 'ui-component/elements/sorry';
+import WalletPointer from 'ui-component/elements/walletPointer';
 
 const SamplePage = () => {
     const { address: addressWallet } = useAccount();
@@ -16,17 +19,20 @@ const SamplePage = () => {
     useEffect(() => {
         const findedEmployee = arrEmployee.find((item) => item.who === addressWallet);
         setIsEmployee(findedEmployee != undefined);
-    }, [arrEmployee, addressWallet])
+    }, [arrEmployee, addressWallet]);
 
     // if (!address) return null
     console.log({ address, addressWallet, isEmployee });
+
     return (
         <>
-            {address && addressWallet ?
-                (addressWallet == owner || addressWallet == admin
-                    ? <Company />
-                    : isEmployee && <Employee arrEmployee={arrEmployee} />)
-                : <Main />}
+            {addressWallet ? (
+                addressWallet == owner || addressWallet == admin ? (
+                    <Company />
+                ) : isEmployee ? (
+                    <Employee arrEmployee={arrEmployee} />
+                ) : (<Sorry />)
+            ) : (<WalletPointer />)}
         </>
     );
 };

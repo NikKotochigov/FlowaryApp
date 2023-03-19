@@ -17,8 +17,8 @@ function SecondStep({ setActiveStep }) {
         setTokenAddress(e.target.value);
     }
 
-    const handleSetToken = () => {
-        setContractToken(tokenAddress, address, dispatch, setLoading, setActiveStep);
+    const handleSetToken = async() => {
+        await setContractToken(tokenAddress, address, dispatch, setLoading, setActiveStep);
     }
 
     return (

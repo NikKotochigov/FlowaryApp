@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { createCompany } from "utils/createCompany";
 import { LoadingButton } from "@mui/lab";
 import { Box, TextField } from "@mui/material";
+import getRecordByName from "utils/dataBase/getRecordByName";
 
 function FirstStep({ setActiveStep }) {
     const [name, setName] = useState("");
@@ -13,9 +14,10 @@ function FirstStep({ setActiveStep }) {
     const handleNameChange = (e) => {
         setName(e.target.value);
     }
-
-    const handleAddCompany = () => {
-        createCompany(name, dispatch, setLoading, setActiveStep);
+    const handleAddCompany = async () => {
+    const record = await getRecordByName(name);
+    if(record) console.log('Such company has already existed')
+    else createCompany(name, dispatch, setLoading, setActiveStep);
     }
 
     return (

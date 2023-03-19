@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { contractSelector } from "store/reducers/contract/reducer";
 import { setContractAdmin } from "utils/contractMethods";
 import { useNavigate } from "react-router";
+import connectContract from "contracts/erc20";
 
 function ThirdStep({ setActiveStep }) {
     const [adminAddress, setAdminAddress] = useState("");
@@ -20,6 +21,8 @@ function ThirdStep({ setActiveStep }) {
 
     const handleSetAdmin = async () => {
         await setContractAdmin(adminAddress, address, dispatch, setLoading, setActiveStep);
+        console.log('navigate')
+        await connectContract(address, dispatch)
         navigate("/personal-page");
     }
 
