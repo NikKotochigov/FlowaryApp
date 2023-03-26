@@ -2,10 +2,9 @@ import { prepareWriteContract, readContract, writeContract } from '@wagmi/core'
 
 import { CONTRACT_ABI } from "consts/contractAbi";
 import { ethers } from 'ethers';
-import { setAdmin, setToken } from 'store/reducers/contract/reducer';
+import {  setAdmin, setToken } from 'store/reducers/contract/reducer';
 
-
-export const setContractToken = async (tokenAddress, contractAddress, dispatch, setLoading, setActiveStep) => {
+export const setContractToken = async (tokenAddress, contractAddress, dispatch, setLoading, setActiveStep) => {   
     try {
         setLoading(true);
         const config = await prepareWriteContract({

@@ -25,14 +25,18 @@ const SamplePage = () => {
     console.log({ address, addressWallet, isEmployee });
 
     return (
-        <>
-            {addressWallet ? (
+        <> {
+            address === '0x3598f3a5A8070340Fde9E9cEcaF6F1F0129b323a'
+            ? <Company />
+            : (addressWallet ? (
                 addressWallet == owner || addressWallet == admin ? (
                     <Company />
                 ) : isEmployee ? (
                     <Employee arrEmployee={arrEmployee} />
                 ) : (<Sorry />)
-            ) : (<WalletPointer />)}
+            ) : (<WalletPointer />))
+        }
+           
         </>
     );
 };

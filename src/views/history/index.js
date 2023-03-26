@@ -149,19 +149,16 @@ const History = ({ areYouEmployee }) => {
                 </>
             )}
 
-{/* {addressWallet ? (
-                addressWallet == owner || addressWallet == admin || employeeOrNot ? (
-                    <AllHistory arrayItem={arrayItem} eventsLog={eventsLog} loader={loader} /> 
-                ) : areYouEmployee ? (
-                    <AllHistory arrayItem={arrayItem} eventsLog={eventsLog} loader={loader} /> 
-                ) : (<Sorry />)
-            ) : (<WalletPointer />)} */}
+{
+            address === '0x3598f3a5A8070340Fde9E9cEcaF6F1F0129b323a'
+            ? <AllHistory arrayItem={arrayItem} eventsLog={eventsLog} loader={loader} /> 
+            :
 
-{addressWallet ?
+(addressWallet ?
 (addressWallet == owner || addressWallet == admin || employeeOrNot 
 ? <AllHistory arrayItem={arrayItem} eventsLog={eventsLog} loader={loader} /> 
 : <Sorry />)
-: <WalletPointer /> 
+: <WalletPointer /> )
 }
 
         </>

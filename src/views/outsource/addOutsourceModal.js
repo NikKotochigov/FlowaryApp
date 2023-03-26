@@ -5,7 +5,7 @@ import BasicModal from '../../ui-component/elements/modal';
 import ButtonWithResult from '../../ui-component/elements/buttonWithResult';
 import getErrorMessage from '../../utils/getErrorMessage';
 import { useDispatch, useSelector } from "react-redux";
-import { contractSelector, setArrOutsource } from '../../store/reducers/contract/reducer';
+import { contractSelector, setArrOutsource, setBalance } from '../../store/reducers/contract/reducer';
 import newUser from '../../assets/images/newUser.png'
 import dayjs from 'dayjs';
 import { ethers } from "ethers";
@@ -34,12 +34,12 @@ function AddOutsourceModal() {
         try {
             setSuccess(false);
             setLoading(true);
-            const addOutsource = await contractSigner.createOutsourceJob(adNew, taskName, BigInt(Math.ceil((wage)*(10**decimalsToken))), (deadLine*3600), true);
+            const addOutsource = await contractSigner.createOutsourceJob(adNew, taskName, BigInt(wage*(10**decimalsToken)), (deadLine*3600), 30);
             const res = await addOutsource.wait();
             console.log(res);
 //========refresh array of outsource========//
 
-const amountOutsources = (await contract.id()).toNumber();
+const amountOutsources = (await contract.OutsourceID()).toNumber();
 let outsourcesArr = [];
 for (let i = 0; i < amountOutsources; i++) {
     const result = await contract.listOutsource(i);
@@ -55,6 +55,10 @@ for (let i = 0; i < amountOutsources; i++) {
 }
 dispatch(setArrOutsource(outsourcesArr));
 //==========end of refresh========//
+const bal = await contract.currentBalanceContract();
+const balan = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
+dispatch(setBalance(balan));
+
             setSuccess(true);
             setLoading(false);
         } catch (error) {

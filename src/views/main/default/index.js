@@ -1,142 +1,193 @@
+import { Box, Button, Grid, TextField, Toolbar, Typography } from '@mui/material';
+import BasicModal from '../../../ui-component/elements/modal';
+import { useState } from 'react';
+import { useAccount } from 'wagmi';
+import connectContract from 'contracts/erc20';
+import { useNavigate, Navigate } from 'react-router-dom';
+import CompanyCreateStepper from '../../../views/main/Steps/companyCreateStepper';
+import CustomPopover from '../../../ui-component/elements/customPopover';
+import { useDispatch } from 'react-redux';
+import companyMatrix from '../../../assets/images/companyMatrix.png';
+import existCompany from '../../../assets/images/existCompany.png';
+import SelectAutoComplete from 'ui-component/pages/main/selectAutoComplete/selectAutoComplete';
+import { LoadingButton } from '@mui/lab';
+import useContract from 'contracts/prepareContract';
+import getRecordByName from 'utils/dataBase/getRecordByName';
+import ReactCardFlip from 'react-card-flip';
+import Logo3 from 'assets/images/Logo3.png';
 
-import {
-  Box,
-  Button,
-  TextField,
-  Toolbar,
-} from "@mui/material";
-import BasicModal from "../../../ui-component/elements/modal";
-import { useState } from "react";
-import { useAccount } from 'wagmi'
-import connectContract from "contracts/erc20";
-import { useNavigate, Navigate } from "react-router-dom";
-import CompanyCreateStepper from "../../../views/main/Steps/companyCreateStepper";
-import CustomPopover from "../../../ui-component/elements/customPopover";
-import { useDispatch } from "react-redux";
-import companyMatrix from '../../../assets/images/companyMatrix.png'
-import existCompany from '../../../assets/images/existCompany.png'
-import SelectAutoComplete from "ui-component/pages/main/selectAutoComplete/selectAutoComplete";
-import { LoadingButton } from "@mui/lab";
+const Main = ({ setApp }) => {
+    const [open, setOpen] = useState(false);
+    const handleClickOpen = () => setOpen((prev) => !prev);
+    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [text, setText] = useState('');
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [add, setAdd] = useState('');
 
-const Main = ({setApp}) => {
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => setOpen(prev => !prev);
-  const [value, setValue] = useState(null);
-  const [loading, setLoading] = useState(false);
+    const handleConnectCompany = async () => {
+        const record = await getRecordByName(add);
+        console.log(record);
+        if (record) {
+            setLoading(true);
+            await connectContract(record.address, dispatch);
+            navigate('/dashboard');
+            setApp(true);
+            setLoading(false);
+        } else setText('Company with such name doesnt exist');
+        setTimeout(() => setText(''), 3000);
+    };
+    const handleConnectDemo = async () => {
+            setIsLoading(true);
+            await connectContract('0x3598f3a5A8070340Fde9E9cEcaF6F1F0129b323a', dispatch);
+            navigate('/dashboard');
+            setApp(true);
+            setIsLoading(false);
+    };
 
-  const dispatch = useDispatch();
-  const { address } = useAccount()
-  const navigate = useNavigate();
-// const [add, setAdd] = useState('');
-  const handleConnectCompany = async () => {
-    setLoading(true)
-    await connectContract(value.company, dispatch)
-   navigate("/dashboard")
-   setApp(true)
-    setLoading(false)
-  };
-  const handleCreateCompany = () => {
-    console.log("hello");
-    setIsCreateOpen(true);
-  }
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const handleCreateCompany = () => setIsCreateOpen((prev) => !prev);
 
-  const handleOpenPopover = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-  const id = open ? 'simple-popover' : undefined;
-  const [anchorEl, setAnchorEl] = useState(null);
+    const [isFlipped, setIsFlipped] = useState(false);
+    const handleClickFlip = () => {
+        setIsFlipped(true);
+    };
+    return (
+        <>
+            <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal" flipSpeedBackToFront={2} flipSpeedFrontToBack={2}>
+            <Grid 
+             container
+             spacing={0}
+             direction="column"
+             alignItems="center"
+             justifyContent="center"
+             style={{ minHeight: '100vh' }}
+           >
+           
+             <Grid 
+             //item xs={3}
+             sx={{
+                border:1,
+            borderRadius: 4,
+            width: '700px',
+            height: '500px',
+            p: 2,
+            justifyItems:'center',
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'column'
+            }}
+             >
+         <img src={Logo3} alt="logo" width="570" />
+                    <Button variant='outlined' size='large'
+                    onClick={handleClickFlip}>START</Button>
+                </Grid>  
+</Grid>  
+                
 
-  return (
-    <>
-      {isCreateOpen ? <CompanyCreateStepper />
-      : <>
-        <Box sx={{
-    display: 'flex',
-    justifyContent: 'center',
-    mt: 6
-  }}>
-             <img src={companyMatrix} alt="gif" width="445"/>
+                <Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        mt: 6
+                    }}
+                >
+                    <img src={companyMatrix} alt="gif" width="445" />
+                </Box>
 
-  </Box>
+                <Toolbar
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Box sx={{ display: 'flex', gap: 3 }}>
+                        <BasicModal
+                            sx={{ border: 1 }}
+                            fontSize="30px"
+                            backgroundColor="red"
+                            nameModal={'Create company'}
+                            open={isCreateOpen}
+                            handleClickOpen={handleCreateCompany}
+                            variant="contained"
+                        >
+                            <CompanyCreateStepper setApp={setApp} />
+                        </BasicModal>
 
-   <Toolbar 
-   sx={{
-    display: 'flex',
-    justifyContent: 'center',
-    }}>
-          <Box sx={{ display: 'flex', gap: 5 }}>
-            <Button variant="contained"
-            sx={{background: 'red', 
-            fontSize: '30px',
-          }}
-            size='large'
-            onClick={address ? handleCreateCompany : handleOpenPopover}>
-              Create company
-            </Button>
-      <BasicModal
-      fontSize = '30px'
-        nameModal={"Company exist"}
-        open={open}
-        //handleClickOpen={address ? handleClickOpen : handleOpenPopover}
-        handleClickOpen={handleClickOpen}
-variant='contained'
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 2,
-            width: 400
-          }}
-        >
-      
-                       <img src={existCompany} alt="gif" width="445"/>
-
-          {/* <TextField
-            fullWidth
-            label="Address of your company"
-            variant="outlined"
-            onChange={(event) => setAdd(event.target.value)}
-          /> */}
-               <SelectAutoComplete 
-               value={value}
-               setValue={setValue}
-               />
-
-            <LoadingButton
-                              size="small"
-                              onClick={handleConnectCompany}
-                              loading={loading}
-                              loadingIndicator="Loading…"
-                              variant="outlined"
+                        <BasicModal
+                            fontSize="30px"
+                            nameModal={'Company exist'}
+                            open={open}
+                            handleClickOpen={handleClickOpen}
+                            variant="contained"
+                        >
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    gap: 2,
+                                    width: 400
+                                }}
                             >
-                              <span>Choose company</span>
-                            </LoadingButton>
-        </Box>
-      </BasicModal>
+                                <img src={existCompany} alt="gif" width="445" />
 
-      <CustomPopover 
-text={'Connect wallet, pls'}
-handleOpenPopover={handleOpenPopover} 
-anchorEl={anchorEl}
-id={id}
-setAnchorEl={setAnchorEl}
-/>
+                                <TextField
+                                    fullWidth
+                                    label="Address of your company"
+                                    variant="outlined"
+                                    onChange={(event) => setAdd(event.target.value)}
+                                />
 
-          </Box>
-        </Toolbar> 
-        <Button>DEMO</Button>
-      </>}
-      
-  </>
-    
+                                <LoadingButton
+                                    size="small"
+                                    onClick={handleConnectCompany}
+                                    loading={loading}
+                                    loadingIndicator="Loading…"
+                                    variant="outlined"
+                                >
+                                    <span>Choose company</span>
+                                </LoadingButton>
+                                <Typography variant="h4" color="red">
+                                    {text}
+                                </Typography>
+                            </Box>
+                        </BasicModal>
 
- 
-    
-  );
+                    </Box>
+                </Toolbar>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+
+                <LoadingButton
+                                    size="large"
+                                    onClick={handleConnectDemo}
+                                    loading={isLoading}
+                                    loadingIndicator="Loading…"
+                                    variant="outlined"
+                                    sx={{ display: 'flex', justifySelf: 'center', fontSize: '30px', minWidth: '190px', mt: 3 }}
+
+                                >
+                                    DEMO
+                                </LoadingButton>
+
+                    {/* <Button
+                        variant="outlined"
+                        sx={{ display: 'flex', justifySelf: 'center', fontSize: '30px', minWidth: '190px', mt: 3 }}
+                        size="large"
+                        onClick={}
+                    >
+                        DEMO
+                    </Button> */}
+                </Box>
+
+                </Box>
+            </ReactCardFlip>
+
+        </>
+    );
 };
 
 export default Main;

@@ -1,7 +1,7 @@
 // material-ui
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import logoCut from 'assets/images/logoCut.svg';
+import Logo3 from 'assets/images/Logo3.png';
 
 /**
  * if you want to use image instead of <svg> uncomment following.
@@ -23,7 +23,7 @@ const Logo = () => {
             // background: '#9CC8FF',
             borderRadius: '10px'
             }}>
-         <img src={logoCut} alt="logo" width="170" />
+         <img src={Logo3} alt="logo" width="185" />
         </Box>
 
     </>

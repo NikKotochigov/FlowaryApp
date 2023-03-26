@@ -24,15 +24,15 @@ const MainRoutes = {
             path: '/',
             element: <Dashboard />
         },
-        {
-            path: 'main',
-            children: [
-                {
-                    path: 'default',
-                    element: <Dashboard />
-                }
-            ]
-        },
+        // {
+        //     path: 'main',
+        //     children: [
+        //         {
+        //             path: 'default',
+        //             element: <Dashboard />
+        //         }
+        //     ]
+        // },
         {
             path: 'dashboard',
             element: <Dashboard />

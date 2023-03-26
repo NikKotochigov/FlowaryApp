@@ -53,7 +53,7 @@ const User = ({ who, rate }) => {
         try {           
             setLoading(true)
             const stopStream = await contractSigner.finish(who)
-            const res = await stopStream.wait()
+            await stopStream.wait()
             setLoading(false)
             const bal = await contract.currentBalanceContract();
             const balan = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)

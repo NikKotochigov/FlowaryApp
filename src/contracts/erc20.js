@@ -19,8 +19,8 @@ const connectContract = async (address, dispatch) => {
     const contractBalance = await contract.currentBalanceContract();
     const balance = Number(ethers.utils.formatUnits(contractBalance, decimalsToken)).toFixed(2);
     const amountEmployee = (await contract.amountEmployee()).toNumber();
-    const liquidation = await contract.liqudation();
-
+ const liquidation = await contract.liqudation();
+ 
     dispatch(setContractInfo({
       admin,
       name,
@@ -32,6 +32,7 @@ const connectContract = async (address, dispatch) => {
       amountEmployee,
       liquidation
     }));
+
     /* get employee info */
     const employeeArr = [];
     for (let i = 0; i < amountEmployee; i++) {
@@ -41,8 +42,9 @@ const connectContract = async (address, dispatch) => {
       employeeArr.push(employee);
     }
     dispatch(setArrEmployee(employeeArr));
+
     /* get outsource info */
-    const amountOutsources = (await contract.id()).toNumber();
+   const amountOutsources = (await contract.OutsourceID()).toNumber();
     const outsourcesArr = [];
     for (let i = 0; i < amountOutsources; i++) {
       const result = await contract.listOutsource(i);
