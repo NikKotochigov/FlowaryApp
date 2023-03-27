@@ -1,6 +1,11 @@
 // assets
 import { IconBrandChrome, IconHelp } from '@tabler/icons';
-
+import { IconLayoutDashboard } from '@tabler/icons-react';
+import { IconBrandCoinbase } from '@tabler/icons-react';
+import { IconShare } from '@tabler/icons-react';
+import { IconBrandGithub } from '@tabler/icons-react';
+import { IconAdjustmentsAlt } from '@tabler/icons-react';
+import { IconCalendarStats } from '@tabler/icons-react';
 // constant
 const icons = { IconBrandChrome, IconHelp };
 
@@ -15,7 +20,7 @@ const other = {
             title: 'Dashboard',
             type: 'item',
             url: '/dashboard',
-            icon: icons.IconBrandChrome,
+            icon: IconLayoutDashboard,
             breadcrumbs: false
         },
         {
@@ -23,7 +28,7 @@ const other = {
             title: 'Personal Page',
             type: 'item',
             url: '/personal-page',
-            icon: icons.IconBrandChrome,
+            icon: IconBrandCoinbase,
             breadcrumbs: false
         },
         {
@@ -31,7 +36,7 @@ const other = {
             title: 'Outsource',
             type: 'item',
             url: '/outsource',
-            icon: icons.IconBrandChrome,
+            icon: IconShare,
             breadcrumbs: false
         },
         {
@@ -39,7 +44,7 @@ const other = {
             title: 'Activity history',
             type: 'item',
             url: '/history',
-            icon: icons.IconBrandChrome,
+            icon: IconCalendarStats,
             breadcrumbs: false
         },
         {
@@ -47,7 +52,7 @@ const other = {
             title: 'Settings',
             type: 'item',
             url: '/settings',
-            icon: icons.IconBrandChrome,
+            icon: IconAdjustmentsAlt,
             breadcrumbs: false
         },
         {
@@ -55,10 +60,11 @@ const other = {
             title: 'Documentation',
             type: 'item',
             url: 'https://github.com/NikKotochigov/FlowaryApp',
-            icon: icons.IconHelp,
+            icon: IconBrandGithub,
             external: true,
             target: true
-        }
+        },
+   
     ]
 };
 

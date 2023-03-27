@@ -1,5 +1,7 @@
 export const FACTORY_ABI = [{"inputs":[{"internalType":"address","name":"_initImpl","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_org","type":"address"},{"indexed":false,"internalType":"address","name":"_creator","type":"address"},{"indexed":false,"internalType":"string","name":"_what","type":"string"}],"name":"Creation","type":"event"},{"inputs":[],"name":"beacon","outputs":[{"internalType":"contract CompanyBeacon","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_name","type":"string"}],"name":"createCompany","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"listOfOrg","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"nameToAddress","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAmounOfComapnies","outputs":[{"internalType":"uint256","name":"_num","type":"uint256"}],"stateMutability":"view","type":"function"}]
-// old factory export const FACTORY_ADDRESS = "0xCc7812De274ADe2c629aE2265BA230BDc75d77d6";
-// one more old contract ==> export const FACTORY_ADDRESS ='0xaFAC6F97A038971a6b20a8E0B0B94FD1b0cbAeD5'
 
-export const FACTORY_ADDRESS ='0x0ea62B158B5c5995a0864331e286e9FC0a207A33'
+// old factory export const FACTORY_ADDRESS = "0xCc7812De274ADe2c629aE2265BA230BDc75d77d6";
+// one more old contract ==> export const FACTORY_ADDRESS =''
+
+export const FACTORY_ADDRESS = '0x0ea62B158B5c5995a0864331e286e9FC0a207A33'
+//Company Implementation -> 0xB8c683CcAa269932f179641B36582710a7Db4c1a

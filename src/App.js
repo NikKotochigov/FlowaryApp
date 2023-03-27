@@ -41,6 +41,7 @@ import {
   import CompanyCreateStepper from "../src/views/main/Steps/companyCreateStepper";
   import CustomPopover from "../src/ui-component/elements/customPopover";
 import Lending from 'ui-component/pages/lending/lending';
+import Main from 'views/main/default';
 
 
 
@@ -64,8 +65,13 @@ const App = () => {
                             <Routes />
                         </NavigationScroll>
 </>
-   : <Lending setApp={setApp}/>                    
+   : 
+    <Main setApp={setApp}/>
+   //<Lending setApp={setApp}/>                    
 }
+
+
+
                     </ThemeProvider>
                 </StyledEngineProvider>
             </RainbowKitProvider>

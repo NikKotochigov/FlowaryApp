@@ -1,8 +1,8 @@
 // assets
-import { IconDashboard } from '@tabler/icons';
+import { IconRefresh } from '@tabler/icons-react';
 
 // constant
-const icons = { IconDashboard };
+const icons = { IconRefresh };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
@@ -11,12 +11,13 @@ const main = {
     type: 'group',
     children: [
         {
-            id: 'main',
-            title: 'Main',
+            id: 'Change Company',
+            title: 'Change Company',
             type: 'item',
-            url: '/main/default',
-            icon: icons.IconDashboard,
-            breadcrumbs: false
+            url: '/',
+            icon: icons.IconRefresh,
+            external: true,
+            target: false
         }
     ]
 };

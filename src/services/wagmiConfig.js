@@ -3,7 +3,8 @@ import {
   } from '@rainbow-me/rainbowkit';
   import {
     configureChains,
-    createClient
+    createClient,
+    createStorage
   } from 'wagmi';
   import {
     goerli
@@ -25,5 +26,6 @@ import {
   export const wagmiClient = createClient({
     autoConnect: false,
     connectors,
-    provider
+    provider,
+    storage: createStorage({ storage: window.localStorage }),
   })

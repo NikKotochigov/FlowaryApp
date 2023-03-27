@@ -100,7 +100,7 @@ newchartData.series[0].data = valueArraySortedByDateForChart
      
     return (
 <>
- {address && addressWallet ?
+ {/* {address && addressWallet ? */}
 
             <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
@@ -147,7 +147,7 @@ newchartData.series[0].data = valueArraySortedByDateForChart
                 </Grid>
             </Grid>
         </Grid>
-            : <Main />}
+             {/* : <Main />} */}
 </>
        
         

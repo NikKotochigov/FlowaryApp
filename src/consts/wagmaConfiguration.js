@@ -25,5 +25,7 @@ import {
   export const wagmiClient = createClient({
     autoConnect: false,
     connectors,
-    provider
+    provider,
+    storage: createStorage({ storage: window.localStorage }),
+
   })

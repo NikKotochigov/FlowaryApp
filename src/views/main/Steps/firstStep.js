@@ -1,54 +1,59 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { createCompany } from "utils/createCompany";
-import { LoadingButton } from "@mui/lab";
-import { Box, TextField } from "@mui/material";
+import { createCompany } from 'utils/createCompany';
+import { LoadingButton } from '@mui/lab';
+import { Box, TextField, Typography } from '@mui/material';
+import getRecordByName from 'utils/dataBase/getRecordByName';
 
 function FirstStep({ setActiveStep }) {
-    const [name, setName] = useState("");
+    const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
-
+    const [existedName, setExistedName] = useState('');
     const handleNameChange = (e) => {
         setName(e.target.value);
-    }
-
-    const handleAddCompany = () => {
-        createCompany(name, dispatch, setLoading, setActiveStep);
-    }
+    };
+    const handleAddCompany = async () => {
+        const record = await getRecordByName(name);
+        if (record) {setExistedName(`Company with name: "${name}" already exists. Choose another name, pls`);
+        setTimeout(()=>setExistedName(''), 3000)}
+        else createCompany(name, dispatch, setLoading, setActiveStep);
+    };
 
     return (
         <>
             <Box
                 sx={{
-                    display: "flex",
-                    flexDirection: "column",
+                    display: 'flex',
+                    flexDirection: 'column',
                     gap: 2,
-                    width: 400,
-                    pt: 2,
-                    pl: 2
+                    mt: 3,
+                    alignItems:'center',
+                    width: '100%'
                 }}
             >
-                <TextField
-                    value={name}
-                    type='text'
-                    label='Company name'
-                    size='small'
-                    onChange={handleNameChange}
-                />
-                <Box sx={{ display: "flex", gap: 2 }}>
+                <TextField 
+                sx={{ width: 270 }}
+                value={name} 
+                type="text" 
+                label="Company name" 
+                size="small" 
+                onChange={handleNameChange} />
                     <LoadingButton
                         loading={loading}
                         loadingIndicator="Creating..."
                         variant="outlined"
-                        sx={{ width: 170, }}
+                        sx={{ width: 170 }}
                         onClick={handleAddCompany}
                     >
                         Create company
                     </LoadingButton>
+                    <Typography textAlign={'center'}
+                    variant="h3" color={'red'}>
+                        {existedName}
+                    </Typography>
                 </Box>
-            </Box>
         </>
     );
 }
