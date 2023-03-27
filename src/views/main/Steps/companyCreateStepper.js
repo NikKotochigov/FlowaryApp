@@ -9,10 +9,12 @@ import Typography from '@mui/material/Typography';
 import FirstStep from './firstStep';
 import SecondStep from './secondStep';
 import ThirdStep from './thirdStep';
+import { Button } from '@mui/material';
+import ZeroStep from './zeroStep';
 
-const steps = ['Create company', 'Set token', 'Set admin'];
+const steps = ['Connect Wallet', 'Create company', 'Set token', 'Set admin'];
 
-export default function CompanyCreateStepper() {
+export default function CompanyCreateStepper({setApp}) {
     const [activeStep, setActiveStep] = useState(0);
 
     return (
@@ -28,18 +30,25 @@ export default function CompanyCreateStepper() {
             </Stepper>
             {activeStep === steps.length ? (
                 <>
-                    <Typography sx={{ mt: 2, mb: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', m: 2, alignItems: 'center'}}>
+                    <Typography sx={{ m: 2 }} variant='h3' color='primary'>
                         All steps completed!
                     </Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                        <Box sx={{ flex: '1 1 auto' }} />
+ <Button 
+ onClick={() => setApp(true)} 
+ variant='outlined'
+ sx={{width:'200px'}}
+ >
+    Go to work!
+    </Button>
                     </Box>
                 </>
             ) : (
                 <>
-                    {activeStep === 0 && <FirstStep setActiveStep={setActiveStep} />}
-                    {activeStep === 1 && <SecondStep setActiveStep={setActiveStep} />}
-                    {activeStep === 2 && <ThirdStep setActiveStep={setActiveStep} />}
+                    {activeStep === 0 && <ZeroStep setActiveStep={setActiveStep} />}
+                    {activeStep === 1 && <FirstStep setActiveStep={setActiveStep} />}
+                    {activeStep === 2 && <SecondStep setActiveStep={setActiveStep} />}
+                    {activeStep === 3 && <ThirdStep setActiveStep={setActiveStep} />}
                 </>
             )}
         </Box>

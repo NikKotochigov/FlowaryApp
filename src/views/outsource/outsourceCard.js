@@ -44,7 +44,7 @@ const OutsourceCard = ({ taskName, wage, who, startDate, deadline, id, status })
             console.log(res);
             //========refresh array of outsource========//
 
-            const amountOutsources = (await contract.id()).toNumber();
+            const amountOutsources = (await contract.OutsourceID()).toNumber();
             let outsourcesArr = [];
             for (let i = 0; i < amountOutsources; i++) {
                 const result = await contract.listOutsource(i);
@@ -84,7 +84,7 @@ const OutsourceCard = ({ taskName, wage, who, startDate, deadline, id, status })
             const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
             dispatch(setBalance(balan));
 
-            const amountOutsources = (await contract.id()).toNumber();
+            const amountOutsources = (await contract.OutsourceID()).toNumber();
             let outsourcesArr = [];
             for (let i = 0; i < amountOutsources; i++) {
                 const result = await contract.listOutsource(i);

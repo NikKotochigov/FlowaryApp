@@ -13,7 +13,7 @@ import {  setBalance } from '../../../../store/reducers/contract/reducer';
 import useContract from '../../../../contracts/prepareContract'
 import walletTwo from '../../../../assets/images/walletTwo.png'
 
-function LoadDepositModal() {
+function LoadDepositModal({showWithdraw=true}) {
     const [isOpen, setIsOpen] = useState(false);
     const handleOnClick = () => {
         setIsOpen(prev => !prev);
@@ -23,7 +23,6 @@ function LoadDepositModal() {
     const [success, setSuccess] = useState(false);
     const [loadingW, setLoadingW] = useState(false);
     const [successW, setSuccessW] = useState(false);
-
     const { contract, contractSigner } = useContract();
 
     const handleInputMoney = (e) => {
@@ -111,9 +110,9 @@ const handleLoadMoney = async() => {
 
             </Box>
         </BasicModal>
-        <Button size='small' 
+        {showWithdraw && <Button size='small' 
         onClick={handleWithdrawMoney}
-        variant='outlined'>Withdraw money</Button>
+        variant='outlined'>Withdraw money</Button>}
     </>
     );
 }

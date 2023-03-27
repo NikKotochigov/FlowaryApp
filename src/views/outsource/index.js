@@ -12,85 +12,38 @@ import AddOutsourceModal from "./addOutsourceModal";
 import OutsourceCard from "./outsourceCard";
 import { v4 as uuidv4 } from 'uuid';
 import TableOutsource from "./tableOutsource";
+import HeaderCompanyBalance from "ui-component/elements/headerCompanyBalance";
+import { useAccount } from 'wagmi';
+import OutsourceMain from "./outsourceMain";
+import OutsourceEmployee from "./outsourceEmployee";
+import { useState } from "react";
+import WalletPointer from "ui-component/elements/walletPointer";
+import Sorry from "ui-component/elements/sorry";
 
 const Outsource = () => {
-    const { name, balance, address, symbolToken, arrOutsource, decimalsToken } = useSelector(contractSelector);
-
-const arrOutsorceAlive = arrOutsource.filter(i => i.status !=3)
-const arrOutsorceFinished = arrOutsource.filter(i => i.status ===3)
-
-console.log("MAssiv AUTSORSA", arrOutsorceFinished)
+    const { address, owner, admin, arrOutsource } = useSelector(contractSelector);
+    const { address: addressWallet } = useAccount();
+    const [isEmployee, setIsEmployee] = useState(false);
+    const arrOutsorceEmployee = arrOutsource.filter(i => i.who === addressWallet).filter(i => i.status !=3)
+    useEffect(() => {
+        const findedEmployee = arrOutsource.find((item) => item.who === addressWallet);
+        setIsEmployee(findedEmployee != undefined);
+    }, [arrOutsource, addressWallet]);
 return ( <>
-                        <Box
-                        sx={{
-                            display: {
-                                sm: 'block', //600px
-                                md: 'flex' //900px
-                            },
-                            justifyContent: 'space-between'
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                m: 3
-                            }}
-                        >
-                            <Typography variant="h2" color="primary">
-                                Company {name}
-                            </Typography>
-                            <Toolkit title={"Click on it to copy!"}>
-            <Button variant='text'
-                onClick={()=>{copyTextToClipboard(address)}}
-            >
-          <AvatarChip 
-         address={address} />        
-            </Button>
-                    </Toolkit>
-                        </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                gap: 1,
-                                m: 4
-                            }}
-                        >
-                            <Typography variant="h4" color="primary">
-                                    Available balance:   {balance} {symbolToken}
-                            </Typography>
-                            <Box sx={{display: 'flex',
-                        gap: 1}}>      
-                            </Box>
-                        </Box>
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', m:5}}>
-<AddOutsourceModal />
-</Box>
-<Box
-sx={{ display: 'flex', justifyContent: 'center', m:5}}>
-<Grid container spacing={3} maxWidth={600}>
-{arrOutsorceAlive.map(({taskName, wage, who, startDate, deadline, id, status}) => (
-                                    <OutsourceCard 
-                                    key={uuidv4()} 
-                                    who={who} 
-                                    wage={wage} 
-                                    taskName={taskName}
-                                    startDate={startDate}
-                                    deadline={deadline}
-                                    id={id}
-                                    status={status} />
-                                ))}
-                                </Grid></Box>
+{
+            address === '0x3598f3a5A8070340Fde9E9cEcaF6F1F0129b323a'
+            ? <OutsourceMain />
+            :
+(addressWallet ? (
+                addressWallet == owner || addressWallet == admin ? (
+                    <OutsourceMain />
+                ) : isEmployee ? (
+                    <OutsourceEmployee arrOutsorceEmployee={arrOutsorceEmployee} />
+                ) : (<Sorry />)
+            ) : (<WalletPointer />))}
 
-                                <TableOutsource 
-                                arrOutsorceFinished={arrOutsorceFinished}
-                                />
 
-    </> );
-}
+
+</>)}
  
 export default Outsource;
