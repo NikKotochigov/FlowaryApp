@@ -15,6 +15,7 @@ import useContract from 'contracts/prepareContract';
 import getRecordByName from 'utils/dataBase/getRecordByName';
 import ReactCardFlip from 'react-card-flip';
 import Logo3 from 'assets/images/Logo3.png';
+import Toolkit from 'ui-component/elements/tooltip';
 
 const Main = ({ setApp }) => {
     const [open, setOpen] = useState(false);
@@ -105,6 +106,7 @@ const Main = ({ setApp }) => {
                     }}
                 >
                     <Box sx={{ display: 'flex', gap: 3 }}>
+
                         <BasicModal
                             sx={{ border: 1 }}
                             fontSize="30px"
@@ -113,16 +115,20 @@ const Main = ({ setApp }) => {
                             open={isCreateOpen}
                             handleClickOpen={handleCreateCompany}
                             variant="contained"
+                            title="You'll create new Company & you'd pay salary for your stuff"
+                            placement={'top'} 
                         >
                             <CompanyCreateStepper setApp={setApp} />
                         </BasicModal>
 
-                        <BasicModal
+                                  <BasicModal
                             fontSize="30px"
                             nameModal={'Company exist'}
                             open={open}
                             handleClickOpen={handleClickOpen}
                             variant="contained"
+                            title="Enter name of your Company & work with it:)"
+                            placement={'top'} 
                         >
                             <Box
                                 sx={{
@@ -137,7 +143,7 @@ const Main = ({ setApp }) => {
 
                                 <TextField
                                     fullWidth
-                                    label="Address of your company"
+                                    label="Name of your company"
                                     variant="outlined"
                                     onChange={(event) => setAdd(event.target.value)}
                                 />
@@ -149,8 +155,9 @@ const Main = ({ setApp }) => {
                                     loadingIndicator="Loading…"
                                     variant="outlined"
                                 >
-                                    <span>Choose company</span>
+                                    <span>Connect</span>
                                 </LoadingButton>
+                             
                                 <Typography variant="h4" color="red">
                                     {text}
                                 </Typography>
@@ -160,7 +167,9 @@ const Main = ({ setApp }) => {
                     </Box>
                 </Toolbar>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-
+                <Toolkit 
+                title={"Push this & you'll see DEMO contract"}
+                placement={'bottom'} >
                 <LoadingButton
                                     size="large"
                                     onClick={handleConnectDemo}
@@ -172,7 +181,7 @@ const Main = ({ setApp }) => {
                                 >
                                     DEMO
                                 </LoadingButton>
-
+</Toolkit>
                     {/* <Button
                         variant="outlined"
                         sx={{ display: 'flex', justifySelf: 'center', fontSize: '30px', minWidth: '190px', mt: 3 }}

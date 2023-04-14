@@ -2,7 +2,6 @@ import { useState } from 'react';
 import useContract from '../../../../contracts/prepareContract';
 import { Box, Button, CardMedia, TextField, Typography } from '@mui/material';
 import BasicModal from '../../../elements/modal';
-import ButtonWithResult from 'ui-component/elements/buttonWithResult';
 import getErrorMessage from 'utils/getErrorMessage';
 import CustomPopover from 'ui-component/elements/customPopover';
 import { useSelector } from 'react-redux';
@@ -11,6 +10,9 @@ import { useDispatch } from "react-redux";
 import { setAmountEmployee, setArrEmployee } from '../../../../store/reducers/contract/reducer';
 import { ethers } from "ethers";
 import newUser from '../../../../assets/images/newUser.png'
+import { LoadingButton } from '@mui/lab';
+import useErrorOwner from 'ui-component/elements/useErrorOwner';
+import HelperToolkit from 'ui-component/elements/helperTooltip';
 
 function AddRecieverModal() {
     const { contract, contractSigner } = useContract();
@@ -21,8 +23,9 @@ function AddRecieverModal() {
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
     const [result, setResult] = useState('');
+
+    const { errorOwner } = useErrorOwner();
 
     const handleOnClick = () => {
         setIsOpen((prev) => !prev);
@@ -30,7 +33,6 @@ function AddRecieverModal() {
 
     const hadleNewUser = async () => {
         try {
-            setSuccess(false);
             setLoading(true);
             const addUser = await contractSigner.addEmployee(adNew, BigInt(Math.ceil((rate/60/60)*(10**decimalsToken))));
             const res = await addUser.wait();
@@ -47,8 +49,10 @@ for (let i = 0; i < amountEmployee; i++) {
 }
 dispatch(setArrEmployee(employeeArr));
 //==========end of refresh========//
-            setSuccess(true);
             setLoading(false);
+            setAdNew('');
+            setRate(0);
+            handleOnClick();
         } catch (error) {
             console.log(error);
             const message = getErrorMessage(error);
@@ -72,7 +76,13 @@ dispatch(setArrEmployee(employeeArr));
 
     return (
         <div>
-            <BasicModal nameModal={'Add reciever'} open={isOpen} handleClickOpen={handleOnClick}>
+            <BasicModal 
+            nameModal={'Add new employee'} 
+            open={isOpen} 
+            handleClickOpen={handleOnClick}
+            title='Click here & add new employee in your Company. You have to know wallet address of reciever & how much you will pay:)'
+            placement={'top'}
+            >
                 <Box
                     sx={{
                         display: 'flex',
@@ -94,9 +104,21 @@ dispatch(setArrEmployee(employeeArr));
                         onChange={handleRateChange}
                     />
 
-                    <ButtonWithResult handler={success ? handleOnClick : hadleNewUser} loading={loading} success={success}>
-                    {success ? 'OK' : 'Add new employee'}                        
-                    </ButtonWithResult>
+<Box>
+                        <LoadingButton
+                                size="large"
+                                disabled={errorOwner}
+                                onClick={hadleNewUser}
+                                loading={loading}
+                                loadingIndicator="Loading..."
+                                variant="outlined"
+                            >
+                             Add new employee
+                            </LoadingButton>
+                            {errorOwner && <HelperToolkit title='This action allowed only for Owner or Admin of the Company' />}
+
+</Box>
+
                     <Typography variant="h4" color="red" fontSize="20px" fontWeight="bold">
                         {result}
                     </Typography>

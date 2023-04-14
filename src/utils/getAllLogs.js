@@ -135,8 +135,6 @@ import provider from '../contracts/provider';
                 // SORT BY TIME!!!!
     
                 // //--------  EVENT#3   ADD_EMPLOYEE ---------------
-                // const eventAddEmployee = await companyContract.queryFilter(companyContract.filters.AddEmployee());
-                // console.log("All Events ADD EMPLOYEE: ", eventAddEmployee)
                 setArrayBlock(result);
                 setLoader(false);
     

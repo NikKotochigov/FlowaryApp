@@ -4,6 +4,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Slide from '@mui/material/Slide';
 import { forwardRef, useState } from 'react';
 import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
+import Toolkit from './tooltip';
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -24,6 +25,7 @@ export default function CustomModal({ children, open, handleClickOpen }) {
                     }
                 }}
             />
+    
             <Dialog
                 open={open}
                 TransitionComponent={Transition}
@@ -31,14 +33,19 @@ export default function CustomModal({ children, open, handleClickOpen }) {
                 onClose={handleClickOpen}
                 aria-describedby="alert-dialog-slide-description"
             >
+                 
                 <DialogActions
                     sx={{
                         p: 4
                     }}
                 >
+                                    
+
                     {children}
+                 
                 </DialogActions>
             </Dialog>
+            
         </div>
     );
 }

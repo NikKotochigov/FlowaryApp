@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import { contractSelector } from "store/reducers/contract/reducer";
@@ -58,6 +58,14 @@ function ThirdStep({ setActiveStep }) {
                     width: '100%'
                 }}
             >
+                              <Typography variant='h4' 
+      color={'primary'} align='justify'>
+This is the last task%) Here you have to add address of one more Wallet, which'll be have role - Admin. 
+Owner of this Wallet has practically the same abilities for your Company managment. Admin - Deputy Owner.      
+If you don't want to give somebody access for your Company managment, you can set here address of your Wallet. You'll have
+two roles - Owner&Admin of Company at once.  
+ </Typography>
+
                 <TextField
                     value={adminAddress}
                     type='text'
