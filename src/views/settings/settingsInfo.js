@@ -11,9 +11,11 @@ import HeaderCompanyBalance from 'ui-component/elements/headerCompanyBalance';
 import LiquidationModal from 'ui-component/elements/liquidationModal';
 import Sorry from 'ui-component/elements/sorry';
 import WalletPointer from 'ui-component/elements/walletPointer';
-
+import useErrorOwner from 'ui-component/elements/useErrorOwner';
+import HelperToolkit from 'ui-component/elements/helperTooltip';
 const SettingsInfo = () => {
-    const { address: addressWallet } = useAccount();
+
+    const { errorOwner } = useErrorOwner();
 
     const { contractSigner } = useContract();
 
@@ -86,7 +88,7 @@ const SettingsInfo = () => {
                         </Typography>
 
                         <Typography variant="h3" color="secondary">
-                            Current Owner:{' '}
+                            Current Owner:
                         </Typography>
                         <Typography variant="h4" color="secondary">
                             {owner}
@@ -103,6 +105,7 @@ const SettingsInfo = () => {
 
                             <LoadingButton
                                 size="small"
+                                disabled={errorOwner}
                                 onClick={handleSetOwner}
                                 loading={loading}
                                 loadingIndicator="Setting..."
@@ -110,6 +113,8 @@ const SettingsInfo = () => {
                             >
                                 <span>Set new Owner</span>
                             </LoadingButton>
+                            {errorOwner && <HelperToolkit title='This action allowed only for Owner or Admin of the Company' />}
+
                         </Box>
 
                         <Typography variant="h3" color="secondary" mt="30px">
@@ -131,6 +136,7 @@ const SettingsInfo = () => {
 
                             <LoadingButton
                                 size="small"
+                                disabled={errorOwner}
                                 onClick={handleSetAdmin}
                                 loading={loadingAdmin}
                                 loadingIndicator="Setting..."
@@ -138,6 +144,8 @@ const SettingsInfo = () => {
                             >
                                 <span>Set new Admin</span>
                             </LoadingButton>
+                            {errorOwner && <HelperToolkit title='This action allowed only for Owner or Admin of the Company' />}
+
                         </Box>
 
                         <Typography variant="h3" color="secondary" mt="30px">
@@ -161,6 +169,7 @@ const SettingsInfo = () => {
 
                             <LoadingButton
                                 size="small"
+                                disabled={errorOwner}
                                 onClick={handleBufferLimit}
                                 loading={loadingBuffer}
                                 loadingIndicator="Setting..."
@@ -168,6 +177,8 @@ const SettingsInfo = () => {
                             >
                                 <span>Set new buffer</span>
                             </LoadingButton>
+                            {errorOwner && <HelperToolkit title='This action allowed only for Owner or Admin of the Company' />}
+
                         </Box>
 
                         <Typography variant="h2" color="secondary" mt="30px">

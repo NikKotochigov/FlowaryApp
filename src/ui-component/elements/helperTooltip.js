@@ -13,8 +13,10 @@ const HelperToolkit = ({ title }) => {
       backgroundColor: theme.palette.common.white,
       color: 'rgba(0, 0, 0, 0.87)',
       boxShadow: '0 2px 14px 0 rgb(32 40 45 / 30%)',
-      fontSize: 11,
-      maxWidth: 150,
+      fontSize: 20,
+      maxWidth: 300,
+      padding: '18px',
+      lineHeight: '1.3' 
     },
   }));
 

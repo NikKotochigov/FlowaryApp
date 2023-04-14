@@ -12,6 +12,8 @@ import { ethers } from "ethers";
 import {  setBalance } from '../../../../store/reducers/contract/reducer';
 import useContract from '../../../../contracts/prepareContract'
 import walletTwo from '../../../../assets/images/walletTwo.png'
+import useErrorOwner from "ui-component/elements/useErrorOwner";
+import Toolkit from "ui-component/elements/tooltip";
 
 function LoadDepositModal({showWithdraw=true}) {
     const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +36,8 @@ const { address, token, decimalsToken } = useSelector(contractSelector);
 const contractToken = new ethers.Contract(token, TOKEN_ABI, provider);
 const contractSignerToken = conectSigner(contractToken)
 const dispatch = useDispatch();
-    
+const { errorOwner } = useErrorOwner();
+
 const handleLoadMoney = async() => {
     try {
         setSuccess(false);
@@ -47,6 +50,7 @@ const handleLoadMoney = async() => {
         dispatch(setBalance(balan));
         setSuccess(true);
         setLoading(false);
+        handleOnClick();
     }
     catch(error){
         console.log(error);
@@ -103,16 +107,26 @@ const handleLoadMoney = async() => {
                     InputProps={{ inputProps: { min: 0 } }}
 
                 />
-                   <ButtonWithResult handler={success ? handleOnClick : handleLoadMoney} loading={loading} success={success}>
+                   <ButtonWithResult 
+                   handler={success ? handleOnClick : handleLoadMoney} 
+                   loading={loading} 
+                   success={success}
+                   sx={{size: 'large'}}
+                   >
                             {success ? 'Success' : 'Send money'}
                         </ButtonWithResult>
              
 
             </Box>
         </BasicModal>
-        {showWithdraw && <Button size='small' 
-        onClick={handleWithdrawMoney}
-        variant='outlined'>Withdraw money</Button>}
+        {showWithdraw && (<Toolkit title='This action allowed only for Owner of the Company'>
+        <Button size='small' 
+                                disabled={errorOwner}
+                                onClick={handleWithdrawMoney}
+        variant='outlined'>Withdraw money</Button> 
+        </Toolkit>)}
+
+        
     </>
     );
 }

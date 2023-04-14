@@ -33,6 +33,10 @@ function FirstStep({ setActiveStep }) {
                     width: '100%'
                 }}
             >
+              <Typography variant='h4' 
+      color={'primary'} align='justify'
+      >On this step you have to come up with a name of your Company and after it your have to sign transaction, which would create contract on Goerly network</Typography>
+        
                 <TextField 
                 sx={{ width: 270 }}
                 value={name} 

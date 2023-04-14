@@ -40,7 +40,7 @@ sx={{ display: 'flex', justifyContent: 'center', m:5}}>
                                     status={status} />
                                 ))}
                                 </Grid></Box>
-
+<Typography variant="h2" align="center" color={'primary'}>History log of outsource jobs</Typography>
                                 <TableOutsource 
                                 arrOutsorceFinished={arrOutsorceFinished}
                                 />

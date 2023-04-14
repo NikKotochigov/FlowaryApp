@@ -24,7 +24,7 @@ const { symbolToken, decimalsToken } = useSelector(contractSelector);
       sx={{
         display: "flex",
         justifyContent: "center",
-        mt: 10,
+        mt: 5,
       }}
     >
       <TableContainer
