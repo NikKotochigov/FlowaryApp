@@ -20,7 +20,6 @@ import { useAccount } from 'wagmi';
 import { TOKEN_ABI } from '../../consts/contractAbi';
 
 import { ethers } from 'ethers';
-// import companyContract from 'contracts/CompanyContract';
 import provider from 'contracts/provider';
 import CustomSelector from 'ui-component/elements/customSelector';
 import usePagination from './pagination';

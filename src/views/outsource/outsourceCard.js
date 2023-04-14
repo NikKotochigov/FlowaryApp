@@ -11,15 +11,19 @@ import useContract from '../../contracts/prepareContract';
 import getErrorMessage from 'utils/getErrorMessage';
 import { LoadingButton } from '@mui/lab';
 import { setArrOutsource, setBalance } from '../../store/reducers/contract/reducer';
-import { ethers } from "ethers";
+import { ethers } from 'ethers';
+import HelperToolkit from 'ui-component/elements/helperTooltip';
+import { useAccount } from 'wagmi';
+import useErrorOwner from 'ui-component/elements/useErrorOwner';
 
 const OutsourceCard = ({ taskName, wage, who, startDate, deadline, id, status }) => {
-    // const { address } = useSelector(contractSelector);
+    const { address: addressWallet } = useAccount();
     const { contract, contractSigner } = useContract();
     const [result, setResult] = useState('');
     const { symbolToken, decimalsToken } = useSelector(contractSelector);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
+    const { errorOwner } = useErrorOwner();
 
     const wagePerSecond = wage / (deadline - startDate);
     const [wageDynamic, setWageDynamic] = useState((dayjs().unix() - startDate) * wagePerSecond);
@@ -28,7 +32,7 @@ const OutsourceCard = ({ taskName, wage, who, startDate, deadline, id, status })
     useEffect(() => {
         let myInterval = setInterval(() => {
             if (active && wage > 0) {
-                setWageDynamic(wageDynamic + wagePerSecond/10);
+                setWageDynamic(wageDynamic + wagePerSecond / 10);
             }
         }, 100);
         return () => {
@@ -81,7 +85,7 @@ const OutsourceCard = ({ taskName, wage, who, startDate, deadline, id, status })
             console.log(res);
             //========refresh array of outsource & BALANCE========//
             const bal = await contract.currentBalanceContract();
-            const balan  = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
+            const balan = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2);
             dispatch(setBalance(balan));
 
             const amountOutsources = (await contract.OutsourceID()).toNumber();
@@ -151,19 +155,26 @@ const OutsourceCard = ({ taskName, wage, who, startDate, deadline, id, status })
                 )}
 
                 <CardContent>
-                    <Typography variant="h2" color="primary" >
+                    <Typography variant="h2" color="primary">
                         {taskName}
                     </Typography>
-  {active && <Typography color='secondary' variant='h4'> {wageDynamic.toFixed(4)} {symbolToken}</Typography>}
-                  
-                    
+                    {active && (
+                        <Typography color="secondary" variant="h4">
+                            {' '}
+                            {wageDynamic.toFixed(4)} {symbolToken}
+                        </Typography>
+                    )}
                 </CardContent>
                 <CardActions>
                     <ModalDetails>
-                        <Typography textAlign="center" m="10px" variant="h3" color="red">
-                            Details of outsource job
-                        </Typography>
-
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Typography textAlign="center" m="10px" variant="h3" color="red">
+                                Details of outsource job
+                            </Typography>
+                            <HelperToolkit title="How it works: when you've started job, it gets status: Active, when deadline
+                            comes - task has status - Waiting for Claim, it means that employee can demand payment, he can do it by pressing button Claim. After it - task has status Waiting for accept. 
+                            Owner or admin can accept job from employee and press button Finish, after it task goes from active stack to history log, and money for job transfers from Company account to employee wallet." />
+                        </Box>
                         <Typography sx={{ display: 'flex', gap: 1, m: 1 }} variant="h4" color="secondary">
                             Address of outsourcer:
                             <Typography variant="h5" color="primary">
@@ -196,8 +207,9 @@ const OutsourceCard = ({ taskName, wage, who, startDate, deadline, id, status })
                             </Typography>
                         </Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            {status === 2 ? (
+                            {status === 2 ? (<>
                                 <LoadingButton
+                                disabled={errorOwner}
                                     size="large"
                                     onClick={handleFinishJob}
                                     loading={loading}
@@ -207,8 +219,13 @@ const OutsourceCard = ({ taskName, wage, who, startDate, deadline, id, status })
                                 >
                                     Finish job
                                 </LoadingButton>
-                            ) : (
+                                {errorOwner && <HelperToolkit title='This action allowed only for Owner or Admin of the Company' />}
+
+                            </>
+                            
+                            ) : (<>
                                 <LoadingButton
+                                disabled={addressWallet != who}
                                     size="large"
                                     onClick={handleClaim}
                                     loading={loading}
@@ -218,6 +235,8 @@ const OutsourceCard = ({ taskName, wage, who, startDate, deadline, id, status })
                                 >
                                     Claim
                                 </LoadingButton>
+                    {addressWallet != who && <HelperToolkit title='This action allowed only for Employee' />}
+                    </>
                             )}
                         </Box>
                         <Typography variant="h4" color="red" fontSize="20px" fontWeight="bold">
@@ -225,28 +244,6 @@ const OutsourceCard = ({ taskName, wage, who, startDate, deadline, id, status })
                         </Typography>
                     </ModalDetails>
                 </CardActions>
-                {/* <Typography variant="h4" color="red" fontSize="20px" fontWeight="bold">
-                    {result}
-                </Typography> */}
-                {/* <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'top',
-                        pt: 1,
-                        //  border: 1,
-                        mr: {
-                            xs: 0, // 100%
-                            sm: 2 //600px
-                        }, height: {
-                            xs: '60px', // 100%
-                            sm: '130px' //600px
-                        },
-
-                    }}
-                >
-                    <ChangeRecieverModal who={who} />
-                </Box> */}
             </Card>
         </Grid>
     );

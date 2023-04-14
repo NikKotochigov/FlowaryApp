@@ -11,7 +11,6 @@ import User from '../../ui-component/pages/company/user';
 import Loader from '../../ui-component/elements/loader';
 import { v4 as uuidv4 } from 'uuid';
 import AvatarChip from 'ui-component/elements/chip';
-import Toolkit from 'ui-component/elements/tooltip';
 import copyTextToClipboard from 'utils/copyPast';
 import HeaderCompanyBalance from 'ui-component/elements/headerCompanyBalance';
 

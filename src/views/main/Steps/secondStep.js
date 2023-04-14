@@ -1,12 +1,15 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { setContractToken } from "utils/contractMethods";
 import { contractSelector } from "store/reducers/contract/reducer";
 import {  setToken } from 'store/reducers/contract/reducer';
 import useContract from "contracts/prepareContract";
+import copyTextToClipboard from "utils/copyPast";
+import Toolkit from "ui-component/elements/tooltip";
 
 function SecondStep({ setActiveStep }) {
     const [tokenAddress, setTokenAddress] = useState("");
@@ -48,6 +51,18 @@ setActiveStep(prev => prev + 1);
                     width: '100%'
                 }}
             >
+                              <Typography variant='h4' 
+      color={'primary'} align='justify'
+      >On this step you have to set address of Token in which you'll pay salary - 
+      it must be only ERC20 standart token. For instance - you can set our testUSDT  -
+      <Toolkit title={"Click on it to copy!"}>
+      <Button onClick={()=>{copyTextToClipboard('0xD049815A3d490CBCF73415A65384652D5F15a367')}}>
+        0xD049815A3d490CBCF73415A65384652D5F15a367.
+        </Button>
+        </Toolkit>
+      Afterwards, on page - Settings, you'd claim testUSDT from our faucet absolutly free.
+      </Typography>
+
                 <TextField
                     value={tokenAddress}
                     type='text'

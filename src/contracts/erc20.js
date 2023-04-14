@@ -4,6 +4,7 @@ import provider from "./provider";
 import { CONTRACT_ABI, TOKEN_ABI } from "../consts/contractAbi";
 import { setArrOutsource, setArrEmployee, setSymbolToken, setContractInfo, setAddress } from "../store/reducers/contract/reducer";
 
+
 const connectContract = async (address, dispatch) => {
   if (!address) return
   try {

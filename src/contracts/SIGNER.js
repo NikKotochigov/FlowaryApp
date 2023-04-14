@@ -1,9 +1,8 @@
-import provider from "./provider";
-import { ethers } from "ethers";
+import walletProvider from "./walletProvider";
 
 
 const conectSigner = (contract) => {
-  const signer = provider.getSigner();
+  const signer = walletProvider.getSigner();
   return contract.connect(signer);
 };
 

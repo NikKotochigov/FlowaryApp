@@ -13,6 +13,9 @@ import { ethers } from "ethers";
 import { LoadingButton } from '@mui/lab';
 import { setBalance } from '../../../store/reducers/contract/reducer';
 import { useIsActiveBalanceData } from './hooks/useIsActiveBalanceData';
+import Toolkit from 'ui-component/elements/tooltip';
+import useErrorOwner from 'ui-component/elements/useErrorOwner';
+import HelperToolkit from 'ui-component/elements/helperTooltip';
 
 const User = ({ who, rate }) => {
     const { address } = useSelector(contractSelector);
@@ -21,13 +24,9 @@ const User = ({ who, rate }) => {
     const { symbolToken, decimalsToken, balance } = useSelector(contractSelector);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
-    // console.log('rateStart :', Number(rate)  )
-    
-    // console.log('rateUTILS :', Number(ethers.utils.formatUnits(rate, decimalsToken)).toFixed(2))
-
-    // const calcRate = ethers.utils.formatUnits(rate);
     const calcRate = Number(rate) / 60 / 60;
     const { isActive, setIsActive, amountOfStream, isLoading } = useIsActiveBalanceData(address, who);
+    const { errorOwner } = useErrorOwner();
 
     const hadleStartStream = async () => {
         try {
@@ -119,9 +118,10 @@ const User = ({ who, rate }) => {
                     )}
                 </CardContent>
                 <CardActions>
-                    {isActive ? (
+                    {isActive ? (<>
                          <LoadingButton
                          size="small"
+                         disabled={errorOwner}
                          onClick={hadleStopStream}
                          loading={loading}
                          loadingIndicator="Loading…"
@@ -130,24 +130,25 @@ const User = ({ who, rate }) => {
                        >
                          <span>Stop stream</span>
                        </LoadingButton>
+                       {errorOwner && <HelperToolkit title='This action allowed only for Owner or Admin of the Company' />}
 
-                        // <Button variant="outlined" sx={{ color: 'red' }} onClick={hadleStopStream}>
-                        //     Stop stream
-                        // </Button>
-                        )
-                        : (
-                            // <Button variant="outlined" onClick={hadleStartStream}>
-                            //     Start stream
-                            // </Button>
-                              <LoadingButton
+                       </>)
+                        : (<>
+<Toolkit
+title={"Push this & stream'll start! How it works: your employee starts to work, so you launch stream, at this moment counter of salary also starts. For instance, your employee's worked for 3 hours & 23 mins. You push 'Stop stream' and all money, which employee's earned, transfer from balance of your Company to employees wallet address."}>
+                                 <LoadingButton
                               size="small"
+                              disabled={errorOwner}
                               onClick={hadleStartStream}
                               loading={loading}
                               loadingIndicator="Loading…"
                               variant="outlined"
                             >
                               <span>Start stream</span>
-                            </LoadingButton>
+                            </LoadingButton>  
+                            </Toolkit>
+                        {errorOwner && <HelperToolkit title='This action allowed only for Owner or Admin of the Company' />}
+</>
                         )}
 
                 </CardActions>
@@ -172,6 +173,7 @@ const User = ({ who, rate }) => {
                     }}
                 >
                     <ChangeRecieverModal who={who} />
+                    
                 </Box>
             </Card>
         </Grid>

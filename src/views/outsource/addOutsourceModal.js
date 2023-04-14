@@ -2,13 +2,15 @@ import { useState } from 'react';
 import useContract from '../../contracts/prepareContract';
 import { Box, Button, CardMedia, TextField, Typography } from '@mui/material';
 import BasicModal from '../../ui-component/elements/modal';
-import ButtonWithResult from '../../ui-component/elements/buttonWithResult';
 import getErrorMessage from '../../utils/getErrorMessage';
 import { useDispatch, useSelector } from "react-redux";
 import { contractSelector, setArrOutsource, setBalance } from '../../store/reducers/contract/reducer';
 import newUser from '../../assets/images/newUser.png'
 import dayjs from 'dayjs';
 import { ethers } from "ethers";
+import useErrorOwner from 'ui-component/elements/useErrorOwner';
+import { LoadingButton } from '@mui/lab';
+import HelperToolkit from 'ui-component/elements/helperTooltip';
 
 function AddOutsourceModal() {
     const { contract, contractSigner } = useContract();
@@ -23,8 +25,9 @@ function AddOutsourceModal() {
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
     const [result, setResult] = useState('');
+
+    const { errorOwner } = useErrorOwner();
 
     const handleOnClick = () => {
         setIsOpen((prev) => !prev);
@@ -32,7 +35,6 @@ function AddOutsourceModal() {
 
     const hadleNewOutsource = async () => {
         try {
-            setSuccess(false);
             setLoading(true);
             const addOutsource = await contractSigner.createOutsourceJob(adNew, taskName, BigInt(wage*(10**decimalsToken)), (deadLine*3600), 30);
             const res = await addOutsource.wait();
@@ -58,9 +60,8 @@ dispatch(setArrOutsource(outsourcesArr));
 const bal = await contract.currentBalanceContract();
 const balan = Number(ethers.utils.formatUnits(bal, decimalsToken)).toFixed(2)
 dispatch(setBalance(balan));
-
-            setSuccess(true);
             setLoading(false);
+            handleOnClick();
         } catch (error) {
             console.log(error);
             const message = getErrorMessage(error);
@@ -89,7 +90,13 @@ dispatch(setBalance(balan));
 
     return (
         <div>
-            <BasicModal nameModal={'Add new outsource project'} open={isOpen} handleClickOpen={handleOnClick}>
+            <BasicModal 
+            nameModal={'Add new outsource project'} 
+            open={isOpen} 
+            handleClickOpen={handleOnClick}
+            title='Click here & add new outsource job. You have to know wallet address of reciever, how much you will pay & how many time you will give for task (in hours)'
+            placement={'top'}
+            >
                 <Box
                     sx={{
                         display: 'flex',
@@ -121,10 +128,21 @@ dispatch(setBalance(balan));
                         variant="outlined"
                         onChange={handleDeadLineChange}
                     />
+                    <Box>
+                                 <LoadingButton
+                                size="large"
+                                disabled={errorOwner}
+                                onClick={hadleNewOutsource}
+                                loading={loading}
+                                loadingIndicator="Loading..."
+                                variant="outlined"
+                            >
+                             Start new outsource project
+                            </LoadingButton>
+                            {errorOwner && <HelperToolkit title='This action allowed only for Owner or Admin of the Company' />}
+           
+                    </Box>
 
-                    <ButtonWithResult handler={success ? handleOnClick : hadleNewOutsource} loading={loading} success={success}>
-                    {success ? 'OK' : 'Start new outsource project'}                        
-                    </ButtonWithResult>
                     <Typography variant="h4" color="red" fontSize="20px" fontWeight="bold">
                         {result}
                     </Typography>
